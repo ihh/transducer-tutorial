@@ -1,0 +1,29 @@
+digraph G {
+
+    S [label="$S$", shape=circle, color=red];
+    E [label="$E$", shape=diamond, color=red];
+
+    W [label="$W$", shape=octagon, color=red];
+
+    I [label="$I(y)$", shape=house, color=red];
+    M [label="$M(x,y)$", shape=rect, color=red];
+    D [label="$D(x)$", shape=invhouse, color=red];
+
+S->I [label=b];
+S->W [label="1-b"];
+
+M->I [label=b];
+M->W [label="1-b"];
+
+D->I [label=c];
+D->W [label="1-c"];
+
+I->I [label=b];
+I->W [label="1-b"];
+
+W->E;
+W->M [label=a];
+W->D [label="1-a"];
+
+    label="Transducer version of TKF91, with all states explicitly named";
+}
