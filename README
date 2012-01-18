@@ -1,0 +1,5 @@
+Requirements:
+graphviz
+latex (e.g. MacTeX)
+dot2tex
+pyparsing
