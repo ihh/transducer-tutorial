@@ -10,7 +10,7 @@ digraph G {
 
     End [shape=diamond, color=red];
 
-    Null;
+    Null [shape=circle];
 
     label="Transducer state types";
 }

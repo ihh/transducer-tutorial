@@ -1,15 +1,15 @@
 digraph G {
 
-    S [label=""];
+    S [label="", shape=circle];
 
-    I [label=""];
+    I [label="", shape=circle];
 
-    W [label="", ordering="out"];
-    X [label=""];
+    W [label="", shape=circle, ordering="out"];
+    X [label="", shape=circle];
 
-    M [label=""];
+    M [label="", shape=circle];
 
-    D [label=""];
+    D [label="", shape=circle];
 
 S->I [label="-/A" taillabel="tp(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
 S->I [label="-/C" taillabel="tp(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];

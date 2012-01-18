@@ -1,11 +1,11 @@
 digraph G {
 
-    S [label="", shape=circle, color=red];
+    S [label="", shape=circle];
 
     I [label="p(y)", shape=house, color=red];
 
-    W [label="", shape=octagon, color=red];
-    X [label="", shape=octagon, color=red];
+    W [label="", shape=circle];
+    X [label="", shape=circle];
 
     M [label="q(x,y)", shape=rect, color=red];
 

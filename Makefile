@@ -1,4 +1,5 @@
 
+# All source files
 ALLDOT := $(wildcard *.dot)
 ALLBIG := $(wildcard *.a1dot)
 ALLBASE := $(subst .dot,,$(ALLDOT)) $(subst .a1dot,,$(ALLBIG))
@@ -7,10 +8,18 @@ ALLPNG := $(addsuffix .png,$(ALLBASE))
 ALLPDF := $(addsuffix .pdf,$(ALLBASE))
 ALLTEX := $(addsuffix .tex,$(ALLBASE))
 
-all: $(ALLPDF)
+# The following source files currently only render properly as PNGs
+BAD := condensed-emission fanned-emission fanned-indel fanned-match
+BADPNG := $(addsuffix .png,$(BAD))
+GOODPDF := $(addsuffix .pdf,$(filter-out $(BAD),$(ALLBASE)))
 
-open: $(ALLPDF)
-	open $(ALLPDF)
+PRODUCT := $(BADPNG) $(GOODPDF)
+
+# Top-level rules
+all: $(ALLPDF) $(ALLPNG)
+
+open: $(PRODUCT)
+	open $(PRODUCT)
 
 clean:
 	rm $(ALLTEX) $(ALLPDF) $(ALLPNG)
