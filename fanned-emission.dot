@@ -1,0 +1,45 @@
+digraph G {
+
+    S [label="", shape=circle, color=red];
+
+    I [label="", shape=house, color=red];
+
+    W [label="", shape=octagon, color=red, ordering="out"];
+    X [label="", shape=octagon, color=red];
+
+    M [label="", shape=rect, color=red];
+
+    D [label="", shape=invhouse, color=red];
+
+S->I [label="-/A" taillabel="tp(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+S->I [label="-/C" taillabel="tp(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+S->I [label="-/G" taillabel="tp(G)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+S->I [label="-/T" taillabel="tp(T)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+
+X->D [label="A/-" taillabel="vr(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+X->D [label="C/-" taillabel="vr(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+X->D [label="G/-" taillabel="vr(G)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+X->D [label="T/-" taillabel="vr(T)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+
+W->M [label="A/A" taillabel="uq(A,A)" labelangle=330 labeldistance=2 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+W->M [label="A/C" fontcolor="blue" fontname="Courier"];
+W->M [label="A/G" fontcolor="blue" fontname="Courier"];
+W->M [label="A/T" fontcolor="blue" fontname="Courier"];
+
+W->M [label="C/A" fontcolor="blue" fontname="Courier"];
+W->M [label="C/C" taillabel="uq(C,C)" labelangle=5 labeldistance=5 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+W->M [label="C/G" fontcolor="blue" fontname="Courier"];
+W->M [label="C/T" fontcolor="blue" fontname="Courier"];
+
+W->M [label="G/A" fontcolor="blue" fontname="Courier"];
+W->M [label="G/C" fontcolor="blue" fontname="Courier"];
+W->M [label="G/G" taillabel="uq(G,G)" labelangle=0 labeldistance=3 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+W->M [label="G/T" fontcolor="blue" fontname="Courier"];
+
+W->M [label="T/A" fontcolor="blue" fontname="Courier"];
+W->M [label="T/C" fontcolor="blue" fontname="Courier"];
+W->M [label="T/G" fontcolor="blue" fontname="Courier"];
+W->M [label="T/T" taillabel="uq(T,T)" labelangle=30 labeldistance=2 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+
+    label="Explicitly showing all transitions with absorption/emission labels and selected weights";
+}

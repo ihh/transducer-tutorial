@@ -1,0 +1,31 @@
+digraph G {
+
+    S [label="Start", shape=circle, color=red];
+    E [label="End", shape=diamond, color=red];
+
+    I [label="Insert", shape=house, color=red];
+
+    W [label="Wait", shape=octagon, color=red];
+
+    M [label="Match", shape=rect, color=red];
+    D [label="Delete", shape=invhouse, color=red];
+
+S->I [label="-/y"];
+S->W [style=dashed];
+
+W->E [style=dashed];
+
+W->M [label="x/y"];
+W->D [label="x/-"];
+
+I->I [label="-/y"];
+I->W [style=dashed];
+
+M->I [label="-/y"];
+M->W [style=dashed];
+
+D->I [label="-/y"];
+D->W [style=dashed];
+
+    label="Allowed transition types in Moore normal form";
+}

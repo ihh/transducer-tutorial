@@ -1,0 +1,16 @@
+digraph G {
+
+    Start [shape=circle, color=red];
+
+    Wait [shape=octagon, color=red];
+
+    Insert [shape=house, color=red];
+    Match [shape=rect, color=red];
+    Delete [shape=invhouse, color=red];
+
+    End [shape=diamond, color=red];
+
+    Null;
+
+    label="Transducer state types";
+}
