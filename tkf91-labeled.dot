@@ -5,9 +5,9 @@ digraph G {
 
     W [label="$W$", shape=octagon, color=red];
 
-    I [label="$I(y)$", shape=house, color=red];
-    M [label="$M(x,y)$", shape=rect, color=red];
-    D [label="$D(x)$", shape=invhouse, color=red];
+    I [label="$I$", shape=house, color=red];
+    M [label="$M$", shape=rect, color=red];
+    D [label="$D$", shape=invhouse, color=red];
 
 S->I [label=b];
 S->W [label="1-b"];
@@ -25,5 +25,5 @@ W->E;
 W->M [label=a];
 W->D [label="1-a"];
 
-    label="Transducer version of TKF91, with all states explicitly named";
+    label="$B(t)$, the TKF91 transducer, with all states explicitly named";
 }

@@ -1,0 +1,62 @@
+digraph G {
+
+    S_S [label="$S \\cdot S$", shape=circle, color=red, ordering="out"];
+    E_E [label="$E \\cdot E$", shape=diamond, color=red, ordering="out"];
+
+    W_W0 [label="$W \\cdot W_0$", shape=octagon, color=red, ordering="out"];
+    D_W0 [label="$D \\cdot W_0$", shape=invhouse, color=red, ordering="out"];
+    
+    I_Dm [label="$I \\cdot \delta_M$", shape=circle, ordering="out"];
+    M_Dm [label="$M \\cdot \delta_M$", shape=invhouse, color=red, ordering="out"];
+    
+    W_Wm [label="$W \\cdot W_M$", shape=octagon, color=red, ordering="out"];
+    D_Wm [label="$D \\cdot W_M$", shape=invhouse, color=red, ordering="out"];
+    
+    I_Df [label="$I \\cdot \delta_F$", shape=circle, ordering="out"];
+    M_Df [label="$M \\cdot \delta_F$",  shape=invhouse, color=red, ordering="out"];
+
+    W_Wf [label="$W \\cdot W_F$", shape=octagon, color=red, ordering="out"];
+    D_Wf [label="$D \\cdot W_F$", shape=invhouse, color=red, ordering="out"];
+
+
+S_S->I_Dm [label=b];
+S_S->W_W0 [label="1-b"];
+
+// W_W0->E;
+W_W0->M_Dm [label=a];
+W_W0->D_W0 [label="1-a"];
+
+D_W0->I_Dm [label=c];
+D_W0->W_W0 [label="1-c"];
+
+M_Dm->I_Df [label=b];
+M_Dm->W_Wm [label="1-b"];
+
+I_Dm->I_Df [label=b];
+I_Dm->W_Wm [label="1-b"];
+
+
+// W_Wm->E;
+W_Wm->M_Df [label=a];
+W_Wm->D_Wm [label="1-a"];
+
+D_Wm->I_Df [label=c];
+D_Wm->W_Wm [label="1-c"];
+
+// M_Df->I_Dnext [label=b];
+M_Df->W_Wf [label="1-b"];
+
+// I_Df->I_Dnext [label=b];
+I_Df->W_Wf [label="1-b"];
+
+
+W_Wf->E_E;
+// W_Wf->M_Dnext [label=a];
+W_Wf->D_Wf [label="1-a"];
+
+// D_Wf->I_Dnext [label=c];
+D_Wf->W_Wf [label="1-c"];
+
+
+label="$B(t) \cdot \Delta(MF)$, the TKF91 transducer in series with the exact-matcher for MF";
+}

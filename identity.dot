@@ -1,0 +1,18 @@
+digraph G {
+
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+
+    W [label="", shape=octagon, color=red];
+
+    M [label="$\\delta(x=y)$", shape=rect, color=red];
+
+S->W;
+
+M->W;
+
+W->E;
+W->M;
+
+    label="The identity transducer, ${\\cal I}$";
+}

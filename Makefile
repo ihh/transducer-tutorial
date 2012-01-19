@@ -13,13 +13,13 @@ BAD := condensed-emission fanned-emission fanned-indel fanned-match
 BADPNG := $(addsuffix .png,$(BAD))
 GOODPDF := $(addsuffix .pdf,$(filter-out $(BAD),$(ALLBASE)))
 
-PRODUCT := $(BADPNG) $(GOODPDF)
+FIGURES := $(BADPNG) $(GOODPDF)
 
 # Top-level rules
 all: $(ALLPDF) $(ALLPNG)
 
-open: $(PRODUCT)
-	open $(PRODUCT)
+open: $(FIGURES)
+	open $(FIGURES)
 
 clean:
 	rm $(ALLTEX) $(ALLPDF) $(ALLPNG)
