@@ -16,5 +16,5 @@ subgraph cluster_2 {
 
 S->W0->D1->W1->D2->W2->E;
 
-    label="$\\Delta(MF)$, the Moore-normal exact-matcher for sequence MF, with all states named";
+    label="$\\Delta(MF)$, the Moore-normal exact-matcher for sequence MF, with all states labeled";
 }

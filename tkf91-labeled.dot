@@ -25,5 +25,5 @@ W->E;
 W->M [label=a];
 W->D [label="1-a"];
 
-    label="$B(t)$, the TKF91 transducer, with all states explicitly named";
+    label="$B(t)$, the TKF91 transducer, with all states explicitly labeled";
 }
