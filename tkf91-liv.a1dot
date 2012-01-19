@@ -3,79 +3,86 @@ digraph G {
     S_S [label="$S \\cdot S$", shape=circle, color=red, ordering="out"];
     E_E [label="$E \\cdot E$", shape=diamond, color=red, ordering="out"];
 
+subgraph cluster_0 {
     W_W0 [label="$W \\cdot W_0$", shape=octagon, color=red, ordering="out"];
     D_W0 [label="$D \\cdot W_0$", shape=invhouse, color=red, ordering="out"];
-    
+}
+
+subgraph cluster_l {
     I_Dl [label="$I \\cdot \delta_L$", shape=circle, ordering="out"];
     M_Dl [label="$M \\cdot \delta_L$", shape=invhouse, color=red, ordering="out"];
     
     W_Wl [label="$W \\cdot W_L$", shape=octagon, color=red, ordering="out"];
     D_Wl [label="$D \\cdot W_L$", shape=invhouse, color=red, ordering="out"];
-    
+}
+
+subgraph cluster_i {
     I_Di [label="$I \\cdot \delta_I$", shape=circle, ordering="out"];
     M_Di [label="$M \\cdot \delta_I$",  shape=invhouse, color=red, ordering="out"];
 
     W_Wi [label="$W \\cdot W_I$", shape=octagon, color=red, ordering="out"];
     D_Wi [label="$D \\cdot W_I$", shape=invhouse, color=red, ordering="out"];
+}
 
+subgraph cluster_v {
     I_Dv [label="$I \\cdot \delta_V$", shape=circle, ordering="out"];
     M_Dv [label="$M \\cdot \delta_V$",  shape=invhouse, color=red, ordering="out"];
 
     W_Wv [label="$W \\cdot W_V$", shape=octagon, color=red, ordering="out"];
     D_Wv [label="$D \\cdot W_V$", shape=invhouse, color=red, ordering="out"];
+}
 
-
-S_S->I_Dl [label=b];
-S_S->W_W0 [label="1-b"];
+S_S->I_Dl [label="$b\pi_L$"];
+S_S->W_W0 [label="$1-b$"];
 
 // W_W0->E;
-W_W0->M_Dl [label=a];
-W_W0->D_W0 [label="1-a"];
+W_W0->M_Dl [label="$a$"];
+W_W0->D_W0 [label="$1-a$"];
 
-D_W0->I_Dl [label=c];
-D_W0->W_W0 [label="1-c"];
+D_W0->I_Dl [label="$c\pi_L$"];
+D_W0->W_W0 [label="$1-c$"];
 
-M_Dl->I_Di [label=b];
-M_Dl->W_Wl [label="1-b"];
+M_Dl->I_Di [label="$b\pi_I$"];
+M_Dl->W_Wl [label="$1-b$"];
 
-I_Dl->I_Di [label=b];
-I_Dl->W_Wl [label="1-b"];
+I_Dl->I_Di [label="$b\pi_I$"];
+I_Dl->W_Wl [label="$1-b$"];
 
 
 // W_Wl->E;
-W_Wl->M_Di [label=a];
-W_Wl->D_Wl [label="1-a"];
+W_Wl->M_Di [label="$a$"];
+W_Wl->D_Wl [label="$1-a$"];
 
-D_Wl->I_Di [label=c];
-D_Wl->W_Wl [label="1-c"];
+D_Wl->I_Di [label="$c\pi_I$"];
+D_Wl->W_Wl [label="$1-c$"];
 
-M_Di->I_Dv [label=b];
-M_Di->W_Wi [label="1-b"];
+M_Di->I_Dv [label="$b\pi_V$"];
+M_Di->W_Wi [label="$1-b$"];
 
-I_Di->I_Dv [label=b];
-I_Di->W_Wi [label="1-b"];
+I_Di->I_Dv [label="$b\pi_V$"];
+I_Di->W_Wi [label="$1-b$"];
 
 
 // W_Wi->E_E;
-W_Wi->M_Dv [label=a];
-W_Wi->D_Wi [label="1-a"];
+W_Wi->M_Dv [label="$a$"];
+W_Wi->D_Wi [label="$1-a$"];
 
-D_Wi->I_Dv [label=c];
-D_Wi->W_Wi [label="1-c"];
+D_Wi->I_Dv [label="$c\pi_V$"];
+D_Wi->W_Wi [label="$1-c$"];
 
 // M_Dv->I_Dnext [label=b];
-M_Dv->W_Wv [label="1-b"];
+M_Dv->W_Wv [label="$1-b$"];
 
 // I_Dv->I_Dnext [label=b];
-I_Dv->W_Wv [label="1-b"];
+I_Dv->W_Wv [label="$1-b$"];
 
 
 W_Wv->E_E;
-// W_Wv->M_Dnext [label=a];
-W_Wv->D_Wv [label="1-a"];
+// W_Wv->M_Dnext [label="$a$"];
+W_Wv->D_Wv [label="$1-a$"];
 
 // D_Wi->I_Dnext [label=c];
-D_Wv->W_Wv [label="1-c"];
+D_Wv->W_Wv [label="$1-c$"];
 
 
 label="$B(t) \cdot \Delta(LIV)$, the TKF91 transducer in series with the exact-matcher for LIV";

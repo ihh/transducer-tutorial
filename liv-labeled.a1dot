@@ -2,14 +2,24 @@ digraph G {
     S [label="$S$", shape=circle, color=red];
     E [label="$E$", shape=diamond, color=red];
 
+subgraph cluster_0 {
     W0 [label="$W_0$", shape=octagon, color=red];
+}
+    
+subgraph cluster_1 {
     W1 [label="$W_L$", shape=octagon, color=red];
-    W2 [label="$W_I$", shape=octagon, color=red];
-    W3 [label="$W_V$", shape=octagon, color=red];
-
     D1 [label="$\\delta_L(x)$", shape=invhouse, color=red];
+}
+    
+subgraph cluster_2 {
+    W2 [label="$W_I$", shape=octagon, color=red];
     D2 [label="$\\delta_I(x)$", shape=invhouse, color=red];
+}
+    
+subgraph cluster_3 {
+    W3 [label="$W_V$", shape=octagon, color=red];
     D3 [label="$\\delta_V(x)$", shape=invhouse, color=red];
+}
 
 S->W0->D1->W1->D2->W2->D3->W3->E;
 

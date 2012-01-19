@@ -49,5 +49,8 @@ clean:
 %.png: %.dot
 	dot -Tpng $< >$@
 
+%.png: %.a1dot
+	dot -Tpng $< >$@
+
 # hey make! don't delete all my stuff
 .SECONDARY:
