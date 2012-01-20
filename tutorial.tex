@@ -1,0 +1,19 @@
+\documentclass{article}
+\newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
+\newcommand{\figlabel}[1]{\label{Figures.#1}}
+\newcommand{\standardfigure}[2]{
+\begin{figure}
+\includegraphics[width=\textwidth]{#1.pdf}
+\caption{ \figlabel{#1} #2}
+\end{figure}}
+
+\usepackage{graphicx}
+
+\begin{document}
+\title{Transducer Tutorial}
+\date{}
+\maketitle
+
+\standardfigure{legend}{Transducer state types.}
+
+\end{document}
