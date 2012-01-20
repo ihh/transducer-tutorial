@@ -1,44 +1,248 @@
 \documentclass{article}
 \newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
 \newcommand{\figlabel}[1]{\label{Figures.#1}}
-\newcommand{\easyfig}[2]{
+
+\newcommand{\easyfig}[3]{
 \begin{figure}
-\includegraphics[width=\textwidth]{#1.pdf}
-\caption{ \figlabel{#1} #2}
+\includegraphics[width=\textwidth]{#1}
+\caption{ \figlabel{#2} #3}
 \end{figure}}
 
+\newcommand{\pdffig}[2]{\easyfig{#1.pdf}{#1}{#2}}
+\newcommand{\pngfig}[2]{\easyfig{#1.png}{#1}{#2}}
+
 \usepackage{graphicx}
+\usepackage{url}
 
 \begin{document}
 \title{Transducer Tutorial}
 \date{}
 \maketitle
 
-% All figures:
-% \easyfig{condensed-emission}{}
-% \easyfig{fanned-emission}{}
-% \easyfig{fanned-indel}{}
-% \easyfig{fanned-match}{}
-% \easyfig{fork-tkf91liv-tkf91mf}{}
-% \easyfig{identity}{}
-% \easyfig{legend}{}
-% \easyfig{liv-labeled}{}
-% \easyfig{liv-small}{}
-% \easyfig{liv}{}
-% \easyfig{mf-generator}{}
-% \easyfig{mf-labeled}{}
-% \easyfig{mf-tkf91-liv}{}
-% \easyfig{moore-mf-generator}{}
-% \easyfig{moore-tkf91-liv}{}
-% \easyfig{moore-tkf91-mf}{}
-% \easyfig{substituter}{}
-% \easyfig{tkf91-labeled}{}
-% \easyfig{tkf91-liv}{}
-% \easyfig{tkf91-mf}{}
-% \easyfig{tkf91}{}
-% \easyfig{transitions}{}
+\section{Transducers as input-output machines}
+
+% Begin quote from Wikipedia
+{\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to recognize a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. Alternatively, we can say that an automaton generates strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
+\url{http://en.wikipedia.org/wiki/Finite_state_transducer}
+% End quote from Wikipedia
+
+In this tutorial we are going to work through some small examples of using transducers on trees,
+for two tiny example protein sequences (MF and LIV).
+Specifically the tree (MF:t,LIV:t) with TKF91 model ... need a figure showing this tree...
+
+\figref{mf-generator} is an example of a generator.
+\figref{liv-small} is an example of a recognizer.
+
+\pdffig{mf-generator}{Generator for protein sequence MF.}
+
+\pdffig{liv-small}{Recognizer for protein sequence LIV.}
+
+These figures illustrate the notation we use.
+States and transitions are shown as a graph.
+Transitions can be labeled with absorption/emission pairs,
+written $x/y$ where $x$ is the absorbed character and $y$ the emitted character.
+Either $x$ or $y$ is allowed to be the empty string (shown in these diagrams as the gap character, a hyphen).
+In a figure that shows absorption/emission pairs,
+if there is no absorption/emission labeled on a transition, then it can be assumed to be $-/-$
+(i.e. no character is absorbed or emitted) and the transition is said to be a ``null'' transition.
+
+Some transitions are also labeled with weights.
+If no transition label is present, the weight is usually 1
+(some more complicated diagrams omit all the weights, to avoid clutter).
+
+Weight of a path is product of transition weights...
+
+Weight of an input-output sequence pair is sum over all path weights that generate those input and output sequences...
+
+Note sometimes this weight is zero --- e.g. in \figref{liv-small} the weight is zero
+except in the unique case that the input tape is LIV, when the weight is one ---
+this in fact makes \figref{liv-small} a special kind of recognizer:
+one that only recognizes a single string
+(and recognizes that string with probability one).
+We call this an {\em exact-match} recognizer.
+
+More generally, suppose that $G$ and $R$ are both weighted finite-state transducers,
+but $G$ is a generator and $R$ is a recognizer.
+Then $G$ defines a probability $P(Y|G)$ of emitting any emitted output sequence $Y$,
+while $R$ defines a probability $P(\mbox{recognized}|X,R)$ of accepting any input sequence $R$.
+Note that while the former, $P(Y|G)$, has an interpretation as a probability distribution over $Y$
+(so it's reasonable to expect the sum over $Y$ to be one),
+the latter, $P(\mbox{recognized}|X,R)$, is conditional on $X$
+(in general not reasonable to expect sum over $X$ to be one,
+although it is for the special case of an exact-match recognizer).
+
+Thus, as noted in the Wikipedia quote, generators and recognizers are in some sense equivalent,
+although the probabilistic interpretations of the weights are slightly different.
+In particular, just as we can have a {\em generative profile}
+that generates some sequences with higher probability than others (e.g. a profile HMM)
+we can also have a {\em recognition profile}: a transducer
+that recognizes some sequences with higher probability than others.
+The exact-match transducer of \figref{liv-small} is a (trivial and extreme) example of such a recognizer;
+later we will see that the conditional probabilities in the Felsenstein pruning recursion can also
+be thought of as recognition profiles.
+
+\section{Moore machines}
+
+Mealy machines: input/output associated with transitions.
+This is the way we define things mathematically...
+
+Moore machines: input/output associated with states.
+Can be more useful in bioinformatics,
+where point substitution means that all combinations of input and output characters are frequently observed...
+
+For example consider the Mealy-machine-like view of \figref{fanned-emission}
+\pngfig{fanned-emission}{All combinations of input and output characters are frequently observed...}
+
+It can be more convenient to represent this as a Moore-machine-like view of \figref{condensed-emission}
+\pngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...}
+
+Note the features of this view:
+\begin{itemize}
+\item shape and color of states indicate that they are visual shorthands
+\item imposes certain constraints on states that involve I/O:
+ they must be classified as Insert, Delete, or Match
+ (determining what kinds of I/O happens on transitions into those states)
+\item imposes certain constraints on transitions into I/O states:
+ their weights must be factorizable into transition and emission components,
+ e.g. suppose state $j$ is a match state and state $i$ is any other state,
+ then all transitions $i \to j$ must both absorb a non-gap input character $x$
+ and emit a non-gap output character $y$,
+ and the transition weight must take the form $t_{ij} \times e_j(x,y)$
+ where $t_{ij}$ can depend on the source and destination state (but not the I/O characters)
+ and $e_j(x,y)$ can depend on the I/O characters and the destination state (but not the source state).
+\item we can then associate the emission function $e_j$ with match state $j$
+ (in fact, in this tutorial, we often use $e_j$ as the state's unique identifying label)
+ and the transition weight $t_{ij}$ with a single conceptual transition $i \to j$
+ that summarizes all the transitions $i \stackrel{x/y}{\to} j$
+ (compare \figref{fanned-emission} and \figref{condensed-emission}).
+\item The function $e_j$ can be thought of as a conditional-probability substitution matrix (for match states),
+a row vector representing probability distribution (for insert states),
+or a column vector of conditional probabilities (for delete states)
+\end{itemize}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-\easyfig{legend}{Transducer state types.}
+\pdffig{legend}{Transducer state types.}
+
+Types of state: Start, Match, Insert, Delete, End, Wait, Null
+
+Frequently abbreviated to $S,M,I,D,E,W,N$
+
+Note the Wait states.
+In our ``Moore-normal form'' for transducers, we require that all input states (Match, Delete)
+are immediately preceded in the transition graph by these Wait states.
+This is useful e.g. for co-ordinating multiple transducers connected together, as we shall soon see...
+
+\figref{transitions} shows the allowed types of transition in Moore-normal form transducers.
+\pdffig{transitions}{Allowed transitions...}
+
+
+\subsection{Moore-normal generators and recognizers}
+
+\figref{moore-mf-generator} is the Moore-normal form version of the generator in \figref{mf-generator}.
+\figref{liv} is the Moore-normal form version of the recognizer in \figref{liv-small}.
+
+\pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.}
+
+\pdffig{liv}{Moore-normal form recognizer for protein sequence LIV.}
+
+\figref{liv-labeled} is a version of \figref{liv-small} with all states given an explicit label.
+This will help in what follows...
+
+\pdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
+
+It will also be useful to have an MF-recognizer, as in \figref{mf-labeled}...
+\pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.}
+
+
+\subsection{Substitution and identity}
+
+\figref{substituter} shows how the Moore-normal notation is used to represent a substitution matrix...
+\pdffig{substituter}{A transducer that introduces substitutions but no indels.}
+
+\figref{identity} shows the special case of the identity transducer (input = output) ...
+\pdffig{identity}{The identity transducer...}
+
+
+\subsection{TKF91}
+
+\pdffig{tkf91}{...}
+
+\pdffig{tkf91-labeled}{...}
+
+\section{Composition}
+
+\subsection{Composition of TKF91 with LIV-recognizer}
+
+\pdffig{tkf91-liv}{...}
+
+Note that there are only delete states in this (as in LIV-recognizer)...
+explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
+and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
+
+Note that this appears quite similar to a profile HMM...
+in fact, the analogous generator (composition of LIV-generator with TKF91)
+is somewhat similar to a profile HMM trained on a single sequence...
+(show this?)
+
+\subsection{Composition of TKF91 with MF-recognizer}
+
+\pdffig{tkf91-mf}{...}
+
+\subsection{Composition of MF-generator, TKF91 and LIV-recognizer}
+
+An alternative way of computing the weight, that expands the model to include the data...
+
+\pdffig{mf-tkf91-liv}{...}
+
+Transitions are unlabeled to avoid clutter...
+
+Note that there are no match/insert/delete states --- only null states...
+thus this is more like a straightforward Markov model...
+in fact Markov models are a special case of an input/output machine where the input and output are both null
+(just as an HMM can be considered as a special case where the input is null, i.e. a generator,
+and a parser or recognizer is a special case where the output is null)...
+
+Probability $P(Y=\mbox{LIV}|X=\mbox{MF})$ for TKF91 model
+is equal to sum of all path weights from start to end in this Markov model...
+
+Note how the structure of the Markov model is directly analogous to a dynamic programming matrix...
+rows, columns, cells...
+
+\section{Fork}
+
+\subsection{Fork of TKF91-MF with TKF91-LIV}
+
+\pdffig{fork-tkf91liv-tkf91mf}{...}
+
+This is the recognition profile for the common ancestor of MF and LIV...
+
+\section{Overview of Felsenstein recursion}
+
+Need a figure showing the generator for the TKF91 root sequence?
+
+
+% All figures:
+% \pngfig{condensed-emission}{}
+% \pngfig{fanned-emission}{}
+% \pngfig{fanned-indel}{}
+% \pngfig{fanned-match}{}
+% \pdffig{fork-tkf91liv-tkf91mf}{}
+% \pdffig{identity}{}
+% \pdffig{legend}{}
+% \pdffig{liv-labeled}{}
+% \pdffig{liv-small}{}
+% \pdffig{liv}{}
+% \pdffig{mf-generator}{}
+% \pdffig{mf-labeled}{}
+% \pdffig{mf-tkf91-liv}{}
+% \pdffig{moore-mf-generator}{}
+% \pdffig{moore-tkf91-liv}{}
+% \pdffig{moore-tkf91-mf}{}
+% \pdffig{substituter}{}
+% \pdffig{tkf91-labeled}{}
+% \pdffig{tkf91-liv}{}
+% \pdffig{tkf91-mf}{}
+% \pdffig{tkf91}{}
+% \pdffig{transitions}{}
 
 \end{document}
