@@ -7,7 +7,9 @@ ALLBASE := $(subst .dot,,$(ALLDOT)) $(subst .a1dot,,$(ALLA1DOT))  $(subst .a0dot
 
 ALLPNG := $(addsuffix .png,$(ALLBASE))
 ALLPDF := $(addsuffix .pdf,$(ALLBASE))
+
 ALLTEX := $(addsuffix .tex,$(ALLBASE))
+ALLJUNK := $(addsuffix .aux,$(ALLBASE)) $(addsuffix .log,$(ALLBASE)) $(addsuffix -pics.pdf,$(ALLBASE))
 
 # The following source files currently only render properly as PNGs
 BAD := condensed-emission fanned-emission fanned-indel fanned-match
@@ -23,7 +25,7 @@ open: $(FIGURES)
 	open $(FIGURES)
 
 clean:
-	rm $(ALLTEX) $(ALLPDF) $(ALLPNG)
+	rm -f $(ALLTEX) $(ALLJUNK) $(ALLPDF) $(ALLPNG) *~
 
 %.open: %
 	open $<
