@@ -43,6 +43,7 @@ clean: tidy
 # Paper rules:
 %.pdf: %.tex $(FIGURES)
 	pdflatex -shell-escape $<
+	pdflatex -shell-escape $<
 
 # Figure rules:
 # PDFs (requires dot2tex + graphviz + pyparsing)

@@ -1,7 +1,7 @@
 \documentclass{article}
 \newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
 \newcommand{\figlabel}[1]{\label{Figures.#1}}
-\newcommand{\standardfigure}[2]{
+\newcommand{\easyfig}[2]{
 \begin{figure}
 \includegraphics[width=\textwidth]{#1.pdf}
 \caption{ \figlabel{#1} #2}
@@ -14,6 +14,7 @@
 \date{}
 \maketitle
 
-\standardfigure{legend}{Transducer state types.}
+\figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
+\easyfig{legend}{Transducer state types.}
 
 \end{document}
