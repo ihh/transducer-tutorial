@@ -1,35 +1,35 @@
 digraph G {
 
-    S_S [label="$S \\cdot S$", shape=circle, color=red, ordering="out"];
-    E_E [label="$E \\cdot E$", shape=diamond, color=red, ordering="out"];
+    S_S [label="$S \cdot S$", shape=circle, color=red, ordering="out"];
+    E_E [label="$E \cdot E$", shape=diamond, color=red, ordering="out"];
 
 subgraph cluster_0 {
-    W_W0 [label="$W \\cdot W_0$", shape=octagon, color=red, ordering="out"];
-    D_W0 [label="$D \\cdot W_0$", shape=invhouse, color=red, ordering="out"];
+    W_W0 [label="$W \cdot W_0$", shape=octagon, color=red, ordering="out"];
+    D_W0 [label="$D \cdot W_0$", shape=invhouse, color=red, ordering="out"];
 }
 
 subgraph cluster_l {
-    I_Dl [label="$I \\cdot \delta_L$", shape=circle, ordering="out"];
-    M_Dl [label="$M \\cdot \delta_L$", shape=invhouse, color=red, ordering="out"];
+    I_Dl [label="$I \cdot \delta_L$", shape=circle, ordering="out"];
+    M_Dl [label="$M \cdot \delta_L$", shape=invhouse, color=red, ordering="out"];
     
-    W_Wl [label="$W \\cdot W_L$", shape=octagon, color=red, ordering="out"];
-    D_Wl [label="$D \\cdot W_L$", shape=invhouse, color=red, ordering="out"];
+    W_Wl [label="$W \cdot W_L$", shape=octagon, color=red, ordering="out"];
+    D_Wl [label="$D \cdot W_L$", shape=invhouse, color=red, ordering="out"];
 }
 
 subgraph cluster_i {
-    I_Di [label="$I \\cdot \delta_I$", shape=circle, ordering="out"];
-    M_Di [label="$M \\cdot \delta_I$",  shape=invhouse, color=red, ordering="out"];
+    I_Di [label="$I \cdot \delta_I$", shape=circle, ordering="out"];
+    M_Di [label="$M \cdot \delta_I$",  shape=invhouse, color=red, ordering="out"];
 
-    W_Wi [label="$W \\cdot W_I$", shape=octagon, color=red, ordering="out"];
-    D_Wi [label="$D \\cdot W_I$", shape=invhouse, color=red, ordering="out"];
+    W_Wi [label="$W \cdot W_I$", shape=octagon, color=red, ordering="out"];
+    D_Wi [label="$D \cdot W_I$", shape=invhouse, color=red, ordering="out"];
 }
 
 subgraph cluster_v {
-    I_Dv [label="$I \\cdot \delta_V$", shape=circle, ordering="out"];
-    M_Dv [label="$M \\cdot \delta_V$",  shape=invhouse, color=red, ordering="out"];
+    I_Dv [label="$I \cdot \delta_V$", shape=circle, ordering="out"];
+    M_Dv [label="$M \cdot \delta_V$",  shape=invhouse, color=red, ordering="out"];
 
-    W_Wv [label="$W \\cdot W_V$", shape=octagon, color=red, ordering="out"];
-    D_Wv [label="$D \\cdot W_V$", shape=invhouse, color=red, ordering="out"];
+    W_Wv [label="$W \cdot W_V$", shape=octagon, color=red, ordering="out"];
+    D_Wv [label="$D \cdot W_V$", shape=invhouse, color=red, ordering="out"];
 }
 
 S_S->I_Dl [label="$b\pi_L$"];

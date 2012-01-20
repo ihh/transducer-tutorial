@@ -17,7 +17,23 @@ subgraph cluster_00 {
     W_W0__W_W0 [label="", dummy="$W W_0 \oplus W W_0$", shape=octagon, color=red];
     D_W0__D_W0 [label="", dummy="$D W_0 \oplus D W_0$", shape=invhouse, color=red];
 }
+subgraph cluster_0m {
+    W_W0__I_Dm [label="", dummy="$W W_0 \oplus I \delta_M$", shape=circle];
+    D_W0__M_Dm [label="$D W_0 \oplus M \delta_M$", shape=invhouse, color=red];
+    
+    W_W0__W_Wm [label="", dummy="$W W_0 \oplus W W_M$", shape=octagon, color=red];
+    D_W0__D_Wm [label="", dummy="$D W_0 \oplus D W_M$", shape=invhouse, color=red];
+}
+subgraph cluster_0f {
+    W_W0__I_Df [label="", dummy="$W W_0 \oplus I \delta_F$", shape=circle];
+    D_W0__M_Df [label="$D W_0 \oplus M \delta_F$", shape=invhouse, color=red];
+    
+    W_W0__W_Wf [label="", dummy="$W W_0 \oplus W W_F$", shape=octagon, color=red];
+    D_W0__D_Wf [label="", dummy="$D W_0 \oplus D W_F$", shape=invhouse, color=red];
+}
+}
 
+subgraph cluster_l {
 subgraph cluster_l0 {
     I_Dl__S_S [label="", dummy="$I \delta_L \oplus S S$", shape=circle];
     I_Dl__D_W0 [label="", dummy="$I \delta_L \oplus D W_0$", shape=circle];
@@ -26,36 +42,6 @@ subgraph cluster_l0 {
     W_Wl__W_W0 [label="", dummy="$W W_L \oplus W W_0$", shape=octagon, color=red];
     D_Wl__D_W0 [label="", dummy="$D W_L \oplus D W_0$", shape=invhouse, color=red];
 }
-
-subgraph cluster_i0 {
-    I_Di__S_S [label="", dummy="$I \delta_I \oplus S S$", shape=circle];
-    I_Di__D_W0 [label="", dummy="$I \delta_I \oplus D W_0$", shape=circle];
-    M_Di__D_W0 [label="$M \delta_I \oplus D W_0$",  shape=invhouse, color=red];
-
-    W_Wi__W_W0 [label="", dummy="$W W_I \oplus W W_0$", shape=octagon, color=red];
-    D_Wi__D_W0 [label="", dummy="$D W_I \oplus D W_0$", shape=invhouse, color=red];
-}
-
-subgraph cluster_v0 {
-    I_Dv__S_S [label="", dummy="$I \delta_V \oplus S S$", shape=circle];
-    I_Dv__D_W0 [label="", dummy="$I \delta_V \oplus D W_0$", shape=circle];
-    M_Dv__D_W0 [label="$M \delta_V \oplus D W_0$",  shape=invhouse, color=red];
-
-    W_Wv__W_W0 [label="", dummy="$W W_V \oplus W W_0$", shape=octagon, color=red];
-    D_Wv__D_W0 [label="", dummy="$D W_V \oplus D W_0$", shape=invhouse, color=red];
-}
-}
-
-// column M
-subgraph cluster_m {
-subgraph cluster_0m {
-    W_W0__I_Dm [label="", dummy="$W W_0 \oplus I \delta_M$", shape=circle];
-    D_W0__M_Dm [label="$D W_0 \oplus M \delta_M$", shape=invhouse, color=red];
-    
-    W_W0__W_Wm [label="", dummy="$W W_0 \oplus W W_M$", shape=octagon, color=red];
-    D_W0__D_Wm [label="", dummy="$D W_0 \oplus D W_M$", shape=invhouse, color=red];
-}
-
 subgraph cluster_lm {
     I_Dl__D_Wm [label="", dummy="$I \delta_L \oplus D W_M$", shape=circle];
     I_Dl__M_Dm [label="", dummy="$I \delta_L \oplus M \delta_M$", shape=circle];
@@ -68,44 +54,6 @@ subgraph cluster_lm {
     W_Wl__W_Wm [label="", dummy="$W W_L \oplus W W_M$", shape=octagon, color=red];
     W_Wl__I_Dm [label="", dummy="$W W_L \oplus I \delta_M$", shape=circle];
 }
-
-subgraph cluster_im {
-    I_Di__D_Wm [label="", dummy="$I \delta_I \oplus D W_M$", shape=circle];
-    I_Di__M_Dm [label="", dummy="$I \delta_I \oplus M \delta_M$", shape=circle];
-    
-    M_Di__M_Dm [label="$M \delta_I \oplus M \delta_M$", shape=invhouse, color=red];
-    M_Di__D_Wm [label="$M \delta_I \oplus D W_M$", shape=invhouse, color=red];
-    D_Wi__M_Dm [label="$D W_I \oplus M \delta_M$", shape=invhouse, color=red];
-    D_Wi__D_Wm [label="", dummy="$D W_I \oplus D W_M$", shape=invhouse, color=red];
-    
-    W_Wi__W_Wm [label="", dummy="$W W_I \oplus W W_M$", shape=octagon, color=red];
-    W_Wi__I_Dm [label="", dummy="$W W_I \oplus I \delta_M$", shape=circle];
-}
-
-subgraph cluster_vm {
-    I_Dv__D_Wm [label="", dummy="$I \delta_V \oplus D W_M$", shape=circle];
-    I_Dv__M_Dm [label="", dummy="$I \delta_V \oplus M \delta_M$", shape=circle];
-    
-    M_Dv__M_Dm [label="$M \delta_V \oplus M \delta_M$", shape=invhouse, color=red];
-    M_Dv__D_Wm [label="$M \delta_V \oplus D W_M$", shape=invhouse, color=red];
-    D_Wv__M_Dm [label="$D W_V \oplus M \delta_M$", shape=invhouse, color=red];
-    D_Wv__D_Wm [label="", dummy="$D W_V \oplus D W_M$", shape=invhouse, color=red];
-    
-    W_Wv__W_Wm [label="", dummy="$W W_V \oplus W W_M$", shape=octagon, color=red];
-    W_Wv__I_Dm [label="", dummy="$W W_V \oplus I \delta_M$", shape=circle];
-}
-}
-
-// column F
-subgraph cluster_f {
-subgraph cluster_0f {
-    W_W0__I_Df [label="", dummy="$W W_0 \oplus I \delta_F$", shape=circle];
-    D_W0__M_Df [label="$D W_0 \oplus M \delta_F$", shape=invhouse, color=red];
-    
-    W_W0__W_Wf [label="", dummy="$W W_0 \oplus W W_F$", shape=octagon, color=red];
-    D_W0__D_Wf [label="", dummy="$D W_0 \oplus D W_F$", shape=invhouse, color=red];
-}
-
 subgraph cluster_lf {
     I_Dl__D_Wf [label="", dummy="$I \delta_L \oplus D W_F$", shape=circle];
     I_Dl__M_Df [label="", dummy="$I \delta_L \oplus M \delta_F$", shape=circle];
@@ -118,7 +66,29 @@ subgraph cluster_lf {
     W_Wl__W_Wf [label="", dummy="$W W_L \oplus W W_F$", shape=octagon, color=red];
     W_Wl__I_Df [label="", dummy="$W W_L \oplus I \delta_F$", shape=circle];
 }
+}
 
+subgraph cluster_i {
+subgraph cluster_i0 {
+    I_Di__S_S [label="", dummy="$I \delta_I \oplus S S$", shape=circle];
+    I_Di__D_W0 [label="", dummy="$I \delta_I \oplus D W_0$", shape=circle];
+    M_Di__D_W0 [label="$M \delta_I \oplus D W_0$",  shape=invhouse, color=red];
+
+    W_Wi__W_W0 [label="", dummy="$W W_I \oplus W W_0$", shape=octagon, color=red];
+    D_Wi__D_W0 [label="", dummy="$D W_I \oplus D W_0$", shape=invhouse, color=red];
+}
+subgraph cluster_im {
+    I_Di__D_Wm [label="", dummy="$I \delta_I \oplus D W_M$", shape=circle];
+    I_Di__M_Dm [label="", dummy="$I \delta_I \oplus M \delta_M$", shape=circle];
+    
+    M_Di__M_Dm [label="$M \delta_I \oplus M \delta_M$", shape=invhouse, color=red];
+    M_Di__D_Wm [label="$M \delta_I \oplus D W_M$", shape=invhouse, color=red];
+    D_Wi__M_Dm [label="$D W_I \oplus M \delta_M$", shape=invhouse, color=red];
+    D_Wi__D_Wm [label="", dummy="$D W_I \oplus D W_M$", shape=invhouse, color=red];
+    
+    W_Wi__W_Wm [label="", dummy="$W W_I \oplus W W_M$", shape=octagon, color=red];
+    W_Wi__I_Dm [label="", dummy="$W W_I \oplus I \delta_M$", shape=circle];
+}
 subgraph cluster_if {
     I_Di__D_Wf [label="", dummy="$I \delta_I \oplus D W_F$", shape=circle];
     I_Di__M_Df [label="", dummy="$I \delta_I \oplus M \delta_F$", shape=circle];
@@ -131,7 +101,29 @@ subgraph cluster_if {
     W_Wi__W_Wf [label="", dummy="$W W_I \oplus W W_F$", shape=octagon, color=red];
     W_Wi__I_Df [label="", dummy="$W W_I \oplus I \delta_F$", shape=circle];
 }
+}
 
+subgraph cluster_v {
+subgraph cluster_v0 {
+    I_Dv__S_S [label="", dummy="$I \delta_V \oplus S S$", shape=circle];
+    I_Dv__D_W0 [label="", dummy="$I \delta_V \oplus D W_0$", shape=circle];
+    M_Dv__D_W0 [label="$M \delta_V \oplus D W_0$",  shape=invhouse, color=red];
+
+    W_Wv__W_W0 [label="", dummy="$W W_V \oplus W W_0$", shape=octagon, color=red];
+    D_Wv__D_W0 [label="", dummy="$D W_V \oplus D W_0$", shape=invhouse, color=red];
+}
+subgraph cluster_vm {
+    I_Dv__D_Wm [label="", dummy="$I \delta_V \oplus D W_M$", shape=circle];
+    I_Dv__M_Dm [label="", dummy="$I \delta_V \oplus M \delta_M$", shape=circle];
+    
+    M_Dv__M_Dm [label="$M \delta_V \oplus M \delta_M$", shape=invhouse, color=red];
+    M_Dv__D_Wm [label="$M \delta_V \oplus D W_M$", shape=invhouse, color=red];
+    D_Wv__M_Dm [label="$D W_V \oplus M \delta_M$", shape=invhouse, color=red];
+    D_Wv__D_Wm [label="", dummy="$D W_V \oplus D W_M$", shape=invhouse, color=red];
+    
+    W_Wv__W_Wm [label="", dummy="$W W_V \oplus W W_M$", shape=octagon, color=red];
+    W_Wv__I_Dm [label="", dummy="$W W_V \oplus I \delta_M$", shape=circle];
+}
 subgraph cluster_vf {
     I_Dv__D_Wf [label="", dummy="$I \delta_V \oplus D W_F$", shape=circle];
     I_Dv__M_Df [label="", dummy="$I \delta_V \oplus M \delta_F$", shape=circle];

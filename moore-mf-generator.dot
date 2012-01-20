@@ -1,0 +1,11 @@
+digraph G {
+    S [label="$S$", shape=circle, color=red];
+    E [label="$E$", shape=diamond, color=red];
+
+    I1 [label="$\\delta_M(y)$", shape=house, color=red];
+    I2 [label="$\\delta_F(y)$", shape=house, color=red];
+
+S->I1->I2->E;
+
+    label="$\nabla(MF)$, the Moore-normal generator for sequence MF";
+}
