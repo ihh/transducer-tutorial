@@ -386,7 +386,7 @@ I_Dl__D_Wf->W_Wl__W_Wf [label="", dummy="$(1-b)(1-c)$"];
 // W_Wl__W_Wf->M_Di__M_Dnext [label="", dummy="$a^2$"];
 W_Wl__W_Wf->M_Di__D_Wf [label="", dummy="$a(1-a)$"];
 // W_Wl__W_Wf->D_Wi__M_Dnext [label="", dummy="$a(1-a)$"];
-W_Wl__W_Wf->D_Wi__D_Wf [label="", dummy="$(1-a)^2$"];
+W_Wl__W_Wf->D_Wl__D_Wf [label="", dummy="$(1-a)^2$"];
 
 D_Wl__D_Wf->I_Di__D_Wf [label="", dummy="$c\pi_I$"];
 // D_Wl__D_Wf->W_Wl__I_Dnext [label="", dummy="$(1-c)c\pi_next$"];
