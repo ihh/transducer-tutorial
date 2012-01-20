@@ -1,5 +1,5 @@
-Requirements:
-graphviz
-latex (e.g. MacTeX)
-dot2tex
-pyparsing
+Requirements (brackets show known working versions):
+graphviz (2.28.0)
+latex (TeX Live 2011)
+dot2tex (2.9.0)
+pyparsing (1.5.7)
