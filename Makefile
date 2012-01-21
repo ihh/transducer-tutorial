@@ -53,7 +53,7 @@ clean: tidy
 # PDFs (requires dot2tex + graphviz + pyparsing)
 # Landscape orientation, letter paper
 %.tex: %.dot
-	dot2tex --autosize --format pstricks --texmode raw $< | perl -ne 'if(/documentclass/){print"\\documentclass{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@
+	dot2tex --autosize --crop --format pstricks --texmode raw $< | perl -ne 'if(/documentclass/){print"\\documentclass{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@
 
 # Landscape orientation, A1 paper (to avoid cropping big graphs)
 %.tex: %.a1dot
@@ -68,6 +68,7 @@ clean: tidy
 # Makes PDF in $TEXNAME.pdf, touches $TEXNAME.figpdf
 %.figpdf: %.tex
 	pdflatex -shell-escape $*.tex
+	pdfcrop $*.pdf $*.pdf
 	touch $*.figpdf
 
 # PNGs (requires graphviz only)

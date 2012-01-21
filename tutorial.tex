@@ -9,14 +9,18 @@
 \newcommand{\needfig}[1]{{\bf Need figure: } #1 }
 \newcommand{\needfigref}{Figure~??? }
 
-\newcommand{\easyfig}[3]{
+\newcommand{\easyfig}[4]{
 \begin{figure}
-\includegraphics[width=\textwidth]{#1}
-\caption{ \figlabel{#2} #3}
+\includegraphics[#2]{#1}
+\caption{ \figlabel{#3} #4}
 \end{figure}}
 
-\newcommand{\pdffig}[2]{\easyfig{#1.pdf}{#1}{#2}}
-\newcommand{\pngfig}[2]{\easyfig{#1.png}{#1}{#2}}
+\newcommand{\pngfig}[2]{\easyfig{#1.png}{}{#1}{#2}}
+\newcommand{\pdffig}[2]{\easyfig{#1.pdf}{}{#1}{#2}}
+
+\newcommand{\widepngfig}[2]{\easyfig{#1.png}{width=\textwidth}{#1}{#2}}
+\newcommand{\widepdffig}[2]{\easyfig{#1.pdf}{width=\textwidth}{#1}{#2}}
+\newcommand{\tallpdffig}[2]{\easyfig{#1.pdf}{height=\textheight}{#1}{#2}}
 
 \usepackage{graphicx}
 \usepackage{url}
@@ -117,10 +121,10 @@ Can be more useful in bioinformatics,
 where point substitution means that all combinations of input and output characters are frequently observed...
 
 For example consider the Mealy-machine-like view of \figref{fanned-emission}
-\pngfig{fanned-emission}{All combinations of input and output characters are frequently observed...}
+\widepngfig{fanned-emission}{All combinations of input and output characters are frequently observed...}
 
 It can be more convenient to represent this as a Moore-machine-like view of \figref{condensed-emission}
-\pngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...}
+\widepngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...}
 
 Note the features of this view:
 \begin{itemize}
@@ -152,7 +156,7 @@ or a column vector of conditional probabilities
 \end{itemize}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-\pdffig{legend}{Transducer state types.}
+\widepdffig{legend}{Transducer state types.}
 
 Types of state: Start, Match, Insert, Delete, End, Wait, Null
 
@@ -186,14 +190,14 @@ We use $\delta_Z(x)$ as shorthand for the function $\delta(x=Z)$.
 \item \figref{mf-labeled} is the Moore-machine recognizer for MF,
 the same sequence whose generator is shown in \figref{moore-mf-generator}.
 \item \figref{cs-labeled} is the Moore-machine recognizer for sequence CS.
-\item \figref{null} is a ``null model'' generator that emits a single IID sequence
+\item \figref{null-model} is a ``null model'' generator that emits a single IID sequence
 with given geometric length distribution and residue frequencies
 \end{itemize}
 
-\pdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
+\tallpdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
 \pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.}
-\pdffig{cs-labeled Moore-normal form recognizer for protein sequence CS.}
-\pdffig{null}{A simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
+\pdffig{cs-labeled}{Moore-normal form recognizer for protein sequence CS.}
+\pdffig{null-model}{A simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
 
 \subsection{Substitution and identity}
 
@@ -207,6 +211,10 @@ Note that the input and output sequences are always the same length...
 
 
 \subsection{TKF91}
+
+We use the TKF91 model as an example, not because it is the best model of indels
+ (it has deficiencies, most notably the linear gap penalty);
+rather, because it is canonical, widely-known, and illustrative of the general properties of transducers...
 
 \pdffig{tkf91}{...}
 
@@ -262,7 +270,7 @@ Note how the match state emit function is now a matrix multiplication...
 
 \subsection{Multiplying TKF91 with itself}
 
-\pdffig{tkf91-tkf91}{Composition of TKF91 model (\pdffig{tkf91-labeled}) with itself.}
+\widepdffig{tkf91-tkf91}{Composition of TKF91 model (\figref{tkf91-labeled}) with itself.}
 
 Again like two consecutive branches $x \to y \to z$
 but now TKF91 is acting along each branch...
@@ -312,7 +320,7 @@ sequences of strings (fragments) with immovable boundaries...
 Note that this is quite similar to a probabilistic weight matrix trained on a single sequence...
 
 \subsection{Composition of MF-generator with TKF91}
-\pdffig{mf-tkf91}{Composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
+\tallpdffig{mf-tkf91}{Composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
 
 \needfigref is the composition of MF-generator with TKF91...
 
@@ -328,7 +336,7 @@ Note that this is quite similar to a profile HMM trained on a single sequence...
 
 \subsection{Composition of TKF91 with LIV-recognizer}
 
-\pdffig{tkf91-liv}{...}
+\tallpdffig{tkf91-liv}{...}
 
 Note that there are only delete states in this (as in LIV-recognizer)...
 explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
@@ -336,7 +344,7 @@ and the meaning (it is a probabilistic recognition profile for ancestral descend
 
 \subsection{Composition of TKF91 with MF-recognizer}
 
-\pdffig{tkf91-mf}{...}
+\tallpdffig{tkf91-mf}{...}
 
 \subsection{Composition of MF-generator, substituter and CS-recognizer}
 
@@ -351,7 +359,7 @@ which is the correctly computed probability of transforming MF to LIV by point s
 
 \subsection{Composition of MF-generator, TKF91 and LIV-recognizer}
 
-\pdffig{mf-tkf91-liv}{...}
+\widepdffig{mf-tkf91-liv}{...}
 
 In this diagram, transitions are unlabeled to avoid clutter...
 
@@ -449,7 +457,7 @@ G^{(n)}(x) = \delta(x=y)
 \needfig{fork-subcs-submf}
 
 Note that this transducer is a recognizer (all delete states).
-Note also that it computes $G^{(n)}$ from \seclabel{Felsenstein}...
+Note also that it computes $G^{(n)}$ from \secref{Felsenstein}...
 
 This is an ensemble of four transducers.
 Input sequence is duplicated;
@@ -491,7 +499,7 @@ Sample traceback path yields sample from posterior distribution over ancestral s
 
 \subsection{Fork of TKF91-LIV with TKF91-MF}
 
-\pdffig{fork-tkf91liv-tkf91mf}{...}
+\widepdffig{fork-tkf91liv-tkf91mf}{...}
 
 \figref{fork-tkf91liv-tkf91mf} is the recognition profile for the common ancestor of LIV and MF...
 
