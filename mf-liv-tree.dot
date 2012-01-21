@@ -1,0 +1,12 @@
+digraph G {
+	ancestor [label="Ancestral sequence", shape=oval];
+	LIV [label="Sequence LIV", shape=oval];
+	MF [label="Sequence MF", shape=oval];
+	tkf_liv [label="TKF91 model", shape=box3d];
+	tkf_mf [label="TKF91 model", shape=box3d];
+	
+	ancestor->tkf_liv->LIV;
+	ancestor->tkf_mf->MF;
+	
+	label="Example phylogenetic tree used in this tutorial";
+}

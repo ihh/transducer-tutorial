@@ -41,22 +41,26 @@ rather than just the binary set $\{0,1\}$.
 
 In this tutorial we are going to work through some small examples of using transducers on trees,
 for some tiny example protein sequences (MF, CS, LIV).
-For example we will compute the likelihood of tree (MF:$t$,LIV:$t$)
-under TKF91 model...
-\needfig{figure showing the tree (MF:$t$,LIV:$t$)}
+For example we will compute the likelihood of the symmetric binary tree shown in \figref{mf-liv-tree},
+explaining the common descent of two sequences (MF and LIV)
+under the TKF91 model.
+\pdffig{mf-liv-tree}{Example tree used in this tutorial.}
 
 As noted in the Wikipedia quote, transducers can be thought of as generalizations of the related
 concepts of {\em generators} (state machines that emit output sequences, such as HMMs)
 and parsers or {\em recognizers} (state machines that match/parse input sequences, such as the UNIX 'lex' program).
 Both generators and recognizers are separate special cases of transducers.
-\figref{mf-generator} is an example of a generator (for the protein sequence MF);
-\figref{liv-small} is an example of a recognizer (for the protein sequence LIV).
+Of particular use in our treatment are generators/recognizers that generate/recognize a single unique sequence.
+\figref{mf-generator} is an example of a generator that uniquely generates the protein sequence MF;
+we write this as $\nabla(MF)$.
+\figref{liv-small} is an example of a recognizer that uniquely recognizes the protein sequence LIV;
+we write this as $\Delta(LIV)$.
 
 \pdffig{mf-generator}{Generator for protein sequence MF.}
 
 \pdffig{liv-small}{Recognizer for protein sequence LIV.}
 
-These figures illustrate the notation we use.
+These figures illustrate the notation we use in this tutorial.
 States and transitions are shown as a graph.
 Transitions can be labeled with absorption/emission pairs,
 written $x/y$ where $x$ is the absorbed character and $y$ the emitted character.
@@ -181,20 +185,20 @@ A few further examples of exact generators and recognizers, useful for the examp
 We use $\delta_Z(x)$ as shorthand for the function $\delta(x=Z)$.
 \item \figref{mf-labeled} is the Moore-machine recognizer for MF,
 the same sequence whose generator is shown in \figref{moore-mf-generator}.
-\item \needfigref is the Moore-machine recognizer for sequence CS.
-\item \needfigref is a ``null model'' generator that emits a single IID sequence
+\item \figref{cs-labeled} is the Moore-machine recognizer for sequence CS.
+\item \figref{null} is a ``null model'' generator that emits a single IID sequence
 with given geometric length distribution and residue frequencies
 \end{itemize}
 
 \pdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
 \pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.}
-\needfig{cs-labeled Moore-normal form recognizer for protein sequence CS.}
-\needfig{null}
+\pdffig{cs-labeled Moore-normal form recognizer for protein sequence CS.}
+\pdffig{null}{A simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
 
 \subsection{Substitution and identity}
 
 \figref{substituter} shows how the Moore-normal notation is used to represent a substitution matrix...
-\pdffig{substituter}{A transducer that introduces substitutions but no indels.}
+\pdffig{substituter}{A transducer that introduces substitutions (matrix $Q$) but no indels.}
 
 Note that the input and output sequences are always the same length...
 
@@ -208,9 +212,9 @@ Note that the input and output sequences are always the same length...
 
 \pdffig{tkf91-labeled}{...}
 
-Discussion of probabilities $a,b,c...$ and parameters $\lambda,\mu,R$
+Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R$
 
-\needfig{tkf91-root}
+\pdffig{tkf91-root}{The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null} but with $p=\lambda/\mu$.}
 
 Equilibrium (root) generator for TKF91...
 
@@ -232,9 +236,9 @@ we are summing over the intermediate sequence
 
 \subsection{Multiplying two substitution models}
 
-\needfig{substituter2}
+\pdffig{substituter2}{A transducer that introduces substitutions (matrix $R$) but no indels. Compare to \figref{substituter}, which is the same model but with substitution matrix $Q$ instead of $R$.}
 
-\needfig{substituter-substituter2}
+\pdffig{substituter-substituter2}{Composition of \figref{substituter} and \figref{substituter2}.}
 
 Like two consecutive branches $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$...
 each branch is modeled by a different substitution matrix, $Q$ and $R$

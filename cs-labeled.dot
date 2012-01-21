@@ -1,0 +1,20 @@
+digraph G {
+    S [label="$S$", shape=circle, color=red];
+    E [label="$E$", shape=diamond, color=red];
+
+subgraph cluster_0 {
+	W0 [label="$W_0$", shape=octagon, color=red];
+}
+subgraph cluster_1 {
+    W1 [label="$W_M$", shape=octagon, color=red];
+    D1 [label="$\\delta_C(x)$", shape=invhouse, color=red];
+}
+subgraph cluster_2 {
+    W2 [label="$W_F$", shape=octagon, color=red];
+    D2 [label="$\\delta_S(x)$", shape=invhouse, color=red];
+}
+
+S->W0->D1->W1->D2->W2->E;
+
+    label="$\\Delta(CS)$, the Moore-normal exact-matcher for sequence CS, with all states labeled";
+}

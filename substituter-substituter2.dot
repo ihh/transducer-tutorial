@@ -5,7 +5,7 @@ digraph G {
 
     W [label="", shape=octagon, color=red];
 
-    M [label="Q", shape=rect, color=red];
+    M [label="QR", shape=rect, color=red];
 
 S->W;
 
@@ -14,5 +14,5 @@ M->W;
 W->E;
 W->M;
 
-    label="A transducer that introduces substitutions but not indels (unlabeled edges have weight 1)";
+    label="Composition of two substituters, with substitution matrices $Q$ and $R$";
 }
