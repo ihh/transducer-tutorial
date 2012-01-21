@@ -41,6 +41,9 @@ clean: tidy
 %.open: %
 	open $<
 
+%.figopen: %.figpdf
+	open $*.pdf
+
 # Paper rules:
 %.pdf: %.tex $(FIGURES)
 	pdflatex -shell-escape $<

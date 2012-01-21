@@ -1,0 +1,70 @@
+digraph G {
+
+    SS [label="$SS$", shape=circle, color=red];
+    EE [label="$EE$", shape=diamond, color=red];
+
+    WW [label="$WW$", shape=octagon, color=red];
+
+    SI [label="$SI$", shape=house, color=red];
+    II [label="$II$", shape=house, color=red];
+    MI [label="$MI$", shape=house, color=red];
+
+    IM [label="$IM$", shape=house, color=red];
+    MM [label="$MM$", shape=rect, color=red];
+
+    ID [label="$ID$", shape=circle];
+    MD [label="$MD$", shape=invhouse, color=red];
+    DW [label="$DW$", shape=invhouse, color=red];
+
+SS->SI [label="$b$"];
+SS->IM [label="$(1-b)ba$"];
+SS->ID [label="$(1-b)b(1-a)$"];
+SS->WW [label="$(1-b)^2$"];
+
+SI->SI [label="$b$"];
+SI->IM [label="$(1-b)ba$"];
+SI->ID [label="$(1-b)b(1-a)$"];
+SI->WW [label="$(1-b)^2$"];
+
+IM->II [label="$b$"];
+IM->IM [label="$(1-b)ba$"];
+IM->ID [label="$(1-b)b(1-a)$"];
+IM->WW [label="$(1-b)^2$"];
+
+ID->II [label="$c$"];
+ID->IM [label="$(1-c)ba$"];
+ID->ID [label="$(1-c)b(1-a)$"];
+ID->WW [label="$(1-c)(1-b)$"];
+
+II->II [label="$b$"];
+II->IM [label="$(1-b)ba$"];
+II->ID [label="$(1-b)b(1-a)$"];
+II->WW [label="$(1-b)^2$"];
+
+WW->EE;
+WW->MM [label="$a^2$"];
+WW->MD [label="$a(1-a)$"];
+WW->DW [label="$1-a$"];
+
+MM->MI [label="$b$"];
+MM->IM [label="$(1-b)ba$"];
+MM->ID [label="$(1-b)b(1-a)$"];
+MM->WW [label="$(1-b)^2$"];
+
+MI->MI [label="$b$"];
+MI->IM [label="$(1-b)ba$"];
+MI->ID [label="$(1-b)b(1-a)$"];
+MI->WW [label="$(1-b)^2$"];
+
+MD->MI [label="$c$"];
+MD->IM [label="$(1-c)ba$"];
+MD->ID [label="$(1-c)b(1-a)$"];
+MD->WW [label="$(1-c)(1-b)$"];
+
+DW->IM [label="$ca$"];
+DW->ID [label="$c(1-a)$"];
+DW->WW [label="$1-c$"];
+
+
+    label="$B(t)B(t)$, two TKF91 transducers composed in series";
+}

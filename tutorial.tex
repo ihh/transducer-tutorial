@@ -210,9 +210,24 @@ Note that the input and output sequences are always the same length...
 
 \pdffig{tkf91}{...}
 
+Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R,t$
+
 \pdffig{tkf91-labeled}{...}
 
-Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R$
+In this diagram, $S,M,I,D,E,W$ have the usual interpretations
+ (Start, Match, Insert, Delete, End, Wait).
+It so happens that TKF91 has one of each of these kinds of state.
+However we are also using these labels to denote the I/O weight functions associated with
+each state in this Moore machine.
+Specifically
+ $M=\exp(Rt)$ is the substitution matrix for the Match state,
+ $I=\pi$ is the vector of weights
+  corresponding to the probability distribution of inserted characters for the Insert state,
+ $D=\left( \begin{array}{c} 1 \\ 1 \\ \ldots \\ 1 \end{array} \right)$
+ is the vector of weights
+  corresponding to the conditional probabilities that any given character will be deleted by the Delete state
+  (in the TKF91 model, deletion rate is independent of the actual character being deleted, so these are all 1);
+ and $S,W,N$ are all scalars that we set equal to 1.
 
 \pdffig{tkf91-root}{The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null} but with $p=\lambda/\mu$.}
 
@@ -246,13 +261,29 @@ each branch is modeled by a different substitution matrix, $Q$ and $R$
 Note how the match state emit function is now a matrix multiplication...
 
 \subsection{Multiplying TKF91 with itself}
-\needfig{tkf91-tkf91}
+
+\pdffig{tkf91-tkf91}{Composition of TKF91 model (\pdffig{tkf91-labeled}) with itself.}
 
 Again like two consecutive branches $x \to y \to z$
 but now TKF91 is acting along each branch...
 
+This is an ensemble of two transducers.
+Input sequence is fed into first TKF91;
+output of this first TKF91 transducer is an intermediate sequence that is fed into the input of the second TKF91;
+output of this second TKF91 is the output of the entire ensemble...
+When summing over paths, we are effectively summing over the intermediate sequence...
+
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(b_1,b_2)$
+where
+$b_1$ is the state of the first TKF91 transducer,
+$b_2$ is the state of the second TKF91 transducer...
+
+Discussion of the various states (MM, MD, IM, mI...)
+and their meaning...
+
 In a specific sense (summing over paths)
-this is equivalent to doubling the time parameter in \figref{tkf91}...
+this composite transducer is equivalent to the single transducer in \figref{tkf91}
+with the time parameter double ($t \to 2t$)...
 this statement is equivalent to a form of the Chapman-Kolmogorov equation,
 $B(t)B(t) \equiv B(2t)$
 
