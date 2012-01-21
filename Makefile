@@ -15,9 +15,10 @@ ALLFIGJUNK := $(addsuffix .tex,$(ALLFIG)) $(addsuffix .aux,$(ALLFIG)) $(addsuffi
 # The following source files currently only render properly as PNGs
 BAD := condensed-emission fanned-emission fanned-indel fanned-match
 BADPNG := $(addsuffix .png,$(BAD))
-GOODPDF := $(addsuffix .figpdf,$(filter-out $(BAD),$(ALLFIG)))
+GOODPDF := $(addsuffix .pdf,$(filter-out $(BAD),$(ALLFIG)))
+GOODFIGPDF := $(addsuffix .figpdf,$(filter-out $(BAD),$(ALLFIG)))
 
-FIGURES := $(BADPNG) $(GOODPDF)
+FIGURES := $(BADPNG) $(GOODFIGPDF)
 
 # Papers:
 ALLTEX := $(filter-out $(ALLFIGJUNK),$(wildcard *.tex))
@@ -28,7 +29,7 @@ ALLTEXJUNK := $(addsuffix .aux,$(ALLTEX)) $(addsuffix .log,$(ALLTEX))
 all: $(FIGURES) $(ALLTEXPDF)
 
 open: $(FIGURES) $(ALLTEXPDF)
-	open $(FIGURES) $(ALLTEXPDF)
+	open $(BADPNG) $(GOODPDF) $(ALLTEXPDF)
 
 tidy:
 	rm -f $(ALLFIGJUNK) $(ALLTEXJUNK) *~

@@ -1,6 +1,13 @@
 \documentclass{article}
+
+\newcommand{\secref}[1]{Section~\ref{sec.#1}}
+\newcommand{\seclabel}[1]{\label{sec.#1}}
+
 \newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
 \newcommand{\figlabel}[1]{\label{Figures.#1}}
+
+\newcommand{\needfig}[1]{{\bf Need figure: } #1 }
+\newcommand{\needfigref}{Figure~??? }
 
 \newcommand{\easyfig}[3]{
 \begin{figure}
@@ -21,17 +28,29 @@
 
 \section{Transducers as input-output machines}
 
+We begin with a brief definition of transducers from Wikipedia...
+
 % Begin quote from Wikipedia
-{\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to recognize a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. Alternatively, we can say that an automaton generates strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
+{\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to } recognize {\em a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. $(\dagger\dagger\dagger)$ Alternatively, we can say that an automaton } generates {\em strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
 \url{http://en.wikipedia.org/wiki/Finite_state_transducer}
 % End quote from Wikipedia
+\\
+$(\dagger\dagger\dagger)$ For a weighted transducer this mapping is,
+more generally, to the positive real axis $[0,\infty)$
+rather than just the binary set $\{0,1\}$.
 
 In this tutorial we are going to work through some small examples of using transducers on trees,
-for two tiny example protein sequences (MF and LIV).
-Specifically the tree (MF:t,LIV:t) with TKF91 model ... need a figure showing this tree...
+for some tiny example protein sequences (MF, CS, LIV).
+For example we will compute the likelihood of tree (MF:$t$,LIV:$t$)
+under TKF91 model...
+\needfig{figure showing the tree (MF:$t$,LIV:$t$)}
 
-\figref{mf-generator} is an example of a generator.
-\figref{liv-small} is an example of a recognizer.
+As noted in the Wikipedia quote, transducers can be thought of as generalizations of the related
+concepts of {\em generators} (state machines that emit output sequences, such as HMMs)
+and parsers or {\em recognizers} (state machines that match/parse input sequences, such as the UNIX 'lex' program).
+Both generators and recognizers are separate special cases of transducers.
+\figref{mf-generator} is an example of a generator (for the protein sequence MF);
+\figref{liv-small} is an example of a recognizer (for the protein sequence LIV).
 
 \pdffig{mf-generator}{Generator for protein sequence MF.}
 
@@ -61,15 +80,18 @@ one that only recognizes a single string
 (and recognizes that string with probability one).
 We call this an {\em exact-match} recognizer.
 
-More generally, suppose that $G$ and $R$ are both weighted finite-state transducers,
+More generally, suppose that $G$ and $R$ are both probabilistically weighted finite-state transducers,
 but $G$ is a generator and $R$ is a recognizer.
-Then $G$ defines a probability $P(Y|G)$ of emitting any emitted output sequence $Y$,
+Then, conventionally, $G$ defines a probability $P(Y|G)$ of emitting any emitted output sequence $Y$,
 while $R$ defines a probability $P(\mbox{recognized}|X,R)$ of accepting any input sequence $R$.
 Note that while the former, $P(Y|G)$, has an interpretation as a probability distribution over $Y$
 (so it's reasonable to expect the sum over $Y$ to be one),
 the latter, $P(\mbox{recognized}|X,R)$, is conditional on $X$
 (in general not reasonable to expect sum over $X$ to be one,
 although it is for the special case of an exact-match recognizer).
+{\bf It is important to state that these are just conventional interpretations of the computed weights:}
+in principle the weights can mean anything we want,
+but it is common to interpret them as probabilities in this way.
 
 Thus, as noted in the Wikipedia quote, generators and recognizers are in some sense equivalent,
 although the probabilistic interpretations of the weights are slightly different.
@@ -103,21 +125,26 @@ Note the features of this view:
  they must be classified as Insert, Delete, or Match
  (determining what kinds of I/O happens on transitions into those states)
 \item imposes certain constraints on transitions into I/O states:
- their weights must be factorizable into transition and emission components,
+ their weights must be factorizable into transition and I/O components,
  e.g. suppose state $j$ is a match state and state $i$ is any other state,
  then all transitions $i \to j$ must both absorb a non-gap input character $x$
  and emit a non-gap output character $y$,
  and the transition weight must take the form $t_{ij} \times e_j(x,y)$
- where $t_{ij}$ can depend on the source and destination state (but not the I/O characters)
- and $e_j(x,y)$ can depend on the I/O characters and the destination state (but not the source state).
-\item we can then associate the emission function $e_j$ with match state $j$
+ where $t_{ij}$ is a component that can depend on the source and destination state
+  (but not the I/O characters)
+ and $e_j(x,y)$ is a component that can depend on the I/O characters and the destination state
+  (but not the source state).
+\item we can then associate the I/O weight function $e_j$ with match state $j$
  (in fact, in this tutorial, we often use $e_j$ as the state's unique identifying label)
  and the transition weight $t_{ij}$ with a single conceptual transition $i \to j$
  that summarizes all the transitions $i \stackrel{x/y}{\to} j$
  (compare \figref{fanned-emission} and \figref{condensed-emission}).
-\item The function $e_j$ can be thought of as a conditional-probability substitution matrix (for match states),
-a row vector representing probability distribution (for insert states),
-or a column vector of conditional probabilities (for delete states)
+\item The function $e_j$ can be thought of as a conditional-probability substitution matrix
+ (for match states, c.f. $Q$ in \figref{condensed-emission}),
+a row vector representing probability distribution
+ (for insert states, c.f. $U$ in \figref{condensed-emission}),
+or a column vector of conditional probabilities
+ (for delete states, c.f. $V$ in \figref{condensed-emission})
 \end{itemize}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
@@ -136,28 +163,40 @@ This is useful e.g. for co-ordinating multiple transducers connected together, a
 \pdffig{transitions}{Allowed transitions...}
 
 
-\subsection{Moore-normal generators and recognizers}
+\subsection{Moore-machine generators and recognizers}
 
-\figref{moore-mf-generator} is the Moore-normal form version of the generator in \figref{mf-generator}.
-\figref{liv} is the Moore-normal form version of the recognizer in \figref{liv-small}.
+\figref{moore-mf-generator} uses our Moore-machine visual representation
+to depict the generator in \figref{mf-generator}.
 
 \pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.}
 
+\figref{liv} is the Moore-machine version of the recognizer in \figref{liv-small}.
+$\delta(x=y)$ is defined to be 1 if $x=y$, 0 otherwise.
+
 \pdffig{liv}{Moore-normal form recognizer for protein sequence LIV.}
 
-\figref{liv-labeled} is a version of \figref{liv-small} with all states given an explicit label.
-This will help in what follows...
+A few further examples of exact generators and recognizers, useful for the examples:
+\begin{itemize}
+\item \figref{liv-labeled} is a version of \figref{liv-small} with all states given an explicit label.
+We use $\delta_Z(x)$ as shorthand for the function $\delta(x=Z)$.
+\item \figref{mf-labeled} is the Moore-machine recognizer for MF,
+the same sequence whose generator is shown in \figref{moore-mf-generator}.
+\item \needfigref is the Moore-machine recognizer for sequence CS.
+\item \needfigref is a ``null model'' generator that emits a single IID sequence
+with given geometric length distribution and residue frequencies
+\end{itemize}
 
 \pdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
-
-It will also be useful to have an MF-recognizer, as in \figref{mf-labeled}...
 \pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.}
-
+\needfig{cs-labeled Moore-normal form recognizer for protein sequence CS.}
+\needfig{null}
 
 \subsection{Substitution and identity}
 
 \figref{substituter} shows how the Moore-normal notation is used to represent a substitution matrix...
 \pdffig{substituter}{A transducer that introduces substitutions but no indels.}
+
+Note that the input and output sequences are always the same length...
 
 \figref{identity} shows the special case of the identity transducer (input = output) ...
 \pdffig{identity}{The identity transducer...}
@@ -169,7 +208,57 @@ It will also be useful to have an MF-recognizer, as in \figref{mf-labeled}...
 
 \pdffig{tkf91-labeled}{...}
 
+Discussion of probabilities $a,b,c...$ and parameters $\lambda,\mu,R$
+
+\needfig{tkf91-root}
+
+Equilibrium (root) generator for TKF91...
+
+
 \section{Composition}
+
+Composition is when you feed the output of one transducer, $T$, into the input of another, $U$...
+the two transducers are now connected in a sense (outputs of $T$ can be synchronized with inputs from $U$)
+and we can construct a single, monster transducer that simulates the connected ensemble of $T$ followed by $U$...
+
+From two transducers $T$ and $U$,
+we make a new transducer $TU$
+wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states...
+
+Composition is like matrix multiplication...
+when we sum over paths through $TU$,
+we are summing over the intermediate sequence
+(the output of $T$, which is the input of $U$)...
+
+\subsection{Multiplying two substitution models}
+
+\needfig{substituter2}
+
+\needfig{substituter-substituter2}
+
+Like two consecutive branches $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$...
+each branch is modeled by a different substitution matrix, $Q$ and $R$
+
+Note how the match state emit function is now a matrix multiplication...
+
+\subsection{Multiplying TKF91 with itself}
+\needfig{tkf91-tkf91}
+
+Again like two consecutive branches $x \to y \to z$
+but now TKF91 is acting along each branch...
+
+In a specific sense (summing over paths)
+this is equivalent to doubling the time parameter in \figref{tkf91}...
+this statement is equivalent to a form of the Chapman-Kolmogorov equation,
+$B(t)B(t) \equiv B(2t)$
+
+\subsection{Composition of MF-generator with TKF91}
+\needfig{mf-tkf91}
+
+\needfigref is the composition of MF-generator with TKF91...
+Note that this appears quite similar to a profile HMM...
+in fact, the analogous generator (composition of LIV-generator with TKF91)
+is somewhat similar to a profile HMM trained on a single sequence...
 
 \subsection{Composition of TKF91 with LIV-recognizer}
 
@@ -179,22 +268,26 @@ Note that there are only delete states in this (as in LIV-recognizer)...
 explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
 and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
 
-Note that this appears quite similar to a profile HMM...
-in fact, the analogous generator (composition of LIV-generator with TKF91)
-is somewhat similar to a profile HMM trained on a single sequence...
-(show this?)
-
 \subsection{Composition of TKF91 with MF-recognizer}
 
 \pdffig{tkf91-mf}{...}
 
-\subsection{Composition of MF-generator, TKF91 and LIV-recognizer}
+\subsection{Composition of MF-generator, substituter and CS-recognizer}
 
 An alternative way of computing the weight, that expands the model to include the data...
+\needfig{mf-substituter-cs}
+
+Note that we could not e.g. compose MF-generator$\to$substituter$\to$LIV-recognizer
+(or rather we could, but since substituter does not change sequence length,
+there would be no valid path, and probability would come out as zero,
+which is the correctly computed probability of transforming MF to LIV by point substitutions alone)
+
+
+\subsection{Composition of MF-generator, TKF91 and LIV-recognizer}
 
 \pdffig{mf-tkf91-liv}{...}
 
-Transitions are unlabeled to avoid clutter...
+In this diagram, transitions are unlabeled to avoid clutter...
 
 Note that there are no match/insert/delete states --- only null states...
 thus this is more like a straightforward Markov model...
@@ -208,41 +301,277 @@ is equal to sum of all path weights from start to end in this Markov model...
 Note how the structure of the Markov model is directly analogous to a dynamic programming matrix...
 rows, columns, cells...
 
+We could not do this with substituter instead of TKF91
+(or rather we could, but substituter does not change sequence length,
+so there would be no valid path, and probability would correctly come out as zero)
+
 \section{Fork}
 
-\subsection{Fork of TKF91-MF with TKF91-LIV}
+Fork is when you feed the same input tape into two transducers in parallel...
+
+As with a transducer composition,
+a fork is constructed by taking the Cartesian product of two transducers' state spaces.
+From two transducers $T$ and $U$,
+we make a new transducer $TU$
+wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states...
+
+\subsection{Compositions, forks and Felsenstein's algorithm}
+\seclabel{Felsenstein}
+
+If a composition is like matrix multiplication,
+i.e. the operation of evolution along a contiguous branch of the phylogenetic tree,
+then a fork is like a bifurcation at a node in the phylogenetic tree,
+where a branch splits into two child branches.
+
+It corresponds to the pointwise multiplication step in the Felsenstein pruning algorithm ---
+i.e. the calculation
+\[
+P(\mbox{descendants}|\mbox{parent}) =
+P(\mbox{left child and its descendants}|\mbox{parent})
+P(\mbox{right child and its descendants}|\mbox{parent})
+\]
+
+Specifically, in the Felsenstein algorithm,
+we define $G^{(n)}(x)$ to be the probability of all observed descendants of node $n$,
+conditional on node $n$ having been in state $x$.
+Let us further suppose that $M^{(n)}$ is the conditional substitution matrix
+for the branch above node $n$ (coming from $n$'s parent), so
+\[
+M^{(n)}_{ij}=P(\mbox{node $n$ is in state $j$}|\mbox{parent of node $n$ is in state $i$})
+\]
+Then we can write the core recursion of Felsenstein's pruning algorithm in matrix form;
+$G^{(n)}$ is a vector, $M^{(n)}$ is a matrix, and the core recursion is
+\[
+G^{(n)} = \left( M^{(l)} \times G^{(l)} \right) \oplus \left( M^{(r)} \times G^{(r)} \right)
+\]
+where $(l,r)$ are the left- and right-children of node $n$,
+$\times$ denotes matrix multiplication,
+and $\oplus$ denotes the vector {\em pointwise product} (also called the {\em Hadamard product}),
+defined as follows for two vectors $A$ and $B$:
+\[
+(A \oplus B)_i = A_i B_i,
+\quad \quad \quad
+A \oplus B = \left( \begin{array}{c}
+A_1 B_1 \\ A_2 B_2 \\ A_3 B_3 \\ \ldots \\ A_K B_K
+\end{array} \right)
+\]
+
+Thus the two core steps of Felsenstein's algorithm (in matrix notation)
+are (a) matrix multiplication and (b) the pointwise product.
+We have defined the transducer equivalent of matrix multiplication,
+now we need to define the transducer equivalent of the vector pointwise product.
+
+Note also that $G^{(n)}(x)$ is the probability of node $n$'s observed descendants
+{\em conditional on} $x$, the state of node $n$.
+Thus $G^{(n)}$ is similar to a recognition profile,
+where the computed weight for a sequence $S$ represents
+the probability of some event (recognition) conditional on having $S$ as input,
+i.e. a probability of the form $P(\ldots|S)$
+(as opposed to a probability distribution of the form $P(S|\ldots)$ where the sequence $S$ is the output,
+as is computed by generative profiles).
+
+Finally consider the initialization step of the Felsenstein algorithm.
+Let $n$ be a leaf node and $y$ the observed character at that node.
+The initialization step is
+\[
+G^{(n)}(x) = \delta(x=y)
+\]
+
+\subsection{Fork of substituter-CS with substituter-MF}
+\seclabel{fork-subcs-submf}
+
+\needfig{fork-subcs-submf}
+
+Note that this transducer is a recognizer (all delete states).
+Note also that it computes $G^{(n)}$ from \seclabel{Felsenstein}...
+
+This is an ensemble of four transducers.
+Input sequence is duplicated;
+one copy fed into substituter (\figref{substituter}),
+output fed into exact-matcher for CS (\figref{cs-labeled});
+other copy fed into a separate substituter (\figref{substituter2}),
+output fed into exact-matcher for MF (\figref{mf-labeled})...
+
+Since it is an ensemble of four transducers, every state corresponds to a tuple $(b_1,d_1,b_2,d_2)$
+where
+$b_1$ is the state of the transducer on the CS-branch (\figref{substituter}),
+$d_1$ is the state of the exact-matcher for sequence CS (\figref{cs-labeled}),
+$b_2$ is the state of the transducer on the MF-branch (\figref{substituter2}),
+$d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
+
+In general we can write the I/O label for such a state as $(b_1 d_1) \oplus (b_2 d_2)$.
+For example consider the case where $(b_1,d_1,b_2,d_2) = (Q,\delta_C,R,\delta_M)$.
+Then $(Q,R)$ denote substitution matrices
+and $(\delta_C,\delta_M)$ denote vectors,
+so the label $(Q \delta_C) \oplus (R \delta_M)$
+denotes the vector whose elements given by
+\[
+\left( (Q \delta_C) \oplus (R \delta_M) \right)_x
+= Q_{xC} R_{xM}
+\]
+i.e. the $x$'th entry in this vector denotes the probability that an input symbol $x$
+would mutate to C on the $Q$-branch and M on the $R$-branch.
+
+\subsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
+
+\needfig{root-fork-submf-subcs}
+
+Forward sum computes final Felsenstein probability...
+
+Note that this transducer is a pure Markov chain (no input/output states).
+Note also that it computes the final Felsenstein probability.
+
+Sample traceback path yields sample from posterior distribution over ancestral sequences...
+
+\subsection{Fork of TKF91-LIV with TKF91-MF}
 
 \pdffig{fork-tkf91liv-tkf91mf}{...}
 
-This is the recognition profile for the common ancestor of MF and LIV...
+\figref{fork-tkf91liv-tkf91mf} is the recognition profile for the common ancestor of LIV and MF...
+
+This is an ensemble of four transducers.
+Input sequence is duplicated;
+one copy fed into TKF91 (\figref{tkf91-labeled}),
+output fed into exact-matcher for LIV (\figref{liv-labeled});
+other copy fed into a separate TKF91 machine (\figref{tkf91-labeled}),
+output fed into exact-matcher for MF (\figref{mf-labeled})...
+
+Since it is an ensemble of four transducers, every state corresponds to a tuple $(b_1,d_1,b_2,d_2)$
+where
+$b_1$ is the state of the TKF91 transducer on the LIV-branch (\figref{tkf91-labeled}),
+$d_1$ is the state of the exact-matcher for sequence LIV (\figref{liv-labeled}),
+$b_2$ is the state of the TKF91 transducer on the MF-branch (\figref{tkf91-labeled}),
+$d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
+
+In general we can label such a state as $(b_1 d_1) \oplus (b_2 d_2)$,
+as described in \figref{fork-subcs-submf}
+
+Note that, as with \figref{mf-tkf91-liv},
+underlying structure is somewhat like a DP matrix,
+with rows, columns and cells.
+In fact, modulo some quirks of the automatic graph layout (performed by graphviz's 'dot' program),
+\figref{fork-tkf91liv-tkf91mf} and \figref{mf-tkf91-liv} are structurally quite similar.
+However, compared to \figref{mf-tkf91-liv},
+\figref{fork-tkf91liv-tkf91mf} has more states in each ``cell'',
+because this transducer tracks two separate branches
+(whereas \figref{mf-tkf91-liv} only tracks one branch).
+
+Note that, since this is a recognizer, it has delete states but no match/insert states...
+the delete states do not necessarily correspond to deletions by the TKF91 transducers
+(all symbols are ultimately deleted by the exact-match recognizers for LIV and MF,
+so even if the two TKF91 transducers allow symbols to pass through undeleted,
+they will still be deleted by the exact-matchers).
+
+In fact, this transducer's states distinguish between
+deletion events on one branch {\em vs} insertion events on the other:
+this is significant because a ``deleted'' residue is homologous to a residue in the ancestral sequence,
+while an ``inserted'' residue is not.
+There are, in fact, four delete states in each ``cell'' of the matrix,
+corresponding to four fates of the input symbol after it is duplicated:
+(a) both copies of input symbol pass successfully through respective TKF91 transducers
+and are then deleted by respective downstream exact-matchers for sequences LIV and MF
+ (e.g. $M D_L \oplus M D_F$);
+(b) one copy of input symbol deleted by TKF91 transducer on LIV-branch,
+leaving downstream LIV-matcher idling in a wait state;
+other copy passes through TKF91 transducer on MF-branch and is then deleted by downstream MF-matcher
+ (e.g. $D W_0 \oplus M D_F$);
+(c) one copy of input symbol passes through TKF91 transducer on LIV-branch
+and is then deleted by downstream LIV-matcher;
+other copy is deleted by TKF91 transducer on MF-branch,
+leaving downstream MF-matcher idling in a wait state;
+ (e.g. $M D_L \oplus D W_0$);
+(d) both input symbols deleted by respective TKF91 transducers,
+while downstream exact-matchers idle in wait states without seeing any input
+ (e.g. $D W_0 \oplus D W_0$).
+
+The other states in each cell of the matrix are insertion states
+(where the symbols in sequences LIV or MF are accounted for by insertions from the TKF91 transducers,
+rather than by input symbols)
+and wait states (where the recognizer waits for the next input symbol).
+
+
+
+\subsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
+
+\needfig{root-fork-tkf91mf-tkf91liv}
+
+Forward sum computes final Felsenstein probability...
+
+Sample traceback path yields sample from posterior distribution over ancestral sequences...
+
+\needfig{root-fork-tkf91mf-tkf91liv-viterbi-traceback}
+
+Highlighted Viterbi traceback path...
+
+e.g.
+\begin{tabular}{ccc}
+L & I & V \\
+M & F & -
+\end{tabular}
+
+\needfig{fork-tkf91mf-tkf91liv-viterbi-traceback}
+
+Relabeling (removing the root generator) we now have a reconstructed linear profile
+for the sequence at the ancestral node,
+as might be computed by progressive alignment...
+
+Note that this is a recognition profile (all delete states)...
+
+\needfig{root-fork-tkf91mf-tkf91liv-forward-tracebacks}
+
+Instead of just doing Viterbi, we can sample more than one traceback path...
+
+Now as well as this path
+\begin{tabular}{ccc}
+L & I & V \\
+M & F & -
+\end{tabular}
+
+we also have this path
+\begin{tabular}{ccc}
+L & I & V \\
+- & M & F
+\end{tabular}
+
+\needfig{fork-tkf91mf-tkf91liv-forward-tracebacks}
+
+Relabeling again, we still have a recognition profile, but it is now branched,
+reflecting the possible uncertainty in our alignment...
+
+Note that these are all still approximations to the full
+recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}
+
+By sampling a fixed number of traceback paths,
+we can construct a recognition profile for the ancestral sequence
+that is linearly bounded in size and offers a stochastic ``lower bound''
+on the probability computed by the full transducer in \figref{fork-tkf91liv-tkf91mf}.
 
 \section{Overview of Felsenstein recursion}
 
-Need a figure showing the generator for the TKF91 root sequence?
+We have already seen the individual steps of the transducer version of the Felsenstein recursion...
 
+The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm
+for simultaneously aligning $N$ sequences of length $L$, ignoring secondary structure)
+involves starting with exact-match recognition profiles at the leaves (\figref{mf-labeled}, \figref{liv-labeled}),
+using those to construct recognition profiles for the parents (\figref{fork-tkf91liv-tkf91mf}),
+and progressively climbing the tree toward the root,
+constructing ancestral recognition profiles as you go.
+At the root, you compose the root generator with the root recognition profile,
+and compute the Forward probability.
 
-% All figures:
-% \pngfig{condensed-emission}{}
-% \pngfig{fanned-emission}{}
-% \pngfig{fanned-indel}{}
-% \pngfig{fanned-match}{}
-% \pdffig{fork-tkf91liv-tkf91mf}{}
-% \pdffig{identity}{}
-% \pdffig{legend}{}
-% \pdffig{liv-labeled}{}
-% \pdffig{liv-small}{}
-% \pdffig{liv}{}
-% \pdffig{mf-generator}{}
-% \pdffig{mf-labeled}{}
-% \pdffig{mf-tkf91-liv}{}
-% \pdffig{moore-mf-generator}{}
-% \pdffig{moore-tkf91-liv}{}
-% \pdffig{moore-tkf91-mf}{}
-% \pdffig{substituter}{}
-% \pdffig{tkf91-labeled}{}
-% \pdffig{tkf91-liv}{}
-% \pdffig{tkf91-mf}{}
-% \pdffig{tkf91}{}
-% \pdffig{transitions}{}
+The ``progressive alignment'' version,
+equivalent to doing Felsenstein's pruning recursion on a single alignment
+found using the progressive alignment algorithm,
+involves sampling the single best linear recognition profile of the parent,
+as in \figref{fork-tkf91mf-tkf91liv-viterbi-traceback}...
+
+Our stochastic lower bound version is intermediate to these two.
+Rather than just sampling the best linear profile for each parent
+(as in \figref{fork-tkf91mf-tkf91liv-viterbi-traceback}),
+we sample some fixed number of such paths
+(as in \figref{fork-tkf91mf-tkf91liv-forward-tracebacks}).
+This allows us to sum over some amount of alignment uncertainty,
+while avoiding the full complexity of the complete ancestral profile
+(\figref{fork-tkf91mf-tkf91liv-viterbi-traceback})...
 
 \end{document}

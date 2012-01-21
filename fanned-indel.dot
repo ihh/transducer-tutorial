@@ -8,15 +8,15 @@ digraph G {
 
     D [label="", shape=circle];
 
-S->I [label="-/A" taillabel="tp(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-S->I [label="-/C" taillabel="tp(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-S->I [label="-/G" taillabel="tp(G)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-S->I [label="-/T" taillabel="tp(T)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+S->I [label="-/A" taillabel="tU(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+S->I [label="-/C" taillabel="tU(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+S->I [label="-/G" taillabel="tU(G)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+S->I [label="-/T" taillabel="tU(T)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
 
-X->D [label="A/-" taillabel="vr(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-X->D [label="C/-" taillabel="vr(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-X->D [label="G/-" taillabel="vr(G)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
-X->D [label="T/-" taillabel="vr(T)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+X->D [label="A/-" taillabel="vV(A)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+X->D [label="C/-" taillabel="vV(C)" labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+X->D [label="G/-" taillabel="vV(G)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
+X->D [label="T/-" taillabel="vV(T)" labelangle=30 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
 
     label="Explicitly showing all transitions into insert/delete states with absorption/emission labels and weights";
 }
