@@ -143,7 +143,6 @@ Note the features of this view:
  and $e_j(x,y)$ is a component that can depend on the I/O characters and the destination state
   (but not the source state).
 \item we can then associate the I/O weight function $e_j$ with match state $j$
- (in fact, in this tutorial, we often use $e_j$ as the state's unique identifying label)
  and the transition weight $t_{ij}$ with a single conceptual transition $i \to j$
  that summarizes all the transitions $i \stackrel{x/y}{\to} j$
  (compare \figref{fanned-emission} and \figref{condensed-emission}).
@@ -175,6 +174,7 @@ This is useful e.g. for co-ordinating multiple transducers connected together, a
 
 \figref{moore-mf-generator} uses our Moore-machine visual representation
 to depict the generator in \figref{mf-generator}.
+% should be \imath_X instead of \delta_X when it's a generator
 
 \pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.}
 
@@ -225,6 +225,8 @@ Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R,t$
 In this diagram, $S,M,I,D,E,W$ have the usual interpretations
  (Start, Match, Insert, Delete, End, Wait).
 It so happens that TKF91 has one of each of these kinds of state.
+% Rewrite the following - not always labels=weight functions, instead we'll observe the connections in the text
+% e.g. ``$MM$ has emit $QR$...''
 However we are also using these labels to denote the I/O weight functions associated with
 each state in this Moore machine.
 Specifically
