@@ -1,0 +1,54 @@
+digraph G {
+
+    SS [label="$SS$", shape=circle, color=red];
+    EE [label="$EE$", shape=diamond, color=red];
+
+subgraph cluster_0 {
+	SI [label="$SI$", shape=house, color=red];
+}
+    
+subgraph cluster_1 {
+    I1M [label="$\delta_M M$", shape=house, color=red];
+    I1D [label="$\delta_M D$", shape=circle];
+    I1I [label="$\delta_M I$", shape=house, color=red];
+}
+
+subgraph cluster_2 {
+    I2M [label="$\delta_F M$", shape=house, color=red];
+    I2D [label="$\delta_F D$", shape=circle];
+    I2I [label="$\delta_F I$", shape=house, color=red];
+}
+
+SS->SI [label="$b$"];
+SS->I1M [label="$(1-b)a$"];
+SS->I1D [label="$(1-b)(1-a)$"];
+
+SI->SI [label="$b$"];
+SI->I1M [label="$(1-b)a$"];
+SI->I1D [label="$(1-b)(1-a)$"];
+
+I1M->I1I [label="$b$"];
+I1M->I2M [label="$(1-b)a$"];
+I1M->I2D [label="$(1-b)(1-a)$"];
+
+I1D->I1I [label="$c$"];
+I1D->I2M [label="$(1-c)a$"];
+I1D->I2D [label="$(1-c)(1-a)$"];
+
+I1I->I1I [label="$b$"];
+I1I->I2M [label="$(1-b)a$"];
+I1I->I2D [label="$(1-b)(1-a)$"];
+
+I2M->I2I [label="$b$"];
+I2M->WW [label="$1-b$"];
+
+I2D->I2I [label="$c$"];
+I2D->WW [label="$1-c$"];
+
+I2I->I2I [label="$b$"];
+I2I->WW [label="$1-b$"];
+
+WW->EE;
+
+    label="$\nabla(MF)B(t)$, the composition of the MF-generator and the TKF91 transducer";
+}
