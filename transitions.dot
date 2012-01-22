@@ -27,5 +27,5 @@ M->W [style=dashed];
 D->I [label="-/y"];
 D->W [style=dashed];
 
-    label="Allowed transition types in Moore normal form";
+
 }

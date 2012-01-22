@@ -73,5 +73,5 @@ W_Wf->D_Wf [label="$1-a$"];
 D_Wf->W_Wf [label="$1-c$"];
 
 
-label="$B(t) \cdot \Delta(MF)$, the TKF91 transducer in series with the exact-matcher for MF";
+
 }

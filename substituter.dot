@@ -14,5 +14,5 @@ M->W;
 W->E;
 W->M;
 
-    label="A transducer that introduces substitutions but not indels (unlabeled edges have weight 1)";
+
 }

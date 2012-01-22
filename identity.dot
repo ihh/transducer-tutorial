@@ -14,5 +14,5 @@ M->W;
 W->E;
 W->M;
 
-    label="The identity transducer, ${\\cal I}$";
+
 }

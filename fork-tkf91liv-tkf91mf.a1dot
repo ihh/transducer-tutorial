@@ -7,465 +7,407 @@ rank=LR;
 
 // ratio="compress";
 
-    S_S__S_S [label="$S S \oplus S S$", shape=circle, color=red];
+    S_S__S_S [label="$S S S S$", shape=circle, color=red];
 
 subgraph cluster_dpmatrix {
 
 // column 0
 subgraph cluster_0 {
 subgraph cluster_00 {
-    W_W0__W_W0 [label="", dummy="$W W_0 \oplus W W_0$", shape=octagon, color=red];
-    D_W0__D_W0 [label="$D W_0 \oplus D W_0$", shape=invhouse, color=red];
+    W_W0__W_W0 [label="", shape=octagon, color=red];
+    D_W0__D_W0 [label="$D W_0 D W_0$", shape=invhouse, color=red];
 }
 subgraph cluster_0m {
-    W_W0__I_Dm [label="", dummy="$W W_0 \oplus I \delta_M$", shape=circle];
-    D_W0__M_Dm [label="$D W_0 \oplus M \delta_M$", shape=invhouse, color=red];
+    W_W0__I_Dm [label="", shape=circle];
+    D_W0__M_Dm [label="$D W_0 M \delta_M$", shape=invhouse, color=red];
     
-    W_W0__W_Wm [label="", dummy="$W W_0 \oplus W W_M$", shape=octagon, color=red];
-    D_W0__D_Wm [label="$D W_0 \oplus D W_M$", shape=invhouse, color=red];
+    W_W0__W_Wm [label="", shape=octagon, color=red];
+    D_W0__D_Wm [label="$D W_0 D W_M$", shape=invhouse, color=red];
 }
 subgraph cluster_0f {
-    W_W0__I_Df [label="", dummy="$W W_0 \oplus I \delta_F$", shape=circle];
-    D_W0__M_Df [label="$D W_0 \oplus M \delta_F$", shape=invhouse, color=red];
+    W_W0__I_Df [label="", shape=circle];
+    D_W0__M_Df [label="$D W_0 M \delta_F$", shape=invhouse, color=red];
     
-    W_W0__W_Wf [label="", dummy="$W W_0 \oplus W W_F$", shape=octagon, color=red];
-    D_W0__D_Wf [label="$D W_0 \oplus D W_F$", shape=invhouse, color=red];
+    W_W0__W_Wf [label="", shape=octagon, color=red];
+    D_W0__D_Wf [label="$D W_0 D W_F$", shape=invhouse, color=red];
 }
 }
 
 subgraph cluster_l {
 subgraph cluster_l0 {
-    I_Dl__S_S [label="", dummy="$I \delta_L \oplus S S$", shape=circle];
-    I_Dl__D_W0 [label="", dummy="$I \delta_L \oplus D W_0$", shape=circle];
-    M_Dl__D_W0 [label="$M \delta_L \oplus D W_0$", shape=invhouse, color=red];
+    I_Dl__S_S [label="", shape=circle];
+    I_Dl__D_W0 [label="", shape=circle];
+    M_Dl__D_W0 [label="$M \delta_L D W_0$", shape=invhouse, color=red];
     
-    W_Wl__W_W0 [label="", dummy="$W W_L \oplus W W_0$", shape=octagon, color=red];
-    D_Wl__D_W0 [label="$D W_L \oplus D W_0$", shape=invhouse, color=red];
+    W_Wl__W_W0 [label="", shape=octagon, color=red];
+    D_Wl__D_W0 [label="$D W_L D W_0$", shape=invhouse, color=red];
 }
 subgraph cluster_lm {
-    I_Dl__D_Wm [label="", dummy="$I \delta_L \oplus D W_M$", shape=circle];
-    I_Dl__M_Dm [label="", dummy="$I \delta_L \oplus M \delta_M$", shape=circle];
+    I_Dl__D_Wm [label="", shape=circle];
+    I_Dl__M_Dm [label="", shape=circle];
     
-    M_Dl__M_Dm [label="$M \delta_L \oplus M \delta_M$", shape=invhouse, color=red];
-    M_Dl__D_Wm [label="$M \delta_L \oplus D W_M$", shape=invhouse, color=red];
-    D_Wl__M_Dm [label="$D W_L \oplus M \delta_M$", shape=invhouse, color=red];
-    D_Wl__D_Wm [label="$D W_L \oplus D W_M$", shape=invhouse, color=red];
+    M_Dl__M_Dm [label="$M \delta_L M \delta_M$", shape=invhouse, color=red];
+    M_Dl__D_Wm [label="$M \delta_L D W_M$", shape=invhouse, color=red];
+    D_Wl__M_Dm [label="$D W_L M \delta_M$", shape=invhouse, color=red];
+    D_Wl__D_Wm [label="$D W_L D W_M$", shape=invhouse, color=red];
     
-    W_Wl__W_Wm [label="", dummy="$W W_L \oplus W W_M$", shape=octagon, color=red];
-    W_Wl__I_Dm [label="", dummy="$W W_L \oplus I \delta_M$", shape=circle];
+    W_Wl__W_Wm [label="", shape=octagon, color=red];
+    W_Wl__I_Dm [label="", shape=circle];
 }
 subgraph cluster_lf {
-    I_Dl__D_Wf [label="", dummy="$I \delta_L \oplus D W_F$", shape=circle];
-    I_Dl__M_Df [label="", dummy="$I \delta_L \oplus M \delta_F$", shape=circle];
+    I_Dl__D_Wf [label="", shape=circle];
+    I_Dl__M_Df [label="", shape=circle];
     
-    M_Dl__M_Df [label="$M \delta_L \oplus M \delta_F$", shape=invhouse, color=red];
-    M_Dl__D_Wf [label="$M \delta_L \oplus D W_F$", shape=invhouse, color=red];
-    D_Wl__M_Df [label="$D W_L \oplus M \delta_F$", shape=invhouse, color=red];
-    D_Wl__D_Wf [label="$D W_L \oplus D W_F$", shape=invhouse, color=red];
+    M_Dl__M_Df [label="$M \delta_L M \delta_F$", shape=invhouse, color=red];
+    M_Dl__D_Wf [label="$M \delta_L D W_F$", shape=invhouse, color=red];
+    D_Wl__M_Df [label="$D W_L M \delta_F$", shape=invhouse, color=red];
+    D_Wl__D_Wf [label="$D W_L D W_F$", shape=invhouse, color=red];
     
-    W_Wl__W_Wf [label="", dummy="$W W_L \oplus W W_F$", shape=octagon, color=red];
-    W_Wl__I_Df [label="", dummy="$W W_L \oplus I \delta_F$", shape=circle];
+    W_Wl__W_Wf [label="", shape=octagon, color=red];
+    W_Wl__I_Df [label="", shape=circle];
 }
 }
 
 subgraph cluster_i {
 subgraph cluster_i0 {
-    I_Di__S_S [label="", dummy="$I \delta_I \oplus S S$", shape=circle];
-    I_Di__D_W0 [label="", dummy="$I \delta_I \oplus D W_0$", shape=circle];
-    M_Di__D_W0 [label="$M \delta_I \oplus D W_0$",  shape=invhouse, color=red];
+    I_Di__S_S [label="", shape=circle];
+    I_Di__D_W0 [label="", shape=circle];
+    M_Di__D_W0 [label="$M \delta_I D W_0$",  shape=invhouse, color=red];
 
-    W_Wi__W_W0 [label="", dummy="$W W_I \oplus W W_0$", shape=octagon, color=red];
-    D_Wi__D_W0 [label="$D W_I \oplus D W_0$", shape=invhouse, color=red];
+    W_Wi__W_W0 [label="", shape=octagon, color=red];
+    D_Wi__D_W0 [label="$D W_I D W_0$", shape=invhouse, color=red];
 }
 subgraph cluster_im {
-    I_Di__D_Wm [label="", dummy="$I \delta_I \oplus D W_M$", shape=circle];
-    I_Di__M_Dm [label="", dummy="$I \delta_I \oplus M \delta_M$", shape=circle];
+    I_Di__D_Wm [label="", shape=circle];
+    I_Di__M_Dm [label="", shape=circle];
     
-    M_Di__M_Dm [label="$M \delta_I \oplus M \delta_M$", shape=invhouse, color=red];
-    M_Di__D_Wm [label="$M \delta_I \oplus D W_M$", shape=invhouse, color=red];
-    D_Wi__M_Dm [label="$D W_I \oplus M \delta_M$", shape=invhouse, color=red];
-    D_Wi__D_Wm [label="$D W_I \oplus D W_M$", shape=invhouse, color=red];
+    M_Di__M_Dm [label="$M \delta_I M \delta_M$", shape=invhouse, color=red];
+    M_Di__D_Wm [label="$M \delta_I D W_M$", shape=invhouse, color=red];
+    D_Wi__M_Dm [label="$D W_I M \delta_M$", shape=invhouse, color=red];
+    D_Wi__D_Wm [label="$D W_I D W_M$", shape=invhouse, color=red];
     
-    W_Wi__W_Wm [label="", dummy="$W W_I \oplus W W_M$", shape=octagon, color=red];
-    W_Wi__I_Dm [label="", dummy="$W W_I \oplus I \delta_M$", shape=circle];
+    W_Wi__W_Wm [label="", shape=octagon, color=red];
+    W_Wi__I_Dm [label="", shape=circle];
 }
 subgraph cluster_if {
-    I_Di__D_Wf [label="", dummy="$I \delta_I \oplus D W_F$", shape=circle];
-    I_Di__M_Df [label="", dummy="$I \delta_I \oplus M \delta_F$", shape=circle];
+    I_Di__D_Wf [label="", shape=circle];
+    I_Di__M_Df [label="", shape=circle];
     
-    M_Di__M_Df [label="$M \delta_I \oplus M \delta_F$", shape=invhouse, color=red];
-    M_Di__D_Wf [label="$M \delta_I \oplus D W_F$", shape=invhouse, color=red];
-    D_Wi__M_Df [label="$D W_I \oplus M \delta_F$", shape=invhouse, color=red];
-    D_Wi__D_Wf [label="$D W_I \oplus D W_F$", shape=invhouse, color=red];
+    M_Di__M_Df [label="$M \delta_I M \delta_F$", shape=invhouse, color=red];
+    M_Di__D_Wf [label="$M \delta_I D W_F$", shape=invhouse, color=red];
+    D_Wi__M_Df [label="$D W_I M \delta_F$", shape=invhouse, color=red];
+    D_Wi__D_Wf [label="$D W_I D W_F$", shape=invhouse, color=red];
     
-    W_Wi__W_Wf [label="", dummy="$W W_I \oplus W W_F$", shape=octagon, color=red];
-    W_Wi__I_Df [label="", dummy="$W W_I \oplus I \delta_F$", shape=circle];
+    W_Wi__W_Wf [label="", shape=octagon, color=red];
+    W_Wi__I_Df [label="", shape=circle];
 }
 }
 
 subgraph cluster_v {
 subgraph cluster_v0 {
-    I_Dv__S_S [label="", dummy="$I \delta_V \oplus S S$", shape=circle];
-    I_Dv__D_W0 [label="", dummy="$I \delta_V \oplus D W_0$", shape=circle];
-    M_Dv__D_W0 [label="$M \delta_V \oplus D W_0$",  shape=invhouse, color=red];
+    I_Dv__S_S [label="", shape=circle];
+    I_Dv__D_W0 [label="", shape=circle];
+    M_Dv__D_W0 [label="$M \delta_V D W_0$",  shape=invhouse, color=red];
 
-    W_Wv__W_W0 [label="", dummy="$W W_V \oplus W W_0$", shape=octagon, color=red];
-    D_Wv__D_W0 [label="$D W_V \oplus D W_0$", shape=invhouse, color=red];
+    W_Wv__W_W0 [label="", shape=octagon, color=red];
+    D_Wv__D_W0 [label="$D W_V D W_0$", shape=invhouse, color=red];
 }
 subgraph cluster_vm {
-    I_Dv__D_Wm [label="", dummy="$I \delta_V \oplus D W_M$", shape=circle];
-    I_Dv__M_Dm [label="", dummy="$I \delta_V \oplus M \delta_M$", shape=circle];
+    I_Dv__D_Wm [label="", shape=circle];
+    I_Dv__M_Dm [label="", shape=circle];
     
-    M_Dv__M_Dm [label="$M \delta_V \oplus M \delta_M$", shape=invhouse, color=red];
-    M_Dv__D_Wm [label="$M \delta_V \oplus D W_M$", shape=invhouse, color=red];
-    D_Wv__M_Dm [label="$D W_V \oplus M \delta_M$", shape=invhouse, color=red];
-    D_Wv__D_Wm [label="$D W_V \oplus D W_M$", shape=invhouse, color=red];
+    M_Dv__M_Dm [label="$M \delta_V M \delta_M$", shape=invhouse, color=red];
+    M_Dv__D_Wm [label="$M \delta_V D W_M$", shape=invhouse, color=red];
+    D_Wv__M_Dm [label="$D W_V M \delta_M$", shape=invhouse, color=red];
+    D_Wv__D_Wm [label="$D W_V D W_M$", shape=invhouse, color=red];
     
-    W_Wv__W_Wm [label="", dummy="$W W_V \oplus W W_M$", shape=octagon, color=red];
-    W_Wv__I_Dm [label="", dummy="$W W_V \oplus I \delta_M$", shape=circle];
+    W_Wv__W_Wm [label="", shape=octagon, color=red];
+    W_Wv__I_Dm [label="", shape=circle];
 }
 subgraph cluster_vf {
-    I_Dv__D_Wf [label="", dummy="$I \delta_V \oplus D W_F$", shape=circle];
-    I_Dv__M_Df [label="", dummy="$I \delta_V \oplus M \delta_F$", shape=circle];
+    I_Dv__D_Wf [label="", shape=circle];
+    I_Dv__M_Df [label="", shape=circle];
     
-    M_Dv__M_Df [label="$M \delta_V \oplus M \delta_F$", shape=invhouse, color=red];
-    M_Dv__D_Wf [label="$M \delta_V \oplus D W_F$", shape=invhouse, color=red];
-    D_Wv__M_Df [label="$D W_V \oplus M \delta_F$", shape=invhouse, color=red];
-    D_Wv__D_Wf [label="$D W_V \oplus D W_F$", shape=invhouse, color=red];
+    M_Dv__M_Df [label="$M \delta_V M \delta_F$", shape=invhouse, color=red];
+    M_Dv__D_Wf [label="$M \delta_V D W_F$", shape=invhouse, color=red];
+    D_Wv__M_Df [label="$D W_V M \delta_F$", shape=invhouse, color=red];
+    D_Wv__D_Wf [label="$D W_V D W_F$", shape=invhouse, color=red];
     
-    W_Wv__W_Wf [label="", dummy="$W W_V \oplus W W_F$", shape=octagon, color=red];
-    W_Wv__I_Df [label="", dummy="$W W_V \oplus I \delta_F$", shape=circle];
+    W_Wv__W_Wf [label="", shape=octagon, color=red];
+    W_Wv__I_Df [label="", shape=circle];
 }
 }
 }
-    E_E__E_E [label="$E E \oplus E E$", shape=diamond, color=red];
+    E_E__E_E [label="$E E E E$", shape=diamond, color=red];
 
 
-S_S__S_S->I_Dl__S_S [label="", dummy="$b\pi_L$"];
-S_S__S_S->W_W0__I_Dm [label="", dummy="$(1-b)b\pi_M$"];
-S_S__S_S->W_W0__W_W0 [label="", dummy="$(1-b)^2$"];
+S_S__S_S->I_Dl__S_S [label=""];
+S_S__S_S->W_W0__I_Dm [label=""];
+S_S__S_S->W_W0__W_W0 [label=""];
 
 
 // column 0
 
-// W_W0->E;
-W_W0__W_W0->M_Dl__M_Dm [label="", dummy="$a^2$"];
-W_W0__W_W0->M_Dl__D_W0 [label="", dummy="$a(1-a)$"];
-W_W0__W_W0->D_W0__M_Dm [label="", dummy="$a(1-a)$"];
-W_W0__W_W0->D_W0__D_W0 [label="", dummy="$(1-a)^2$"];
+W_W0__W_W0->M_Dl__M_Dm [label=""];
+W_W0__W_W0->M_Dl__D_W0 [label=""];
+W_W0__W_W0->D_W0__M_Dm [label=""];
+W_W0__W_W0->D_W0__D_W0 [label=""];
 
-D_W0__D_W0->I_Dl__D_W0 [label="", dummy="$c\pi_L$"];
-D_W0__D_W0->W_W0__I_Dm [label="", dummy="$(1-c)c\pi_M$"];
-D_W0__D_W0->W_W0__W_W0 [label="", dummy="$(1-c)^2$"];
+D_W0__D_W0->I_Dl__D_W0 [label=""];
+D_W0__D_W0->W_W0__I_Dm [label=""];
+D_W0__D_W0->W_W0__W_W0 [label=""];
 
-M_Dl__D_W0->I_Di__D_W0 [label="", dummy="$b\pi_I$"];
-M_Dl__D_W0->W_Wl__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
-M_Dl__D_W0->W_Wl__W_W0 [label="", dummy="$(1-b)(1-c)$"];
+M_Dl__D_W0->I_Di__D_W0 [label=""];
+M_Dl__D_W0->W_Wl__I_Dm [label=""];
+M_Dl__D_W0->W_Wl__W_W0 [label=""];
 
-I_Dl__S_S->I_Di__S_S [label="", dummy="$b\pi_I$"];
-I_Dl__S_S->W_Wl__I_Dm [label="", dummy="$(1-b)b\pi_M$"];
-I_Dl__S_S->W_Wl__W_W0 [label="", dummy="$(1-b)^2$"];
+I_Dl__S_S->I_Di__S_S [label=""];
+I_Dl__S_S->W_Wl__I_Dm [label=""];
+I_Dl__S_S->W_Wl__W_W0 [label=""];
 
-I_Dl__D_W0->I_Di__D_W0 [label="", dummy="$b\pi_I$"];
-I_Dl__D_W0->W_Wl__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
-I_Dl__D_W0->W_Wl__W_W0 [label="", dummy="$(1-b)(1-c)$"];
-
-
-// W_Wl->E;
-W_Wl__W_W0->M_Di__M_Dm [label="", dummy="$a^2$"];
-W_Wl__W_W0->M_Di__D_W0 [label="", dummy="$a(1-a)$"];
-W_Wl__W_W0->D_Wl__M_Dm [label="", dummy="$a(1-a)$"];
-W_Wl__W_W0->D_Wl__D_W0 [label="", dummy="$(1-a)^2$"];
-
-D_Wl__D_W0->I_Di__D_W0 [label="", dummy="$c\pi_I$"];
-D_Wl__D_W0->W_Wl__I_Dm [label="", dummy="$(1-c)c\pi_M$"];
-D_Wl__D_W0->W_Wl__W_W0 [label="", dummy="$(1-c)^2$"];
-
-M_Di__D_W0->I_Dv__D_W0 [label="", dummy="$b\pi_V$"];
-M_Di__D_W0->W_Wi__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
-M_Di__D_W0->W_Wi__W_W0 [label="", dummy="$(1-b)(1-c)$"];
-
-I_Di__S_S->I_Dv__S_S [label="", dummy="$b\pi_V$"];
-I_Di__S_S->W_Wi__I_Dm [label="", dummy="$(1-b)b\pi_M$"];
-I_Di__S_S->W_Wi__W_W0 [label="", dummy="$(1-b)^2$"];
-
-I_Di__D_W0->I_Dv__D_W0 [label="", dummy="$b\pi_V$"];
-I_Di__D_W0->W_Wi__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
-I_Di__D_W0->W_Wi__W_W0 [label="", dummy="$(1-b)(1-c)$"];
+I_Dl__D_W0->I_Di__D_W0 [label=""];
+I_Dl__D_W0->W_Wl__I_Dm [label=""];
+I_Dl__D_W0->W_Wl__W_W0 [label=""];
 
 
-// W_Wi->E_E;
-W_Wi__W_W0->M_Dv__M_Dm [label="", dummy="$a^2$"];
-W_Wi__W_W0->M_Dv__D_W0 [label="", dummy="$a(1-a)$"];
-W_Wi__W_W0->D_Wi__M_Dm [label="", dummy="$a(1-a)$"];
-W_Wi__W_W0->D_Wi__D_W0 [label="", dummy="$(1-a)^2$"];
+W_Wl__W_W0->M_Di__M_Dm [label=""];
+W_Wl__W_W0->M_Di__D_W0 [label=""];
+W_Wl__W_W0->D_Wl__M_Dm [label=""];
+W_Wl__W_W0->D_Wl__D_W0 [label=""];
 
-D_Wi__D_W0->I_Dv__D_W0 [label="", dummy="$c\pi_V$"];
-D_Wi__D_W0->W_Wi__I_Dm [label="", dummy="$(1-c)c\pi_M$"];
-D_Wi__D_W0->W_Wi__W_W0 [label="", dummy="$(1-c)^2$"];
+D_Wl__D_W0->I_Di__D_W0 [label=""];
+D_Wl__D_W0->W_Wl__I_Dm [label=""];
+D_Wl__D_W0->W_Wl__W_W0 [label=""];
 
-// M_Dv->I_Dnext [label="", dummy=b];
-M_Dv__D_W0->W_Wv__W_W0 [label="", dummy="$(1-b)(1-c)$"];
-M_Dv__D_W0->W_Wv__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
+M_Di__D_W0->I_Dv__D_W0 [label=""];
+M_Di__D_W0->W_Wi__I_Dm [label=""];
+M_Di__D_W0->W_Wi__W_W0 [label=""];
 
-// I_Dv->I_Dnext [label="", dummy=b];
-I_Dv__D_W0->W_Wv__W_W0 [label="", dummy="$(1-b)(1-c)$"];
-I_Dv__D_W0->W_Wv__I_Dm [label="", dummy="$(1-b)c\pi_M$"];
+I_Di__S_S->I_Dv__S_S [label=""];
+I_Di__S_S->W_Wi__I_Dm [label=""];
+I_Di__S_S->W_Wi__W_W0 [label=""];
 
-I_Dv__S_S->W_Wv__W_W0 [label="", dummy="$(1-b)^2$"];
-I_Dv__S_S->W_Wv__I_Dm [label="", dummy="$(1-b)b\pi_M$"];
+I_Di__D_W0->I_Dv__D_W0 [label=""];
+I_Di__D_W0->W_Wi__I_Dm [label=""];
+I_Di__D_W0->W_Wi__W_W0 [label=""];
 
 
-// W_Wv->E_E;
-// W_Wv->M_Dnext [label="", dummy="$a$"];
-W_Wv__W_W0->D_Wv__M_Dm [label="", dummy="$(1-a)a$"];
-W_Wv__W_W0->D_Wv__D_W0 [label="", dummy="$(1-a)^2$"];
+W_Wi__W_W0->M_Dv__M_Dm [label=""];
+W_Wi__W_W0->M_Dv__D_W0 [label=""];
+W_Wi__W_W0->D_Wi__M_Dm [label=""];
+W_Wi__W_W0->D_Wi__D_W0 [label=""];
 
-// D_Wi->I_Dnext [label="", dummy=c];
-D_Wv__D_W0->W_Wv__I_Dm [label="", dummy="$(1-c)c\pi_M$"];
-D_Wv__D_W0->W_Wv__W_W0 [label="", dummy="$(1-c)^2$"];
+D_Wi__D_W0->I_Dv__D_W0 [label=""];
+D_Wi__D_W0->W_Wi__I_Dm [label=""];
+D_Wi__D_W0->W_Wi__W_W0 [label=""];
+
+M_Dv__D_W0->W_Wv__W_W0 [label=""];
+M_Dv__D_W0->W_Wv__I_Dm [label=""];
+
+I_Dv__D_W0->W_Wv__W_W0 [label=""];
+I_Dv__D_W0->W_Wv__I_Dm [label=""];
+
+I_Dv__S_S->W_Wv__W_W0 [label=""];
+I_Dv__S_S->W_Wv__I_Dm [label=""];
+
+
+W_Wv__W_W0->D_Wv__M_Dm [label=""];
+W_Wv__W_W0->D_Wv__D_W0 [label=""];
+
+D_Wv__D_W0->W_Wv__I_Dm [label=""];
+D_Wv__D_W0->W_Wv__W_W0 [label=""];
 
 
 // column M
 
-W_W0__W_Wm->M_Dl__M_Df [label="", dummy="$a^2$"];
-W_W0__W_Wm->M_Dl__D_Wm [label="", dummy="$a(1-a)$"];
-W_W0__W_Wm->D_W0__M_Df [label="", dummy="$a(1-a)$"];
-W_W0__W_Wm->D_W0__D_Wm [label="", dummy="$(1-a)^2$"];
+W_W0__W_Wm->M_Dl__M_Df [label=""];
+W_W0__W_Wm->M_Dl__D_Wm [label=""];
+W_W0__W_Wm->D_W0__M_Df [label=""];
+W_W0__W_Wm->D_W0__D_Wm [label=""];
 
-D_W0__D_Wm->I_Dl__D_Wm [label="", dummy="$c\pi_L$"];
-D_W0__D_Wm->W_W0__I_Df [label="", dummy="$(1-c)c\pi_F$"];
-D_W0__D_Wm->W_W0__W_Wm [label="", dummy="$(1-c)^2$"];
+D_W0__D_Wm->I_Dl__D_Wm [label=""];
+D_W0__D_Wm->W_W0__I_Df [label=""];
+D_W0__D_Wm->W_W0__W_Wm [label=""];
 
-D_W0__M_Dm->I_Dl__M_Dm [label="", dummy="$c\pi_L$"];
-D_W0__M_Dm->W_W0__I_Df [label="", dummy="$(1-c)b\pi_F$"];
-D_W0__M_Dm->W_W0__W_Wm [label="", dummy="$(1-c)(1-b)$"];
+D_W0__M_Dm->I_Dl__M_Dm [label=""];
+D_W0__M_Dm->W_W0__I_Df [label=""];
+D_W0__M_Dm->W_W0__W_Wm [label=""];
 
-W_W0__I_Dm->W_W0__I_Df [label="", dummy="$b\pi_F$"];
-W_W0__I_Dm->W_W0__W_Wm [label="", dummy="$1-b$"];
+W_W0__I_Dm->W_W0__I_Df [label=""];
+W_W0__I_Dm->W_W0__W_Wm [label=""];
 
-M_Dl__M_Dm->I_Di__M_Dm [label="", dummy="$b\pi_I$"];
-M_Dl__M_Dm->W_Wl__I_Df [label="", dummy="$(1-b)b\pi_F$"];
-M_Dl__M_Dm->W_Wl__W_Wm [label="", dummy="$(1-b)^2$"];
+M_Dl__M_Dm->I_Di__M_Dm [label=""];
+M_Dl__M_Dm->W_Wl__I_Df [label=""];
+M_Dl__M_Dm->W_Wl__W_Wm [label=""];
 
-M_Dl__D_Wm->I_Di__D_Wm [label="", dummy="$b\pi_I$"];
-M_Dl__D_Wm->W_Wl__I_Df [label="", dummy="$(1-b)c\pi_F$"];
-M_Dl__D_Wm->W_Wl__W_Wm [label="", dummy="$(1-b)(1-c)$"];
+M_Dl__D_Wm->I_Di__D_Wm [label=""];
+M_Dl__D_Wm->W_Wl__I_Df [label=""];
+M_Dl__D_Wm->W_Wl__W_Wm [label=""];
 
-I_Dl__M_Dm->I_Di__M_Dm [label="", dummy="$b\pi_I$"];
-I_Dl__M_Dm->W_Wl__I_Df [label="", dummy="$(1-b)b\pi_F$"];
-I_Dl__M_Dm->W_Wl__W_Wm [label="", dummy="$(1-b)^2$"];
+I_Dl__M_Dm->I_Di__M_Dm [label=""];
+I_Dl__M_Dm->W_Wl__I_Df [label=""];
+I_Dl__M_Dm->W_Wl__W_Wm [label=""];
 
-I_Dl__D_Wm->I_Di__D_Wm [label="", dummy="$b\pi_I$"];
-I_Dl__D_Wm->W_Wl__I_Df [label="", dummy="$(1-b)c\pi_F$"];
-I_Dl__D_Wm->W_Wl__W_Wm [label="", dummy="$(1-b)(1-c)$"];
-
-
-// W_Wl->E;
-W_Wl__W_Wm->M_Di__M_Df [label="", dummy="$a^2$"];
-W_Wl__W_Wm->M_Di__D_Wm [label="", dummy="$a(1-a)$"];
-W_Wl__W_Wm->D_Wl__M_Df [label="", dummy="$a(1-a)$"];
-W_Wl__W_Wm->D_Wl__D_Wm [label="", dummy="$(1-a)^2$"];
-
-D_Wl__D_Wm->I_Di__D_Wm [label="", dummy="$c\pi_I$"];
-D_Wl__D_Wm->W_Wl__I_Df [label="", dummy="$(1-c)c\pi_F$"];
-D_Wl__D_Wm->W_Wl__W_Wm [label="", dummy="$(1-c)^2$"];
-
-D_Wl__M_Dm->I_Di__M_Dm [label="", dummy="$c\pi_I$"];
-D_Wl__M_Dm->W_Wl__I_Df [label="", dummy="$(1-c)b\pi_F$"];
-D_Wl__M_Dm->W_Wl__W_Wm [label="", dummy="$(1-c)(1-b)$"];
-
-W_Wl__I_Dm->W_Wl__I_Df [label="", dummy="$b\pi_F$"];
-W_Wl__I_Dm->W_Wl__W_Wm [label="", dummy="$1-b$"];
-
-M_Di__M_Dm->I_Dv__M_Dm [label="", dummy="$b\pi_V$"];
-M_Di__M_Dm->W_Wi__I_Df [label="", dummy="$(1-b)b\pi_F$"];
-M_Di__M_Dm->W_Wi__W_Wm [label="", dummy="$(1-b)^2$"];
-
-M_Di__D_Wm->I_Dv__D_Wm [label="", dummy="$b\pi_V$"];
-M_Di__D_Wm->W_Wi__I_Df [label="", dummy="$(1-b)c\pi_F$"];
-M_Di__D_Wm->W_Wi__W_Wm [label="", dummy="$(1-b)(1-c)$"];
-
-I_Di__M_Dm->I_Dv__M_Dm [label="", dummy="$b\pi_V$"];
-I_Di__M_Dm->W_Wi__I_Df [label="", dummy="$(1-b)b\pi_F$"];
-I_Di__M_Dm->W_Wi__W_Wm [label="", dummy="$(1-b)^2$"];
-
-I_Di__D_Wm->I_Dv__D_Wm [label="", dummy="$b\pi_V$"];
-I_Di__D_Wm->W_Wi__I_Df [label="", dummy="$(1-b)c\pi_F$"];
-I_Di__D_Wm->W_Wi__W_Wm [label="", dummy="$(1-b)(1-c)$"];
+I_Dl__D_Wm->I_Di__D_Wm [label=""];
+I_Dl__D_Wm->W_Wl__I_Df [label=""];
+I_Dl__D_Wm->W_Wl__W_Wm [label=""];
 
 
-// W_Wi->E_E;
-W_Wi__W_Wm->M_Dv__M_Df [label="", dummy="$a^2$"];
-W_Wi__W_Wm->M_Dv__D_Wm [label="", dummy="$a(1-a)$"];
-W_Wi__W_Wm->D_Wi__M_Df [label="", dummy="$a(1-a)$"];
-W_Wi__W_Wm->D_Wi__D_Wm [label="", dummy="$(1-a)^2$"];
+W_Wl__W_Wm->M_Di__M_Df [label=""];
+W_Wl__W_Wm->M_Di__D_Wm [label=""];
+W_Wl__W_Wm->D_Wl__M_Df [label=""];
+W_Wl__W_Wm->D_Wl__D_Wm [label=""];
 
-D_Wi__M_Dm->I_Dv__M_Dm [label="", dummy="$c\pi_V$"];
-D_Wi__M_Dm->W_Wi__I_Df [label="", dummy="$(1-c)b\pi_F$"];
-D_Wi__M_Dm->W_Wi__W_Wm [label="", dummy="$(1-c)(1-b)$"];
+D_Wl__D_Wm->I_Di__D_Wm [label=""];
+D_Wl__D_Wm->W_Wl__I_Df [label=""];
+D_Wl__D_Wm->W_Wl__W_Wm [label=""];
 
-D_Wi__D_Wm->I_Dv__D_Wm [label="", dummy="$c\pi_V$"];
-D_Wi__D_Wm->W_Wi__I_Df [label="", dummy="$(1-c)c\pi_F$"];
-D_Wi__D_Wm->W_Wi__W_Wm [label="", dummy="$(1-c)^2$"];
+D_Wl__M_Dm->I_Di__M_Dm [label=""];
+D_Wl__M_Dm->W_Wl__I_Df [label=""];
+D_Wl__M_Dm->W_Wl__W_Wm [label=""];
 
-W_Wi__I_Dm->W_Wi__I_Df [label="", dummy="$b\pi_F$"];
-W_Wi__I_Dm->W_Wi__W_Wm [label="", dummy="$1-b$"];
+W_Wl__I_Dm->W_Wl__I_Df [label=""];
+W_Wl__I_Dm->W_Wl__W_Wm [label=""];
 
-// M_Dv->I_Dnext [label="", dummy=b];
-M_Dv__M_Dm->W_Wv__W_Wm [label="", dummy="$(1-b)(1-b)$"];
-M_Dv__M_Dm->W_Wv__I_Df [label="", dummy="$(1-b)b\pi_F$"];
+M_Di__M_Dm->I_Dv__M_Dm [label=""];
+M_Di__M_Dm->W_Wi__I_Df [label=""];
+M_Di__M_Dm->W_Wi__W_Wm [label=""];
 
-// M_Dv->I_Dnext [label="", dummy=b];
-M_Dv__D_Wm->W_Wv__W_Wm [label="", dummy="$(1-b)(1-c)$"];
-M_Dv__D_Wm->W_Wv__I_Df [label="", dummy="$(1-b)c\pi_F$"];
+M_Di__D_Wm->I_Dv__D_Wm [label=""];
+M_Di__D_Wm->W_Wi__I_Df [label=""];
+M_Di__D_Wm->W_Wi__W_Wm [label=""];
 
-// I_Dv->I_Dnext [label="", dummy=b];
-I_Dv__M_Dm->W_Wv__W_Wm [label="", dummy="$(1-b)^2$"];
-I_Dv__M_Dm->W_Wv__I_Df [label="", dummy="$(1-b)b\pi_F$"];
+I_Di__M_Dm->I_Dv__M_Dm [label=""];
+I_Di__M_Dm->W_Wi__I_Df [label=""];
+I_Di__M_Dm->W_Wi__W_Wm [label=""];
 
-// I_Dv->I_Dnext [label="", dummy=b];
-I_Dv__D_Wm->W_Wv__W_Wm [label="", dummy="$(1-b)(1-c)$"];
-I_Dv__D_Wm->W_Wv__I_Df [label="", dummy="$(1-b)c\pi_F$"];
+I_Di__D_Wm->I_Dv__D_Wm [label=""];
+I_Di__D_Wm->W_Wi__I_Df [label=""];
+I_Di__D_Wm->W_Wi__W_Wm [label=""];
 
 
-// W_Wv->E_E;
-// W_Wv->M_Dnext [label="", dummy="$a$"];
-W_Wv__W_Wm->D_Wv__M_Df [label="", dummy="$(1-a)a$"];
-W_Wv__W_Wm->D_Wv__D_Wm [label="", dummy="$(1-a)^2$"];
+W_Wi__W_Wm->M_Dv__M_Df [label=""];
+W_Wi__W_Wm->M_Dv__D_Wm [label=""];
+W_Wi__W_Wm->D_Wi__M_Df [label=""];
+W_Wi__W_Wm->D_Wi__D_Wm [label=""];
 
-// D_Wi->I_Dnext [label="", dummy=c];
-D_Wv__M_Dm->W_Wv__I_Df [label="", dummy="$(1-c)b\pi_F$"];
-D_Wv__M_Dm->W_Wv__W_Wm [label="", dummy="$(1-c)(1-b)$"];
+D_Wi__M_Dm->I_Dv__M_Dm [label=""];
+D_Wi__M_Dm->W_Wi__I_Df [label=""];
+D_Wi__M_Dm->W_Wi__W_Wm [label=""];
 
-// D_Wi->I_Dnext [label="", dummy=c];
-D_Wv__D_Wm->W_Wv__I_Df [label="", dummy="$(1-c)c\pi_F$"];
-D_Wv__D_Wm->W_Wv__W_Wm [label="", dummy="$(1-c)^2$"];
+D_Wi__D_Wm->I_Dv__D_Wm [label=""];
+D_Wi__D_Wm->W_Wi__I_Df [label=""];
+D_Wi__D_Wm->W_Wi__W_Wm [label=""];
 
-W_Wv__I_Dm->W_Wv__I_Df [label="", dummy="$b\pi_F$"];
-W_Wv__I_Dm->W_Wv__W_Wm [label="", dummy="$1-b$"];
+W_Wi__I_Dm->W_Wi__I_Df [label=""];
+W_Wi__I_Dm->W_Wi__W_Wm [label=""];
+
+M_Dv__M_Dm->W_Wv__W_Wm [label=""];
+M_Dv__M_Dm->W_Wv__I_Df [label=""];
+
+M_Dv__D_Wm->W_Wv__W_Wm [label=""];
+M_Dv__D_Wm->W_Wv__I_Df [label=""];
+
+I_Dv__M_Dm->W_Wv__W_Wm [label=""];
+I_Dv__M_Dm->W_Wv__I_Df [label=""];
+
+I_Dv__D_Wm->W_Wv__W_Wm [label=""];
+I_Dv__D_Wm->W_Wv__I_Df [label=""];
+
+
+W_Wv__W_Wm->D_Wv__M_Df [label=""];
+W_Wv__W_Wm->D_Wv__D_Wm [label=""];
+
+D_Wv__M_Dm->W_Wv__I_Df [label=""];
+D_Wv__M_Dm->W_Wv__W_Wm [label=""];
+
+D_Wv__D_Wm->W_Wv__I_Df [label=""];
+D_Wv__D_Wm->W_Wv__W_Wm [label=""];
+
+W_Wv__I_Dm->W_Wv__I_Df [label=""];
+W_Wv__I_Dm->W_Wv__W_Wm [label=""];
 
 
 
 // column F
 
-// W_W0__W_Wf->M_Dl__M_Dnext [label="", dummy="$a^2$"];
-W_W0__W_Wf->M_Dl__D_Wf [label="", dummy="$a(1-a)$"];
-// W_W0__W_Wf->D_W0__M_Dnext [label="", dummy="$a(1-a)$"];
-W_W0__W_Wf->D_W0__D_Wf [label="", dummy="$(1-a)^2$"];
+W_W0__W_Wf->M_Dl__D_Wf [label=""];
+W_W0__W_Wf->D_W0__D_Wf [label=""];
 
-D_W0__D_Wf->I_Dl__D_Wf [label="", dummy="$c\pi_L$"];
-// D_W0__D_Wf->W_W0__I_Dnext [label="", dummy="$(1-c)c\pi_F$"];
-D_W0__D_Wf->W_W0__W_Wf [label="", dummy="$(1-c)^2$"];
+D_W0__D_Wf->I_Dl__D_Wf [label=""];
+D_W0__D_Wf->W_W0__W_Wf [label=""];
 
-D_W0__M_Df->I_Dl__M_Df [label="", dummy="$c\pi_L$"];
-// D_W0__M_Df->W_W0__I_Dnext [label="", dummy="$(1-c)b\pi_F$"];
-D_W0__M_Df->W_W0__W_Wf [label="", dummy="$(1-c)(1-b)$"];
+D_W0__M_Df->I_Dl__M_Df [label=""];
+D_W0__M_Df->W_W0__W_Wf [label=""];
 
-// W_W0__I_Df->W_W0__I_Dnext [label="", dummy="$b\pi_next$"];
-W_W0__I_Df->W_W0__W_Wf [label="", dummy="$1-b$"];
+W_W0__I_Df->W_W0__W_Wf [label=""];
 
-M_Dl__M_Df->I_Di__M_Df [label="", dummy="$b\pi_I$"];
-// M_Dl__M_Df->W_Wl__I_Dnext [label="", dummy="$(1-b)b\pi_F$"];
-M_Dl__M_Df->W_Wl__W_Wf [label="", dummy="$(1-b)^2$"];
+M_Dl__M_Df->I_Di__M_Df [label=""];
+M_Dl__M_Df->W_Wl__W_Wf [label=""];
 
-M_Dl__D_Wf->I_Di__D_Wf [label="", dummy="$b\pi_I$"];
-// M_Dl__D_Wf->W_Wl__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
-M_Dl__D_Wf->W_Wl__W_Wf [label="", dummy="$(1-b)(1-c)$"];
+M_Dl__D_Wf->I_Di__D_Wf [label=""];
+M_Dl__D_Wf->W_Wl__W_Wf [label=""];
 
-I_Dl__M_Df->I_Di__M_Df [label="", dummy="$b\pi_I$"];
-// I_Dl__M_Df->W_Wl__I_Dnext [label="", dummy="$(1-b)b\pi_F$"];
-I_Dl__M_Df->W_Wl__W_Wf [label="", dummy="$(1-b)^2$"];
+I_Dl__M_Df->I_Di__M_Df [label=""];
+I_Dl__M_Df->W_Wl__W_Wf [label=""];
 
-I_Dl__D_Wf->I_Di__D_Wf [label="", dummy="$b\pi_I$"];
-// I_Dl__D_Wf->W_Wl__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
-I_Dl__D_Wf->W_Wl__W_Wf [label="", dummy="$(1-b)(1-c)$"];
+I_Dl__D_Wf->I_Di__D_Wf [label=""];
+I_Dl__D_Wf->W_Wl__W_Wf [label=""];
 
 
-// W_Wl->E;
-// W_Wl__W_Wf->M_Di__M_Dnext [label="", dummy="$a^2$"];
-W_Wl__W_Wf->M_Di__D_Wf [label="", dummy="$a(1-a)$"];
-// W_Wl__W_Wf->D_Wi__M_Dnext [label="", dummy="$a(1-a)$"];
-W_Wl__W_Wf->D_Wl__D_Wf [label="", dummy="$(1-a)^2$"];
+W_Wl__W_Wf->M_Di__D_Wf [label=""];
+W_Wl__W_Wf->D_Wl__D_Wf [label=""];
 
-D_Wl__D_Wf->I_Di__D_Wf [label="", dummy="$c\pi_I$"];
-// D_Wl__D_Wf->W_Wl__I_Dnext [label="", dummy="$(1-c)c\pi_next$"];
-D_Wl__D_Wf->W_Wl__W_Wf [label="", dummy="$(1-c)^2$"];
+D_Wl__D_Wf->I_Di__D_Wf [label=""];
+D_Wl__D_Wf->W_Wl__W_Wf [label=""];
 
-D_Wl__M_Df->I_Di__M_Df [label="", dummy="$c\pi_I$"];
-// D_Wl__M_Df->W_Wl__I_Dnext [label="", dummy="$(1-c)b\pi_F$"];
-D_Wl__M_Df->W_Wl__W_Wf [label="", dummy="$(1-c)(1-b)$"];
+D_Wl__M_Df->I_Di__M_Df [label=""];
+D_Wl__M_Df->W_Wl__W_Wf [label=""];
 
-// W_Wl__I_Df->W_Wl__I_Dnext [label="", dummy="$b\pi_F$"];
-W_Wl__I_Df->W_Wl__W_Wf [label="", dummy="$1-b$"];
+W_Wl__I_Df->W_Wl__W_Wf [label=""];
 
-M_Di__M_Df->I_Dv__M_Df [label="", dummy="$b\pi_V$"];
-// M_Di__M_Df->W_Wi__I_Dnext [label="", dummy="$(1-b)b\pi_F$"];
-M_Di__M_Df->W_Wi__W_Wf [label="", dummy="$(1-b)^2$"];
+M_Di__M_Df->I_Dv__M_Df [label=""];
+M_Di__M_Df->W_Wi__W_Wf [label=""];
 
-M_Di__D_Wf->I_Dv__D_Wf [label="", dummy="$b\pi_V$"];
-// M_Di__D_Wf->W_Wi__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
-M_Di__D_Wf->W_Wi__W_Wf [label="", dummy="$(1-b)(1-c)$"];
+M_Di__D_Wf->I_Dv__D_Wf [label=""];
+M_Di__D_Wf->W_Wi__W_Wf [label=""];
 
-I_Di__M_Df->I_Dv__M_Df [label="", dummy="$b\pi_V$"];
-// I_Di__M_Df->W_Wi__I_Dnext [label="", dummy="$(1-b)b\pi_F$"];
-I_Di__M_Df->W_Wi__W_Wf [label="", dummy="$(1-b)^2$"];
+I_Di__M_Df->I_Dv__M_Df [label=""];
+I_Di__M_Df->W_Wi__W_Wf [label=""];
 
-I_Di__D_Wf->I_Dv__D_Wf [label="", dummy="$b\pi_V$"];
-// I_Di__D_Wf->W_Wi__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
-I_Di__D_Wf->W_Wi__W_Wf [label="", dummy="$(1-b)(1-c)$"];
+I_Di__D_Wf->I_Dv__D_Wf [label=""];
+I_Di__D_Wf->W_Wi__W_Wf [label=""];
 
 
-// W_Wi->E_E;
-// W_Wi__W_Wf->M_Dv__M_Dnext [label="", dummy="$a^2$"];
-W_Wi__W_Wf->M_Dv__D_Wf [label="", dummy="$a(1-a)$"];
-// W_Wi__W_Wf->D_Wi__M_Dnext [label="", dummy="$a(1-a)$"];
-W_Wi__W_Wf->D_Wi__D_Wf [label="", dummy="$(1-a)^2$"];
+W_Wi__W_Wf->M_Dv__D_Wf [label=""];
+W_Wi__W_Wf->D_Wi__D_Wf [label=""];
 
-D_Wi__M_Df->I_Dv__M_Df [label="", dummy="$c\pi_V$"];
-// D_Wi__M_Df->W_Wi__I_Dnext [label="", dummy="$(1-c)b\pi_F$"];
-D_Wi__M_Df->W_Wi__W_Wf [label="", dummy="$(1-c)(1-b)$"];
+D_Wi__M_Df->I_Dv__M_Df [label=""];
+D_Wi__M_Df->W_Wi__W_Wf [label=""];
 
-D_Wi__D_Wf->I_Dv__D_Wf [label="", dummy="$c\pi_V$"];
-// D_Wi__D_Wf->W_Wi__I_Dnext [label="", dummy="$(1-c)c\pi_F$"];
-D_Wi__D_Wf->W_Wi__W_Wf [label="", dummy="$(1-c)^2$"];
+D_Wi__D_Wf->I_Dv__D_Wf [label=""];
+D_Wi__D_Wf->W_Wi__W_Wf [label=""];
 
-// W_Wi__I_Df->W_Wi__I_Dnext [label="", dummy="$b\pi_next$"];
-W_Wi__I_Df->W_Wi__W_Wf [label="", dummy="$1-b$"];
+W_Wi__I_Df->W_Wi__W_Wf [label=""];
 
-// M_Dv->I_Dnext [label="", dummy=b];
-M_Dv__M_Df->W_Wv__W_Wf [label="", dummy="$(1-b)(1-b)$"];
-// M_Dv__M_Df->W_Wv__I_Dnext [label="", dummy="$(1-b)b\pi_F$"];
+M_Dv__M_Df->W_Wv__W_Wf [label=""];
 
-// M_Dv->I_Dnext [label="", dummy=b];
-M_Dv__D_Wf->W_Wv__W_Wf [label="", dummy="$(1-b)(1-c)$"];
-// M_Dv__D_Wf->W_Wv__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
+M_Dv__D_Wf->W_Wv__W_Wf [label=""];
 
-// I_Dv->I_Dnext [label="", dummy=b];
-I_Dv__M_Df->W_Wv__W_Wf [label="", dummy="$(1-b)^2$"];
-// I_Dv__M_Df->W_Wv__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
+I_Dv__M_Df->W_Wv__W_Wf [label=""];
 
-// I_Dv->I_Dnext [label="", dummy=b];
-I_Dv__D_Wf->W_Wv__W_Wf [label="", dummy="$(1-b)(1-c)$"];
-// I_Dv__D_Wf->W_Wv__I_Dnext [label="", dummy="$(1-b)c\pi_F$"];
+I_Dv__D_Wf->W_Wv__W_Wf [label=""];
 
 
-// W_Wv->M_Dnext [label="", dummy="$a$"];
-// W_Wv__W_Wf->D_Wv__M_Dnext [label="", dummy="$(1-a)a$"];
-W_Wv__W_Wf->D_Wv__D_Wf [label="", dummy="$(1-a)^2$"];
+W_Wv__W_Wf->D_Wv__D_Wf [label=""];
 W_Wv__W_Wf->E_E__E_E;
 
-// D_Wi->I_Dnext [label="", dummy=c];
-// D_Wv__M_Df->W_Wv__I_Dnext [label="", dummy="$(1-c)b\pi_F$"];
-D_Wv__M_Df->W_Wv__W_Wf [label="", dummy="$(1-c)(1-b)$"];
+D_Wv__M_Df->W_Wv__W_Wf [label=""];
 
-// D_Wi->I_Dnext [label="", dummy=c];
-// D_Wv__D_Wf->W_Wv__I_Dnext [label="", dummy="$(1-c)c\pi_F$"];
-D_Wv__D_Wf->W_Wv__W_Wf [label="", dummy="$(1-c)^2$"];
+D_Wv__D_Wf->W_Wv__W_Wf [label=""];
 
-// W_Wv__I_Df->W_Wv__I_Dnext [label="", dummy="$b\pi_next$"];
-W_Wv__I_Df->W_Wv__W_Wf [label="", dummy="$1-b$"];
+W_Wv__I_Df->W_Wv__W_Wf [label=""];
 
 
-label="$\left(B(t) \cdot \Delta(LIV)\right) \oplus \left(B(t) \cdot \Delta(MF)\right)$, the recognizer for the common ancestor of LIV and MF under a TKF91 model";
+
 }

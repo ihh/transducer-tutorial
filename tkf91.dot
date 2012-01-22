@@ -25,5 +25,5 @@ W->E;
 W->M [label=a];
 W->D [label="1-a"];
 
-    label="Transducer version of TKF91 model";
+
 }

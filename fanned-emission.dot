@@ -41,5 +41,5 @@ W->M [label="T/C" fontcolor="blue" fontname="Courier"];
 W->M [label="T/G" fontcolor="blue" fontname="Courier"];
 W->M [label="T/T" taillabel="uQ(T,T)" labelangle=30 labeldistance=2 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
 
-    label="Explicitly showing all transitions with absorption/emission labels and selected weights";
+
 }

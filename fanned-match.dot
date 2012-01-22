@@ -24,5 +24,5 @@ W->M [label="T/C" fontcolor="blue" fontname="Courier"];
 W->M [label="T/G" fontcolor="blue" fontname="Courier"];
 W->M [label="T/T" taillabel="uQ(T,T)" labelangle=30 labeldistance=3 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times" labelfontcolor="darkgreen"];
 
-    label="Explicitly showing all transitions into a match state, with all absorption/emission labels and selected weights";
+
 }

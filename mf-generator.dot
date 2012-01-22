@@ -9,5 +9,5 @@ S->I1 [label="-/M"];
 I1->I2 [label="-/F"];
 I2->E;
 
-    label="A transducer that generates sequence MF (and accepts only the empty string)";
+
 }

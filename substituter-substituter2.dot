@@ -14,5 +14,5 @@ M->W;
 W->E;
 W->M;
 
-    label="Composition of two substituters, with substitution matrices $Q$ and $R$";
+
 }

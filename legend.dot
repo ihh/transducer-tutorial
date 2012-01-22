@@ -12,5 +12,5 @@ digraph G {
 
     Null [shape=circle];
 
-    label="Transducer state types";
+
 }

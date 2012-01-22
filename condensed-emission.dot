@@ -17,5 +17,5 @@ W->M [label="x/y" taillabel="u" labelangle=300 labeldistance=1.4 fontcolor="blue
 
 X->D [label="x/-" taillabel="v" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
 
-    label="Condensed notation for Moore-form absorption/emission transitions";
+
 }

@@ -7,18 +7,16 @@ ALLA0DOT := $(wildcard *.a0dot)
 ALLFIG := $(subst .dot,,$(ALLDOT)) $(subst .a1dot,,$(ALLA1DOT))  $(subst .a0dot,,$(ALLA0DOT))
 
 ALLFIGPNG := $(addsuffix .png,$(ALLFIG))
-ALLFIGPDF := $(addsuffix .pdf,$(ALLFIG)) 
-ALLFIGPDFTARGET := $(addsuffix .figpdf,$(ALLFIG))
+ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG)) 
 
 ALLFIGJUNK := $(addsuffix .tex,$(ALLFIG)) $(addsuffix .aux,$(ALLFIG)) $(addsuffix .log,$(ALLFIG)) $(addsuffix -pics.pdf,$(ALLFIG))
 
 # The following source files currently only render properly as PNGs
 BAD := condensed-emission fanned-emission fanned-indel fanned-match
 BADPNG := $(addsuffix .png,$(BAD))
-GOODPDF := $(addsuffix .pdf,$(filter-out $(BAD),$(ALLFIG)))
-GOODFIGPDF := $(addsuffix .figpdf,$(filter-out $(BAD),$(ALLFIG)))
+GOODPDF := $(addsuffix -fig.pdf,$(filter-out $(BAD),$(ALLFIG)))
 
-FIGURES := $(BADPNG) $(GOODFIGPDF)
+FIGURES := $(BADPNG) $(GOODPDF)
 
 # Papers:
 ALLTEX := $(filter-out $(ALLFIGJUNK),$(wildcard *.tex))
@@ -35,14 +33,11 @@ tidy:
 	rm -f $(ALLFIGJUNK) $(ALLTEXJUNK) *~
 
 clean: tidy
-	rm -f $(ALLTEXPDF) $(ALLFIGPDF) $(ALLFIGPDFTARGET) $(ALLFIGPNG)
+	rm -f $(ALLTEXPDF) $(ALLFIGPDF) $(ALLFIGPNG)
 
 # General rules:
 %.open: %
 	open $<
-
-%.figopen: %.figpdf
-	open $*.pdf
 
 # Paper rules:
 %.pdf: %.tex $(FIGURES)
@@ -65,11 +60,10 @@ clean: tidy
 	dot2tex --autosize --format tikz --texmode raw $*.tmpdot | perl -ne 'if(/documentclass/){print"\\documentclass{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@
 
 # LaTeX -> PDF
-# Makes PDF in $TEXNAME.pdf, touches $TEXNAME.figpdf
-%.figpdf: %.tex
+%-fig.pdf: %.tex
 	pdflatex -shell-escape $*.tex
-	pdfcrop $*.pdf $*.pdf
-	touch $*.figpdf
+	pdfcrop $*.pdf $*-fig.pdf
+	rm $*.pdf
 
 # PNGs (requires graphviz only)
 %.png: %.dot

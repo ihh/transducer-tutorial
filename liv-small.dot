@@ -11,5 +11,5 @@ digraph G {
     D2->D3 [label="V/-"];
     D3->E;
 
-    label="The exact-match transducer for sequence LIV";
+
 }

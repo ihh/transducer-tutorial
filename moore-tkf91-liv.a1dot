@@ -103,5 +103,5 @@ W_Wv->D_Wv [label="$1-a$"];
 D_Wv->W_Wv [label="$1-c$"];
 
 
-label="$B(t) \cdot \Delta(LIV)$, the TKF91 transducer in series with the exact-matcher for LIV";
+
 }

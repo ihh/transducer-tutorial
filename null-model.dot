@@ -8,5 +8,5 @@ S->I;
 I->I [label="$p$"];
 I->E [label="$1-p$"];
 
-    label="Generator for a simple null model";
+
 }

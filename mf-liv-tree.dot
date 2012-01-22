@@ -8,5 +8,5 @@ digraph G {
 	ancestor->tkf_liv->LIV;
 	ancestor->tkf_mf->MF;
 	
-	label="Example phylogenetic tree used in this tutorial";
+
 }

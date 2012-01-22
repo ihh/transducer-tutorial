@@ -66,5 +66,5 @@ DW->ID [label="$c(1-a)$"];
 DW->WW [label="$1-c$"];
 
 
-    label="$B(t)B(t)$, two TKF91 transducers composed in series";
+
 }

@@ -50,5 +50,5 @@ I2I->WW [label="$1-b$"];
 
 WW->EE;
 
-    label="$\nabla(MF)B(t)$, the composition of the MF-generator and the TKF91 transducer";
+
 }

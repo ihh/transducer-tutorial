@@ -23,5 +23,5 @@ subgraph cluster_3 {
 
 S->W0->D1->W1->D2->W2->D3->W3->E;
 
-    label="$\\Delta(LIV)$, the Moore-normal exact-matcher for LIV, with all states explicitly labeled";
+
 }
