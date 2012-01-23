@@ -62,8 +62,8 @@ while (<>) {
 	    for my $node (@rest) {
 		print_node ($node);
 	    }
-	    print "subgraph cluster_DPmatrix {\n";
-	    print "rankdir=LR;\n";
+# Commented out outermost cluster for consistency with sort-fork2.pl
+#	    print "subgraph cluster_DPmatrix {\n";
 	    for my $pos2 (sort {$pos2rank{$a} <=> $pos2rank{$b}} keys %order) {
 		print "subgraph cluster_$pos2 {\n";
 		for my $pos1 (sort {$pos1rank{$a} <=> $pos1rank{$b}} keys %{$order{$pos2}}) {
@@ -75,7 +75,7 @@ while (<>) {
 		}
 		print "}\n";
 	    }
-	    print "}\n";
+#	    print "}\n";
 	    $nodes_to_print = 0;
 	}
 	print "$longname{$src} -> $longname{$dest};\n";

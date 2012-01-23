@@ -2,9 +2,9 @@ digraph G {
     S [label="$S$", shape=circle, color=red];
     E [label="$E$", shape=diamond, color=red];
     
-    W [label="", shape=octagon, color=red];
+    W [label="$W$", shape=octagon, color=red];
 
-    I [label="$\pi(y)$", shape=house, color=red];
+    I [label="$I$", shape=house, color=red];
 
 S->I [label="$\lambda/\mu$"];
 I->I [label="$\lambda/\mu$"];

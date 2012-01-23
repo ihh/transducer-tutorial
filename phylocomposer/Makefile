@@ -14,7 +14,7 @@
 
 # Custom sort rules
 # Two-sequence DP via a forked recognizer
-fork2-%.bigdot: fork-%.html.dot
+fork2-%.bigdot: fork2-%.html.dot
 	./sort-fork2.pl $< >$@
 
 # Two-sequence DP via a generator-transducer-recognizer composition

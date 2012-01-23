@@ -1,0 +1,14 @@
+digraph G {
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+    W [label="", shape=octagon, color=red];
+    
+    D1 [label="", shape=circle];
+    D2 [label="", shape=circle];
+
+S->D1 [label="$\sum_x \pi_x Q_{xM} Q_{xC}$"];
+D1->D2 [label="$\sum_x \pi_x Q_{xF} Q_{xS}$"];
+D2->W->E;
+
+
+}

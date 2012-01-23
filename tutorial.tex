@@ -870,7 +870,8 @@ So,
  $(1,1,\ldots,1)$
  is the vector of weights corresponding to
  the conditional probabilities that any given character will be deleted by the $D$ (Delete) state
- (in the TKF91 model, deletion rate is independent of the actual character being deleted, so these are all 1).
+ (in the TKF91 model, deletion rate is independent of the actual character being deleted,
+ which is why these delete weights are all 1).
 }
 
 \figref{tkf91-labeled} is a version of \figref{tkf91}
@@ -878,7 +879,8 @@ where, rather than writing the I/O weight functions directly on each state (as i
 we have instead written a state label (as in \figref{liv-labeled}, \figref{mf-labeled} and \figref{cs-labeled}).
 The state labels are $S,M,I,D,E,W$ (interpretation: Start, Match, Insert, Delete, End, Wait).
 
-\pdffig{tkf91-root}{The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null} but with $p=\lambda/\mu$.}
+\pdffig{tkf91-root}{The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null} with $p=\lambda/\mu$.
+The I/O function for the $I$ (Insert) state is $\pi_y$.}
 
 Equilibrium (root) generator for TKF91...
 
@@ -1176,7 +1178,7 @@ G^{(n)}(x) = \delta(x=y)
 \subsubsection{Fork of substituter-CS with substituter-MF}
 \seclabel{fork-subcs-submf}
 
-\needfig{fork-subcs-submf}
+\pdffig{fork-subcs-submf}{...}
 
 Fork of \figref{substituter-mf} and \figref{substituter-cs}
 
@@ -1211,7 +1213,7 @@ would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \subsubsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
 
-\needfig{root-fork-submf-subcs}
+\pdffig{root-fork-subcs-submf}{...}
 
 Forward sum computes final Felsenstein probability for this two-branch tree...
 

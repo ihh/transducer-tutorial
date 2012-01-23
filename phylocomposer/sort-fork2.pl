@@ -53,6 +53,8 @@ while (<>) {
 	    for my $node (@rest) {
 		print_node ($node);
 	    }
+# Commented out outermost cluster as it messes up the left->right layout... sigh
+#	    print "subgraph cluster_DPmatrix {\n";
 	    for my $pos1 (sort keys %order) {
 		print "subgraph cluster_$pos1 {\n";
 		for my $pos2 (sort keys %{$order{$pos1}}) {
@@ -64,6 +66,7 @@ while (<>) {
 		}
 		print "}\n";
 	    }
+#	    print "}\n";
 	    $nodes_to_print = 0;
 	}
 	print "$longname{$src} -> $longname{$dest};\n";
