@@ -33,6 +33,22 @@
 \date{}
 \maketitle
 
+\section{Overview}
+
+Our algorithm may be viewed as a consolidation of several approaches:
+\begin{itemize}
+\item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods
+\item Sankoff's algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny
+\item Fast heuristic approximations to Sankoff's algorithm including progressive alignment and partial-order graph alignment
+\item Hidden Markov Model theory for sequence profiling
+\item Algorithms for ancestral sequence reconstruction conditioned on an alignment (TreeHMM, Indelign, Ortheus)
+\end{itemize}
+
+The algorithm uses the theory of finite state transducers to make explicit certain connections between these fields,
+and suggests a way to extend the literature on
+site-dependent and latent-variable substitution models \needcite{Yang,Goldman,Bruno,Holmes...}
+to indel models.
+
 \section{Transducers as input-output machines}
 
 We begin with a brief definition of transducers from Wikipedia...
