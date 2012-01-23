@@ -54,7 +54,7 @@
 
 ;;; History:
 
-;; 18/01/2012: Added .a1dot file suffix - Ian Holmes <ihh AT berkeley DOT edu>
+;; 18/01/2012: Added .bigdot file suffix - Ian Holmes <ihh AT berkeley DOT edu>
 ;; Version 0.3.4 bug fixes
 ;; 24/02/2005: * fixed a bug in graphviz-dot-preview
 ;; Version 0.3.3 bug fixes
@@ -916,6 +916,6 @@ buffer is saved before the command is executed."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 ;;; nonstandard file extensions for the transducer-tutorial project
-(add-to-list 'auto-mode-alist '("\\.a1dot\\'" . graphviz-dot-mode))
+(add-to-list 'auto-mode-alist '("\\.bigdot\\'" . graphviz-dot-mode))
 
 ;;; graphviz-dot-mode.el ends here

@@ -13,8 +13,13 @@
 	cat $< | perl -pe 'while(s/<[^>]+>//){};s/label=(\S+)>/label="$$1"/' | grep -v plaintext >$@
 
 # Custom sort rules
-fork-%.bigdot: fork-%.html.dot
-	./sortpairdp.pl $< >$@
+# Two-sequence DP via a forked recognizer
+fork2-%.bigdot: fork-%.html.dot
+	./sort-fork2.pl $< >$@
+
+# Two-sequence DP via a generator-transducer-recognizer composition
+comp2-%.bigdot: comp2-%.html.dot
+	./sort-comp2.pl $< >$@
 
 # Landscape orientation, A1 paper (workaround to avoid cropping big graphs)
 %.tex: %.bigdot

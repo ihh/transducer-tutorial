@@ -16,9 +16,15 @@ while (<>) {
 	while ($label =~ s/<[^>]+>//) { }
 	if ($label =~ /([\*\-])(.).*([SWEMDI]).([SWD])([0mflivcs]?).*([SWEMDI]).([WD])([0mflivcs])/) {
 	    my ($input, $root, $tkf1, $state1, $pos1, $tkf2, $state2, $pos2) = ($1, $2, $3, $4, $5, $6, $7, $8);
+	    my $suffix1 =
+		$state1 eq 'S'
+		? ""
+		: ('_' . uc($pos1));
+	    my $suffix2 = '_' . ($pos2 eq "" ? "0" : uc($pos2));
 	    $pos1 = "0" if $pos1 eq "";
-	    my $name = $tkf1.$match{$state1}.'_'.uc($pos1).$tkf2.$match{$state2}.'_'.uc($pos2);
-	    my $longname = "${root}${tkf1}_${state1}_${pos1}__${tkf2}_${state2}_${pos2}";
+	    $pos2 = "0" if $pos2 eq "";
+	    my $name = $tkf1.$match{$state1}.$suffix1.$tkf2.$match{$state2}.$suffix2;
+	    my $longname = "${root}${tkf1}_${state1}${pos1}__${tkf2}_${state2}${pos2}";
 	    die "Duplicate name $name:  $longname  $longname{$node}" if exists $name{$node};
 	    $name{$node} = $name;
 	    $longname{$node} = $longname;

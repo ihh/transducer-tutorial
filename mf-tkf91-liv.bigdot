@@ -1,160 +1,106 @@
-digraph G {
-
-splines=false;
-
-
-    S_S_S [label="$S S S$", shape=circle, color=red];
-    E_E_E [label="$E E E$", shape=diamond, color=red];
-
-
-subgraph cluster_dpmatrix {
+digraph transmat {
+Start [shape=circle, color=red, label="$SSS$"];
+End [shape=diamond, color=red, label="$EEE$"];
+Wf_W_Wv [shape=octagon, color=red, label="$W_FWW_V$"];
+subgraph cluster_DPmatrix {
+rankdir=LR;
 subgraph cluster_0 {
 subgraph cluster_0m {
-    Im_D_W0 [label="$\delta_M D W_0$", shape=circle];
+Im_D_W0 [shape=circle, label="$\imath_MDW_0$"];
 }
 subgraph cluster_0f {
-    If_D_W0 [label="$\delta_F D W_0$", shape=circle];
+If_D_W0 [shape=circle, label="$\imath_FDW_0$"];
 }
 }
-
 subgraph cluster_l {
 subgraph cluster_l0 {
-    S_I_Dl [label="$S I \delta_L$", shape=circle];
+S0_I_Dl [shape=circle, label="$SI\delta_L$"];
 }
-
 subgraph cluster_lm {
-    Im_I_Dl [label="$\delta_M I \delta_L$", shape=circle];
-    Im_M_Dl [label="\delta_M M \delta_L$", shape=circle];
-    Im_D_Wl [label="$\delta_M D W_L$", shape=circle];
+Im_M_Dl [shape=circle, label="$\imath_MM\delta_L$"];
+Im_D_Wl [shape=circle, label="$\imath_MDW_L$"];
+Im_I_Dl [shape=circle, label="$\imath_MI\delta_L$"];
 }
-
 subgraph cluster_lf {
-    If_I_Dl [label="$\delta_F I \delta_L$", shape=circle];
-    If_M_Dl [label="\delta_F M \delta_L$", shape=circle];
-    If_D_Wl [label="$\delta_F D W_L$", shape=circle];
+If_M_Dl [shape=circle, label="$\imath_FM\delta_L$"];
+If_D_Wl [shape=circle, label="$\imath_FDW_L$"];
+If_I_Dl [shape=circle, label="$\imath_FI\delta_L$"];
 }
 }
-
 subgraph cluster_i {
 subgraph cluster_i0 {
-    S_I_Di [label="$S I \delta_I$", shape=circle];
+S0_I_Di [shape=circle, label="$SI\delta_I$"];
 }
-
 subgraph cluster_im {
-    Im_I_Di [label="$\delta_M I \delta_I$", shape=circle];
-    Im_M_Di [label="\delta_M M \delta_I$", shape=circle];
-    Im_D_Wi [label="$\delta_M D W_I$", shape=circle];
+Im_M_Di [shape=circle, label="$\imath_MM\delta_I$"];
+Im_D_Wi [shape=circle, label="$\imath_MDW_I$"];
+Im_I_Di [shape=circle, label="$\imath_MI\delta_I$"];
 }
-
 subgraph cluster_if {
-    If_I_Di [label="$\delta_F I \delta_I$", shape=circle];
-    If_M_Di [label="\delta_F M \delta_I$", shape=circle];
-    If_D_Wi [label="$\delta_F D W_I$", shape=circle];
+If_M_Di [shape=circle, label="$\imath_FM\delta_I$"];
+If_D_Wi [shape=circle, label="$\imath_FDW_I$"];
+If_I_Di [shape=circle, label="$\imath_FI\delta_I$"];
 }
 }
-
 subgraph cluster_v {
 subgraph cluster_v0 {
-    S_I_Dv [label="$S I \delta_V$", shape=circle];
+S0_I_Dv [shape=circle, label="$SI\delta_V$"];
 }
-
 subgraph cluster_vm {
-    Im_I_Dv [label="$\delta_M I \delta_V$", shape=circle];
-    Im_M_Dv [label="\delta_M M \delta_V$", shape=circle];
-    Im_D_Wv [label="$\delta_M D W_V$", shape=circle];
+Im_M_Dv [shape=circle, label="$\imath_MM\delta_V$"];
+Im_D_Wv [shape=circle, label="$\imath_MDW_V$"];
+Im_I_Dv [shape=circle, label="$\imath_MI\delta_V$"];
 }
-
 subgraph cluster_vf {
-    If_I_Dv [label="$\delta_F I \delta_V$", shape=circle];
-    If_M_Dv [label="\delta_F M \delta_V$", shape=circle];
-    If_D_Wv [label="$\delta_F D W_V$", shape=circle];
+If_M_Dv [shape=circle, label="$\imath_FM\delta_V$"];
+If_D_Wv [shape=circle, label="$\imath_FDW_V$"];
+If_I_Dv [shape=circle, label="$\imath_FI\delta_V$"];
 }
 }
 }
-
-S_S_S->S_I_Dl;
-S_S_S->Im_D_W0;
-S_S_S->Im_M_Dl;
-
-S_I_Dl->S_I_Di;
-S_I_Dl->Im_D_Wl;
-S_I_Dl->Im_M_Di;
-
-S_I_Di->S_I_Dv;
-S_I_Di->Im_D_Wi;
-S_I_Di->Im_M_Dv;
-
-S_I_Dv->Im_D_Wv;
-
-
-Im_D_W0->Im_I_Dl;
-Im_D_W0->If_D_W0;
-Im_D_W0->If_M_Dl;
-
-
-Im_I_Dl->Im_I_Di;
-Im_I_Dl->If_D_Wl;
-Im_I_Dl->If_M_Di;
-
-Im_M_Dl->Im_I_Di;
-Im_M_Dl->If_D_Wl;
-Im_M_Dl->If_M_Di;
-
-Im_D_Wl->Im_I_Di;
-Im_D_Wl->If_D_Wl;
-Im_D_Wl->If_M_Di;
-
-
-Im_I_Di->Im_I_Dv;
-Im_I_Di->If_D_Wi;
-Im_I_Di->If_M_Dv;
-
-Im_M_Di->Im_I_Dv;
-Im_M_Di->If_D_Wi;
-Im_M_Di->If_M_Dv;
-
-Im_D_Wi->Im_I_Dv;
-Im_D_Wi->If_D_Wi;
-Im_D_Wi->If_M_Dv;
-
-
-Im_I_Dv->If_D_Wv;
-
-Im_M_Dv->If_D_Wv;
-
-Im_D_Wv->If_D_Wv;
-
-
-
-If_D_W0->If_I_Dl;
-
-
-If_I_Dl->If_I_Di;
-
-If_M_Dl->If_I_Di;
-
-If_D_Wl->If_I_Di;
-
-
-If_I_Di->If_I_Dv;
-
-If_M_Di->If_I_Dv;
-
-If_D_Wi->If_I_Dv;
-
-
-If_I_Dv->E_E_E;
-
-If_M_Dv->E_E_E;
-
-If_D_Wv->E_E_E;
-
-
-
-
-
-
-
-
-
+Start -> S0_I_Dl;
+Start -> Im_M_Dl;
+Start -> Im_D_W0;
+S0_I_Dl -> S0_I_Di;
+S0_I_Dl -> Im_M_Di;
+S0_I_Dl -> Im_D_Wl;
+S0_I_Di -> S0_I_Dv;
+S0_I_Di -> Im_M_Dv;
+S0_I_Di -> Im_D_Wi;
+S0_I_Dv -> Im_D_Wv;
+Wf_W_Wv -> End;
+Im_M_Dl -> If_M_Di;
+Im_M_Dl -> If_D_Wl;
+Im_M_Dl -> Im_I_Di;
+If_M_Dl -> If_I_Di;
+Im_M_Di -> If_M_Dv;
+Im_M_Di -> If_D_Wi;
+Im_M_Di -> Im_I_Dv;
+If_M_Di -> If_I_Dv;
+Im_M_Dv -> If_D_Wv;
+If_M_Dv -> Wf_W_Wv;
+Im_D_W0 -> If_M_Dl;
+Im_D_W0 -> If_D_W0;
+Im_D_W0 -> Im_I_Dl;
+If_D_W0 -> If_I_Dl;
+Im_D_Wl -> If_M_Di;
+Im_D_Wl -> If_D_Wl;
+Im_D_Wl -> Im_I_Di;
+If_D_Wl -> If_I_Di;
+Im_D_Wi -> If_M_Dv;
+Im_D_Wi -> If_D_Wi;
+Im_D_Wi -> Im_I_Dv;
+If_D_Wi -> If_I_Dv;
+Im_D_Wv -> If_D_Wv;
+If_D_Wv -> Wf_W_Wv;
+Im_I_Dl -> If_M_Di;
+Im_I_Dl -> If_D_Wl;
+Im_I_Dl -> Im_I_Di;
+If_I_Dl -> If_I_Di;
+Im_I_Di -> If_M_Dv;
+Im_I_Di -> If_D_Wi;
+Im_I_Di -> Im_I_Dv;
+If_I_Di -> If_I_Dv;
+Im_I_Dv -> If_D_Wv;
+If_I_Dv -> Wf_W_Wv;
 }

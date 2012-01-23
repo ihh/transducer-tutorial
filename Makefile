@@ -25,8 +25,8 @@ ALLTEXJUNK := $(addsuffix .aux,$(ALLTEX)) $(addsuffix .log,$(ALLTEX))
 # Top-level rules
 all: $(FIGURES) $(ALLTEXPDF)
 
-open: $(FIGURES) $(ALLTEXPDF)
-	open $(BADPNG) $(GOODPDF) $(ALLTEXPDF)
+open: $(ALLTEXPDF)
+	open $(ALLTEXPDF)
 
 tidy:
 	rm -f $(ALLFIGJUNK) $(ALLTEXJUNK) *~

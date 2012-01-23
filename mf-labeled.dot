@@ -7,11 +7,11 @@ subgraph cluster_0 {
 }
 subgraph cluster_1 {
     W1 [label="$W_M$", shape=octagon, color=red];
-    D1 [label="$\\delta_M(x)$", shape=invhouse, color=red];
+    D1 [label="$\delta_M$", shape=invhouse, color=red];
 }
 subgraph cluster_2 {
     W2 [label="$W_F$", shape=octagon, color=red];
-    D2 [label="$\\delta_F(x)$", shape=invhouse, color=red];
+    D2 [label="$\delta_F$", shape=invhouse, color=red];
 }
 
 S->W0->D1->W1->D2->W2->E;

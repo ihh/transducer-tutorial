@@ -1,11 +1,12 @@
 digraph G {
     S [label="$S$", shape=circle, color=red];
     E [label="$E$", shape=diamond, color=red];
+    W [label="$W_F$", shape=octagon, color=red];
 
-    I1 [label="$\\delta_M(y)$", shape=house, color=red];
-    I2 [label="$\\delta_F(y)$", shape=house, color=red];
+    I1 [label="$\imath_M$", shape=house, color=red];
+    I2 [label="$\imath_F$", shape=house, color=red];
 
-S->I1->I2->E;
+S->I1->I2->W->E;
 
 
 }

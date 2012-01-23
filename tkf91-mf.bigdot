@@ -1,27 +1,27 @@
 digraph G {
 
-    S_S [label="$S \cdot S$", shape=circle, color=red, ordering="out"];
-    E_E [label="$E \cdot E$", shape=diamond, color=red, ordering="out"];
+    S_S [label="$S S$", shape=circle, color=red, ordering="out"];
+    E_E [label="$E E$", shape=diamond, color=red, ordering="out"];
 
 subgraph cluster_0 {
-    W_W0 [label="$W \cdot W_0$", shape=octagon, color=red, ordering="out"];
-    D_W0 [label="$D \cdot W_0$", shape=invhouse, color=red, ordering="out"];
+    W_W0 [label="$W W_0$", shape=octagon, color=red, ordering="out"];
+    D_W0 [label="$D W_0$", shape=invhouse, color=red, ordering="out"];
 }
 
 subgraph cluster_m {
-    I_Dm [label="$I \cdot \delta_M$", shape=circle, ordering="out"];
-    M_Dm [label="$M \cdot \delta_M$", shape=invhouse, color=red, ordering="out"];
+    I_Dm [label="$I \delta_M$", shape=circle, ordering="out"];
+    M_Dm [label="$M \delta_M$", shape=invhouse, color=red, ordering="out"];
     
-    W_Wm [label="$W \cdot W_M$", shape=octagon, color=red, ordering="out"];
-    D_Wm [label="$D \cdot W_M$", shape=invhouse, color=red, ordering="out"];
+    W_Wm [label="$W W_M$", shape=octagon, color=red, ordering="out"];
+    D_Wm [label="$D W_M$", shape=invhouse, color=red, ordering="out"];
 }
 
 subgraph cluster_f {
-    I_Df [label="$I \cdot \delta_F$", shape=circle, ordering="out"];
-    M_Df [label="$M \cdot \delta_F$",  shape=invhouse, color=red, ordering="out"];
+    I_Df [label="$I \delta_F$", shape=circle, ordering="out"];
+    M_Df [label="$M \delta_F$",  shape=invhouse, color=red, ordering="out"];
 
-    W_Wf [label="$W \cdot W_F$", shape=octagon, color=red, ordering="out"];
-    D_Wf [label="$D \cdot W_F$", shape=invhouse, color=red, ordering="out"];
+    W_Wf [label="$W W_F$", shape=octagon, color=red, ordering="out"];
+    D_Wf [label="$D W_F$", shape=invhouse, color=red, ordering="out"];
 }
 
 S_S->I_Dm [label="$b\pi_M$"];
