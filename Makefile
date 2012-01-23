@@ -2,9 +2,8 @@
 # All source files
 # Figures:
 ALLDOT := $(wildcard *.dot)
-ALLA1DOT := $(wildcard *.a1dot)
-ALLA0DOT := $(wildcard *.a0dot)
-ALLFIG := $(subst .dot,,$(ALLDOT)) $(subst .a1dot,,$(ALLA1DOT))  $(subst .a0dot,,$(ALLA0DOT))
+ALLBIGDOT := $(wildcard *.bigdot)
+ALLFIG := $(subst .dot,,$(ALLDOT)) $(subst .bigdot,,$(ALLBIGDOT))
 
 ALLFIGPNG := $(addsuffix .png,$(ALLFIG))
 ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG)) 
@@ -50,8 +49,8 @@ clean: tidy
 %.tex: %.dot
 	dot2tex --autosize --crop --format pstricks --texmode raw $< | perl -ne 'if(/documentclass/){print"\\documentclass{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@
 
-# Landscape orientation, A1 paper (to avoid cropping big graphs)
-%.tex: %.a1dot
+# Landscape orientation, A1 paper (workaround to avoid cropping big graphs)
+%.tex: %.bigdot
 	dot2tex --autosize --crop --format pstricks --texmode raw $< | perl -ne 'if(/documentclass/){print"\\documentclass[a1paper]{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@
 
 # Using TikZ instead of PSTricks (some problems with this, e.g. TikZ doesn't have same node shapes as normal GraphViz...)
@@ -69,10 +68,7 @@ clean: tidy
 %.png: %.dot
 	dot -Tpng $< >$@
 
-%.png: %.a1dot
-	dot -Tpng $< >$@
-
-%.png: %.a0dot
+%.png: %.bigdot
 	dot -Tpng $< >$@
 
 # hey make! don't delete all my stuff
