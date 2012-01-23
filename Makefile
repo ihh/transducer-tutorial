@@ -40,8 +40,11 @@ clean: tidy
 
 # Paper rules:
 %.pdf: %.tex $(FIGURES)
-	pdflatex -shell-escape $<
-	pdflatex -shell-escape $<
+	test -e $*.aux && rm $*.aux || eval
+	pdflatex -shell-escape $*
+	bibtex $*
+	pdflatex -shell-escape $*
+	pdflatex -shell-escape $*
 
 # Figure rules:
 # PDFs (requires dot2tex + graphviz + pyparsing)

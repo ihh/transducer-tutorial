@@ -1,16 +1,27 @@
 \documentclass{article}
 
+\bibliographystyle{unsrt}
+
+% Section
 \newcommand{\secref}[1]{Subsection~\ref{sec.#1}}
 \newcommand{\seclabel}[1]{\label{sec.#1}}
 
+% Appendix
+\newcommand{\appref}[1]{Appendix~\ref{app.#1}}
+\newcommand{\applabel}[1]{\label{app.#1}}
+
+% Table
+\newcommand{\tabnum}[1]{\ref{tab.#1}}
+\newcommand{\tabref}[1]{Table~\tabnum{#1}}
+\newcommand{\tablabel}[1]{\label{tab.#1}}
+
+% Equation
+\newcommand{\eqnref}[1]{Equation~\ref{Equations.#1}}
+\newcommand{\eqnlabel}[1]{\label{Equations.#1}}
+
+% Figure
 \newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
 \newcommand{\figlabel}[1]{\label{Figures.#1}}
-
-\newcommand{\needfig}[1]{{\bf Need figure: } #1 }
-\newcommand{\needfigref}[1]{Figure~??? [#1] }
-
-\newcommand{\needcite}[1]{[CITE #1]}
-\newcommand{\todo}[1]{[TODO: #1]}
 
 \newcommand{\easyfig}[4]{
 \begin{figure}
@@ -25,30 +36,596 @@
 \newcommand{\widepdffig}[2]{\easyfig{#1-fig.pdf}{width=\textwidth}{#1}{#2}}
 \newcommand{\tallpdffig}[2]{\easyfig{#1-fig.pdf}{height=\textheight}{#1}{#2}}
 
+% ToDo
+\newcommand{\needfig}[1]{{\bf Need figure: } #1 }
+\newcommand{\needfigref}[1]{Figure~??? [#1] }
+
+\newcommand{\needcite}[1]{[CITE #1]}
+\newcommand{\todo}[1]{[TODO: #1]}
+
+% Packages
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color} 
+\usepackage{ifthen}
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Imported parsetree.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% parse trees
+%\input{parsetree.sty}
+%parsetree.sty - LaTeX style file with macros for typesetting parse trees
+% See parsetree.doc for extensive section-by-section comments to the code.
+% Eirik Hektoen, 1994-2-24
+
+% Some Initial Variables and Auxiliary Macros:
+
+\def\pterror#1{\errmessage{Parsetree ERROR: #1}}
+
+\newdimen\pthgap\def\pthorgap#1{\pthgap=#1}
+\newdimen\ptvgap\def\ptvergap#1{\ptvgap=#1}
+
+\newbox\ptnodestrutbox\def\ptnodestrut{\unhcopy\ptnodestrutbox}
+\newbox\ptleafstrutbox\def\ptleafstrut{\unhcopy\ptleafstrutbox}
+
+\def\ptnodefont#1#2#3{\def\ptnodefn{#1}
+  \setbox\ptnodestrutbox=\hbox{\vrule height#2 width0pt depth#3}}
+\def\ptleaffont#1#2#3{\def\ptleaffn{#1}
+  \setbox\ptleafstrutbox=\hbox{\vrule height#2 width0pt depth#3}}
+
+
+% Customizable Definitions (- NOTE: MAY BE REDEFINED IN DOCUMENT -):
+
+\pthorgap{12pt}                         % horizontal gap betw sisters
+\ptvergap{12pt}                         % vertical gap betw mother/daughter
+\ptnodefont{\normalsize\rm}{11pt}{3pt}  % font and strut height/depth: nodes
+\ptleaffont{\normalsize\it}{11pt}{3pt}  % font and strut height/depth: leaves
+
+
+% Hierarchy-building macros:
+
+\newcount\ptdepth           % current bracketing depth
+\newcount\ptn               % 1: m, 2: ma, 3: mab, 4: mabc
+\newbox\ptm \newdimen\ptmx  % m = mother
+\newbox\pta \newdimen\ptax  % a = 1st daughter
+\newbox\ptb \newdimen\ptbx  % b = 2nd daughter
+\newbox\ptc \newdimen\ptcx  % c = 3rd daughter (max)
+\newbox\ptx \newdimen\ptxx  % x = used for passing results
+\newif\ifpttri              % choose triangular subtree with \pttritrue
+
+\def\ptnext{\advance\ptn by 1 \ifcase\ptn
+  \or \setbox\ptm=\box\ptx \ptmx=\ptxx \or \setbox\pta=\box\ptx \ptax=\ptxx
+  \or \setbox\ptb=\box\ptx \ptbx=\ptxx \or \setbox\ptc=\box\ptx \ptcx=\ptxx
+  \else \pterror{More than 3 daughters in (sub)tree}\fi}
+
+\def\ptbegtree{\ptdepth=0}
+\def\ptendtree
+  {\ifnum\ptdepth>0 \pterror{Mismatched bracketing: too few ')'s!}\fi}
+
+\def\ptbeg{\ifnum\ptdepth=0 \leavevmode\fi\begingroup
+  \advance\ptdepth1 \ptn=0\pttrifalse}
+\def\ptend{\ifnum\ptdepth=0 \pterror{Mismatched bracketing: too many ')'s!}
+  \else\ptcons\endgroup\ifnum\ptdepth=0 \box\ptx\else\ptnext\fi\fi}
+
+\def\ptnodeaux#1{\setbox\ptx=\hbox{#1}\ptxx=0.5\wd\ptx\ptnext}
+\def\ptnode#1{\ptnodeaux{\ptnodefn\ptnodestrut #1}}
+\def\ptleaf#1{\ptnodeaux{\ptleaffn\ptleafstrut #1}}
+
+\def\pthoradjust#1{\ifcase\ptn
+  \or \pthadjbox{\ptm}{#1} \or \pthadjbox{\pta}{#1}
+  \or \pthadjbox{\ptb}{#1} \or \pthadjbox{\ptc}{#1}
+  \else \pterror{More than 3 daughters in (sub)tree}\fi}
+\def\pthadjbox#1#2{\setbox#1=\hbox{\box#1\kern#2}}
+
+
+% Subtree-constructing macros:
+
+\def\ptcons
+ {\ifnum\ptn=0 \ptconsz 
+  \else
+    \ifpttri\ptconstri\else
+      \ifcase\ptn \or\ptconsm\or\ptconsma\or\ptconsmab\or\ptconsmabc \fi \fi
+    \ptax=\ptxx \advance\ptax-\ptmx \ptbx=0pt
+    \ifdim\ptax<0pt \ptbx=-\ptax\ptax=0pt\ptxx=\ptmx \fi
+    \setbox\ptx=\vtop{\hbox{\kern\ptax\box\ptm}\nointerlineskip
+                      \hbox{\kern\ptbx\box\ptx}}\fi
+  \global\ptxx=\ptxx\global\setbox\ptx=\box\ptx}
+
+\def\ptavg#1#2#3{#1=#2\advance#1#3#1=0.5#1}     % #1 := average(#2,#3)
+\def\ptadv#1#2{\advance#1#2\advance#1\pthgap}   % #1 := #1 + #2 + \pthgap
+
+\def\ptconsz{\ptxx=0pt \setbox\ptx=\vtop{}}     % empty (zero) tree
+
+\def\ptconsm{\ptxx=0pt 
+  \setbox\ptx=\hbox{\ptedge{1}{0}{}{}}}         % mother only
+
+\def\ptconsma                                   % mother and one daughter
+ {\ptxx=\ptax\setbox\ptx=\vtop{
+    \hbox{\ptedge{1}\ptax{}{}}\nointerlineskip
+    \hbox{\box\pta}}}
+
+\def\ptconsmab                                  % mother and two daughters
+ {\ptadv\ptbx{\wd\pta}\ptavg\ptxx\ptax\ptbx
+  \setbox\ptx=\vtop{
+    \hbox{\ptedge{2}\ptax\ptbx{}}\nointerlineskip
+    \hbox{\box\pta\kern\pthgap\box\ptb}}}
+
+\def\ptconsmabc                                 % mother and three daughters
+ {\ptadv\ptbx{\wd\pta}\ptadv\ptcx{\wd\pta}%
+  \ptadv\ptcx{\wd\ptb}\ptavg\ptxx\ptax\ptcx
+  \setbox\ptx=\vtop{
+    \hbox{\ptedge{3}\ptax\ptbx\ptcx}\nointerlineskip
+    \hbox{\box\pta\kern\pthgap\box\ptb\kern\pthgap\box\ptc}}}
+
+\def\ptconstri                                  % triangular subtree
+ {\ifcase\ptn\or\setbox\pta\hbox{\kern2\pthgap}\or
+  \or\setbox\pta=\hbox{\box\pta\kern\pthgap\box\ptb}
+  \or\setbox\pta=\hbox{\box\pta\kern\pthgap\box\ptb\kern\pthgap\box\ptc}\fi
+  \ptxx=0.5\wd\pta
+  \setbox\ptx=\vtop{
+    \hbox{\ptedge{0}{0}{\wd\pta}{}}\nointerlineskip
+    \box\pta}}
+
+
+% Macros for `diagonal rules':
+
+\newcount\pted          % edge mode
+\newcount\ptedm         % position of mother
+\newcount\pteda         % position a
+\newcount\ptedb         % position b
+\newcount\ptedc         % position c
+\newcount\ptedl         % edge length
+\newcount\ptedh         % edge height
+\newcount\ptedhs        % horizontal slope
+\newcount\ptedvs        % vertical slope
+\newcount\ptedtemp      % temporary variable
+
+\def\ptedge#1#2#3#4{\pted=#1%
+  \pteda=#2\ifcase\pted\ptedb=#3\or\or\ptedb=#3\or\ptedb=#3\ptedc=#4\fi
+  \ptedm=\pteda\advance\ptedm\ifcase\pted\ptedb\or\pteda\or\ptedb\or\ptedc\fi
+  \divide\ptedm by 2
+  \ptedh=\ptvgap\ptedtemp=\ptedm\advance\ptedtemp-\pteda\divide\ptedtemp by 6
+  \ifnum\ptedh<\ptedtemp\ptedh=\ptedtemp\fi
+  \unitlength=1sp%
+  \begin{picture}(0,\ptedh)
+    \ifnum\pted=3 \ptedput\ptedc\fi
+    \ifnum\pted=1 \else\ptedput\ptedb\fi
+    \ptedput\pteda
+    \ifnum\pted=0 \ptedbot\fi 
+  \end{picture}}
+
+\def\ptedput#1{\ptedl=#1\advance\ptedl-\ptedm
+  \ifnum\ptedl>0 \ptedslope\else
+    \ptedl=-\ptedl\ptedslope\ptedhs=-\ptedhs\fi
+  \ifnum\ptedhs=0 \ptedl=\ptedh\fi
+  \put(\ptedm,\ptedh){\line(\ptedhs,-\ptedvs){\ptedl}}}
+
+\def\ptedbot
+ {\ptedtemp=\ptedl\multiply\ptedtemp by \ptedvs\divide\ptedtemp by \ptedhs
+  \ifnum\ptedtemp>0\ptedtemp=-\ptedtemp\fi \advance\ptedtemp-1
+  \advance\ptedtemp\ptedh\multiply\ptedl by 2
+  \put(\pteda,\ptedtemp){\line(1,0){\ptedl}}}
+
+\def\ptedslope
+ {\ifnum\ptedl>\ptedh\ptedhs=\ptedl\ptedvs=\ptedh
+  \else              \ptedvs=\ptedl\ptedhs=\ptedh \fi
+  \divide\ptedhs by 60 \divide\ptedvs by \ptedhs
+  \ifnum \ptedvs <  5 \ptedvs=0 \ptedhs=1 \else
+  \ifnum \ptedvs < 11 \ptedvs=1 \ptedhs=6 \else
+  \ifnum \ptedvs < 13 \ptedvs=1 \ptedhs=5 \else
+  \ifnum \ptedvs < 17 \ptedvs=1 \ptedhs=4 \else
+  \ifnum \ptedvs < 22 \ptedvs=1 \ptedhs=3 \else
+  \ifnum \ptedvs < 27 \ptedvs=2 \ptedhs=5 \else
+  \ifnum \ptedvs < 33 \ptedvs=1 \ptedhs=2 \else
+  \ifnum \ptedvs < 38 \ptedvs=3 \ptedhs=5 \else
+  \ifnum \ptedvs < 42 \ptedvs=2 \ptedhs=3 \else
+  \ifnum \ptedvs < 46 \ptedvs=3 \ptedhs=4 \else
+  \ifnum \ptedvs < 49 \ptedvs=4 \ptedhs=5 \else
+  \ifnum \ptedvs < 55 \ptedvs=5 \ptedhs=6 \else
+                      \ptedvs=1 \ptedhs=1 
+    \fi \fi \fi \fi \fi \fi \fi \fi \fi \fi \fi \fi
+  \ifnum \ptedl < \ptedh
+    \ptedtemp=\ptedhs \ptedhs=\ptedvs \ptedvs=\ptedtemp \fi}
+
+
+% Convenient End-User Environment:
+
+\newenvironment{parsetree}{\ptactivechardefs\ptbegtree}{\ptendtree}
+
+\def\ptcatcodes
+ {\catcode`(=\active \catcode`)=\active
+  \catcode`.=\active \catcode``=\active
+  \catcode`~=\active}
+
+{\ptcatcodes
+\gdef\ptactivechardefs
+ {\ptcatcodes
+  \def({\ptbeg\ignorespaces}
+  \def){\ptend\ignorespaces}
+  \def.##1.{\ptnode{##1}\ignorespaces} 
+  \def`##1'{\ptleaf{##1}\ignorespaces}
+  \def~{\pttritrue\ignorespaces}}}
+
+
+
+% to link empty nodes
+%\def\ptlink{\rule{0.4pt}{\ht\ptnodestrutbox + \dt\ptnodestrutbox}}
+\def\ptlink{\vrule height\ht\ptnodestrutbox depth\dp\ptnodestrutbox}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End of imported parsetree.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Algorithm package
+\usepackage[boxed,noend]{algorithm2e}
+
+
+
+% Transducer-related latex command definitions
+\newcommand\charat[2]{\mbox{symbol}(#1,#2)}
+
+\newcommand\gappedalphabet[1]{(\Omega_{#1} \cup \{\epsilon\})}
+\newcommand\gapsquared{\gappedalphabet{}^2}
+\newcommand\gappedpair[2]{\gappedalphabet{#1} \times \gappedalphabet{#2}}
+
+\newcommand\wtrans[4]{#1(#2 : [#3] : #4)}
+\newcommand\transequiv{\equiv}
+
+\newcommand\compose{}
+\newcommand\identity{{\cal I}}
+
+\newcommand\fork{\otimes}
+\newcommand\idfork{\Upsilon}
+\newcommand\forkn[1]{\idfork(#1)}
+\newcommand\forkfun[2]{\forkn{#1, #2}}
+
+\newcommand\generate{\Delta}
+\newcommand\recognize{\nabla}
+
+\newcommand\States{\Phi}
+\newcommand\statesof[1]{\States_{#1}}
+
+\newcommand\Transitions{\tau}
+\newcommand\transitionsof[1]{\Transitions_{#1}}
+
+\newcommand\startstate{\phi_S}
+\newcommand\laststate{\phi_E}
+\newcommand\startstateof[1]{\phi_{S;#1}}
+\newcommand\laststateof[1]{\phi_{E;#1}}
+
+\newcommand\weight{{\cal W}}
+\newcommand\weightfunof[1]{\weight_{#1}}
+\newcommand\transweightfun[1]{\weightfunof{#1}^{\mbox{\small trans}}}
+\newcommand\emitweightfun[1]{\weightfunof{#1}^{\mbox{\small emit}}}
+
+\newcommand\sumoverpaths[1]{\transweightfun{#1}(\{\pi_{#1}\})}
+
+\newcommand\transviawait[1]{\weightfunof{#1}^{\mbox{\small via-wait}}}
+\newcommand\transtowait[1]{\weightfunof{#1}^{\mbox{\small to-wait}}}
+
+\newcommand\numberofstates[1]{|\statesof{#1}|}
+\newcommand\numberoftransitions[1]{|\transitionsof{#1}|}
+
+\newcommand\statesoftype[1]{\States_{#1}}
+\newcommand\statetype{\mbox{type}}
+
+\newcommand\dup[1]{\left( \begin{array}{l} #1 \\ #1 \end{array} \right)}
+
+\newcommand\numberofleaves{\kappa}
+\newcommand\numberofinternalnodes{\numberofleaves - 1}
+\newcommand\numberofnodes{2\numberofleaves - 1}
+\newcounter{LeafIndex}
+\newcommand\leafnode[1]{\numberofleaves \ifthenelse{\equal{#1}{1}}{}{\setcounter{LeafIndex}{#1} \addtocounter{LeafIndex}{-1} +\arabic{LeafIndex}}}
+\newcommand\leaves{{\cal L}}
+
+\newcommand\seqlen[1]{\mbox{len}(#1)}
+
+\newcommand\outputs{{\cal D}}
+\newcommand\outputn[1]{{\cal S}_{#1}}
+\newcommand\outseqlen[1]{\seqlen{\outputn{#1}}}
+
+\newcommand\order[1]{{\cal O}(#1)}
+
+% State- and type-sets
+\newcommand\typeset[1]{{\cal T}_{\mbox{\small #1}}}
+\newcommand\stateset[1]{\statesof{\mbox{\small #1}}}
+
+% H_n state tuples, state-sets and type-sets
+\newcommand\hstate{(\upsilon,b_l,e_l,b_r,e_r)}
+\newcommand\hstatedest{(\upsilon',b'_l,e'_l,b'_r,e'_r)}
+
+\newcommand\externalsuffix{ext}
+\newcommand\internalsuffix{int}
+\newcommand\leftsuffix{left-int}
+\newcommand\rightsuffix{right-int}
+\newcommand\waitsuffix{wait}
+
+\newcommand\externalcascades{\stateset{\externalsuffix}}
+\newcommand\internalcascades{\stateset{\internalsuffix}}
+\newcommand\leftcascades{\stateset{\leftsuffix}}
+\newcommand\rightcascades{\stateset{\rightsuffix}}
+\newcommand\waitstates{\stateset{\waitsuffix}}
+
+\newcommand\externaltypes{\typeset{\externalsuffix}}
+\newcommand\internaltypes{\typeset{\internalsuffix}}
+\newcommand\lefttypes{\typeset{\leftsuffix}}
+\newcommand\righttypes{\typeset{\rightsuffix}}
+\newcommand\waittypes{\typeset{\waitsuffix}}
+
+% M_n state tuples, state-sets and type-sets
+\newcommand\mstate{(\rho,\upsilon,b_l,e_l,b_r,e_r)}
+\newcommand\mstatedest{(\rho',\upsilon',b'_l,e'_l,b'_r,e'_r)}
+
+% Q_n state tuples, state-sets and type-sets
+\newcommand\qstate{(\rho,\upsilon,b_l,b_r)}
+\newcommand\qstatedest{(\rho',\upsilon',b'_l,b'_r)}
+
+\newcommand\matchsuffix{match}
+\newcommand\nullsuffix{null}
+\newcommand\leftinsertsuffix{left-ins}
+\newcommand\rightinsertsuffix{right-ins}
+\newcommand\leftdeletesuffix{left-del}
+\newcommand\rightdeletesuffix{right-del}
+\newcommand\leftemitsuffix{left-emit}
+\newcommand\rightemitsuffix{right-emit}
+\newcommand\qwaitsuffix{wait}
+
+\newcommand\matchstates{\stateset{\matchsuffix}}
+\newcommand\nullstates{\stateset{\nullsuffix}}
+\newcommand\leftinsertstates{\stateset{\leftinsertsuffix}}
+\newcommand\rightinsertstates{\stateset{\rightinsertsuffix}}
+\newcommand\leftdeletestates{\stateset{\leftdeletesuffix}}
+\newcommand\rightdeletestates{\stateset{\rightdeletesuffix}}
+\newcommand\leftemitstates{\stateset{\leftemitsuffix}}
+\newcommand\rightemitstates{\stateset{\rightemitsuffix}}
+\newcommand\qwaitstates{\stateset{\qwaitsuffix}}
+
+\newcommand\matchtypes{\typeset{\matchsuffix}}
+\newcommand\nulltypes{\typeset{\nullsuffix}}
+\newcommand\leftinserttypes{\typeset{\leftinsertsuffix}}
+\newcommand\rightinserttypes{\typeset{\rightinsertsuffix}}
+\newcommand\leftdeletetypes{\typeset{\leftdeletesuffix}}
+\newcommand\rightdeletetypes{\typeset{\rightdeletesuffix}}
+\newcommand\leftemittypes{\typeset{\leftemitsuffix}}
+\newcommand\rightemittypes{\typeset{\rightemitsuffix}}
+\newcommand\qwaittypes{\typeset{\qwaitsuffix}}
+
+
+% DP
+\newcommand\envelope[2]{\mbox{is\_in\_envelope}(#1,#2)}
+
+\newcommand\newTransName[1]{t_{#1}}
+
+\newcommand\numStates[1]{N_{#1}}
+
+\newcommand\leftFromI{i_l}
+\newcommand\rightFromI{i_r}
+
+\newcommand\rightToI{i'_r}
+\newcommand\leftToI{i'_l}
+
+\newcommand\rightProfTo{e'_r}
+\newcommand\leftProfTo{e'_l}
+
+\newcommand\rightProfFrom{e_r}
+\newcommand\leftProfFrom{e_l}
+
+\newcommand\mTo{m'}
+\newcommand\mFrom{m}
+
+\newcommand\qTo{q'}
+\newcommand\qFrom{q}
+
+\newcommand\emitProb{\mathcal{E}}
+\newcommand\getprofiletype{\mbox{get\_state\_type}}
+\newcommand\incomingLeftProfile[1]{\mbox{incoming\_left\_profile\_indices}(#1)}
+\newcommand\incomingRightProfile[1]{\mbox{incoming\_right\_profile\_indices}(#1)}
+\newcommand\incomingM[1]{\mbox{incoming\_match\_states}(#1)}
+\newcommand\incomingL[1]{\mbox{incoming\_left\_emit\_states}(#1)}
+\newcommand\incomingR[1]{\mbox{incoming\_right\_emit\_states}(#1)}
+
+\newcommand\addToDPFunction{sum\_paths\_to}   
+\newcommand\addToDP[3]{\addToDPFunction(#1,#2,#3)} 
+
+\newcommand\profTrans[1]{t_{#1}}
+\newcommand\profiledelete[1]{\phi_D^{(#1)}}
+\newcommand\profileunknown[1]{\phi_{\tau}^{(#1)}}
+\newcommand\profilewait[1]{\phi_W^{(#1)}}
+\newcommand\profileterminate{\profilewait{\mbox{\small end}}}
+
+\newcommand\currentstate{m'}
+\newcommand\newstate{m}
+\newcommand\instates{\mbox{states\_in}}
+\newcommand\inweights{\mbox{weights\_in}}
+\newcommand\sample{\mbox{sample}}
+\newcommand\stateindex[2]{\mbox{index\_of}_{#1}(#2)}
+
+\newcommand\emptyarray{ ( )}
+
+
+
+% Begin
 \begin{document}
-\title{Transducer Tutorial}
-\date{}
-\maketitle
 
-\section{Tutorial overview}
+\newcommand\authorstring{
+Oscar Westesson$^{1}$, 
+Gerton Lunter$^{2}$, 
+Benedict Paten$^{3}$, 
+Ian Holmes$^{1,\ast}$
+\\
+\textbf{1} Department of Bioengineering, University of California, Berkeley, CA, USA; \\
+\textbf{2} Wellcome Trust Center for Human Genetics, Oxford, Oxford, UK;\\
+\textbf{3} Baskin School of Engineering, UC Santa Cruz, Santa Cruz, CA, USA
+\\
+$\ast$ E-mail: ihh@berkeley.edu
+}
+
+\newcommand\titlestring{An alignment-free generalization to indels of Felsenstein's phylogenetic pruning algorithm}
+\newcommand\shorttitlestring{Felsenstein pruning of indels}
+\markboth{\shorttitlestring}{\shorttitlestring}
+
+\begin{flushleft}
+  {\Large
+    \textbf{\titlestring}
+  }
+\\
+\authorstring
+\end{flushleft}
+
+\pagebreak
+
+
+
+
+
+\section*{Abstract}
+
+We present an extension of Felsenstein's algorithm to indel models defined on entire sequences,
+without the need to condition on one multiple alignment.
+The algorithm makes use of a generalization from probabilistic substitution matrices to weighted finite-state transducers.
+Our approach may equivalently be viewed as a probabilistic formulation of progressive multiple sequence alignment,
+using partial-order graphs to represent ensemble profiles of ancestral sequences.
+We present a hierarchical stochastic approximation technique which makes this algorithm tractable for alignment analyses of reasonable size.  
+
+% Start of document
+
+\paragraph{Keywords:} Multiple alignment, Felsenstein pruning, transducers, insertion deletion, ancestral sequence reconstruction. 
+
+\tableofcontents
+
+\section{Background}
+
+Felsenstein's pruning algorithm is routinely used throughout bioinformatics and molecular evolution \cite{Felsenstein81}.
+A few common applications include estimation of substitution rates \cite{Yang94b};
+reconstruction of phylogenetic trees \cite{RannalaYang96};
+identification of conserved (slow-evolving) or recently-adapted (fast-evolving) elements in proteins and DNA \cite{SiepelHaussler04b};
+detection of different substitution matrix ``signatures''
+(e.g. purifying vs diversifying selection at synonymous codon positions \cite{YangEtAl2000},
+hydrophobic vs hydrophilic amino acid signatures \cite{ThorneEtAl96},
+CpG methylation in genomes \cite{SiepelHaussler04},
+or basepair covariation in RNA structures \cite{KnudsenHein99});
+annotation of structures in genomes \cite{SiepelHaussler04c,PedersenEtAl2006};
+and placement of metagenomic reads on phylogenetic trees \cite{MatsenEtAl2010}.
+
+The pruning algorithm computes the likelihood of observing a single column of a multiple sequence alignment,
+ given knowledge of an underlying phylogenetic tree (including a map from leaf-nodes of the tree to rows in the alignment)
+ and a substitution probability matrix associated with each branch of the tree.
+Crucially, the algorithm sums over all unobserved substitution histories on internal branches of the tree.
+For a tree containing $N$ taxa, the algorithm achieves ${\cal O}(N)$ time and memory complexity by computing and tabulating intermediate probability functions of the form $G_n(x) = P(Y_n|x_n=x)$,
+where $x_n$ represents the individual residue state of ancestral node $n$,
+and $Y_n$ represents all the data that is causally descended from node $n$ in the tree (i.e. the observed residues at all the leaf nodes whose most recent common ancestor is node $n$).
+
+The pruning recursion visits all nodes in postorder.
+Each $G_n$ function is computed in terms of the functions $G_l$ and $G_r$ of its immediate left and right children (assuming a binary tree):
+\begin{eqnarray*}
+G_n(x) & = & P(Y_n|x_n = x) \\
+& = & \left\{
+\begin{array}{ll}
+\left( \sum_{x_l} M^{(l)}_{x,\ x_l} G_l(x_l) \right) \left( \sum_{x_r} M^{(r)}_{x,\ x_r} G_r(x_r) \right) & \mbox{if $n$ is not a leaf}
+ \\
+\delta(x=y_n) & \mbox{if $n$ is a leaf}
+\end{array}
+\right.
+\end{eqnarray*}
+where $M^{(n)}_{ab} = P(x_n=b|x_m=a)$ is the probability that node $n$ has state $b$, given that its parent node $m$ has state $a$;
+and $\delta(x=y_n)$ is a Kronecker delta function terminating the recursion at the leaf nodes of the tree.
+
+The ``states'' in the above description represent individual residues (nucleotides, amino acids) or sometimes base-pairs (in RNA secondary structures) or base-triples (codons).
+Sometimes, the state space is augmented to include gap characters, or latent variables.
+In the machine learning literature, the $G_n$ functions are often described as ``messages'' propagated from the leaves to the root of the tree \cite{KschischangEtAl98},
+and corresponding to a summary of the information in the subtree rooted at $n$.
+
+The usual method for extending this approach from individual residues to full-length sequences assumes that one knows the alignment of the sequences.
+One uses pruning to compute the above likelihood for a single alignment column,
+then multiplies together the probabilities across every column in the alignment.
+For an alignment of length $L$, the time complexity is ${\cal O}(LN)$ and the memory complexity ${\cal O}(N)$.
+This approach works well for marginalizing substitution histories, but is essentially incompatible with summing over indel histories,
+since only a narrow subset of such indel histories are consistent with any given alignment.
+
+The purpose of this technical report is to introduce another way of extending Felsenstein's recursion from single residues (or small groups of residues)
+to entire, full-length sequences, without needing to condition on a single alignment.
+The time and memory complexities are ${\cal O}(L^2N)$, dropping to ${\cal O}(LN)$ if a ``guide alignment'' is provided as a clue to the algorithm
+(note however that the guide alignment is not a hard constraint, and may be controllably relaxed, or dispensed with altogether).
+
+The new algorithm is algebraically equivalent to Felsenstein's algorithm,
+if the concept of a ``substitution matrix'' over a particular alphabet is extended to the countably-infinite set of all sequences over that alphabet.
+Our chosen class of ``infinite substitution matrix'' is one that has a finite representation:
+namely, the {\em finite-state transducer}, a probabilistic automaton that transforms an input sequence to an output sequence,
+and a familiar tool of statistical linguistics \cite{MohriPereiraRiley2000}.
+
+By generalizing the idea of matrix multiplication ($AB$) to two transducers ($A$ and $B$),
+and introducing a notation for feeding the same input sequence to two transducers in parallel ($A \fork B$),
+we are able to write Felsenstein's algorithm in a new form (see Section~\ref{sec:EvidenceExpandedModel}):
+\[
+G_n = \left\{
+\begin{array}{ll}
+\left( M^{(l)} G_l \right) \fork \left( M^{(r)} G_r \right) & \mbox{if $n$ is not a leaf} \\
+\recognize(y_n) & \mbox{if $n$ is a leaf}
+\end{array}
+\right.
+\]
+where $\recognize(y_n)$ is the transducer equivalent of the Kronecker delta $\delta(x=y_n)$.
+The function $G_n$ is now encapsulated by a transducer ``profile'' of node $n$.
+This representation has complexity ${\cal O}(L^N)$, which we reduce to ${\cal O}(LN)$ by stochastic approximation of the $G_n$.
+
+The new algorithm is a natural generalization of Felsenstein's pruning recursion to indels,
+since it calculates
+\[
+P(S|T,\theta) = \sum_A P(S,A|T,\theta)
+\]
+i.e. the likelihood of sequences $S$ given tree $T$ and parameters $\theta$, summed over all alignments $A$.
+Previous attempts to address indels phylogenetically have mostly returned $P(S|\hat{A},T,\theta)$ where $\hat{A}$ represents a single alignment
+(typically estimated by a separate alignment program, which may introduce undetermined biases).
+The exceptions to this rule are the ``statistical alignment'' methods \cite{HeinEtal2000,HolmesBruno2001,SuchardRedelings2006}
+which also marginalize alignments in an unbiased way---albeit more slowly, since they use Markov Chain Monte Carlo methods (MCMC).
+In this sense, the new algorithm may be thought of as a fast, non-MCMC approximation to statistical alignment.
+
+Our algorithm may, equivalently, be thought of as a phylogenetic generalization of progressive multiple alignment \cite{HigginsSharp89}
+that uses structures similar to partial-order graphs to represent ensembles of alignments \cite{LeeGrassoSharlow2002}.
+Yet another interpretation is that it represents the application of standard message-passing on a phylogenetic factor graph,
+where the conditional distributions (the factors of the graph) are finite-state transducers \cite{KschischangEtAl98}.
+
+The purpose of this technical report is a clean theoretical presentation of the algorithm.
+In separate work (manuscript {\em submitted}) we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
+as indicated by proxy statistics such as the estimated indel rate.
+
+The use of transducers in bioinformatics has been reported before \cite{Holmes2003,BradleyHolmes2007,SatijaEtAl2008,PatenEtAl2008}
+including an application to genome reconstruction that is conceptually similar to what we do here for proteins \cite{PatenEtAl2008}.
+However, this paper represents a clearer presentation of the underlying mathematics.
+In particular, to maximize accessibility, we have chosen to use a formulation of finite-state transducers
+that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/wiki/Finite\_state\_transducer}).
+
+
+
+\section{Informal overview}
 
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
-\item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods
-\item Sankoff's ${\cal O}(L^N)$ algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny
-\item Heuristic approximations (at ${\cal O}(NL^2)$ or thereabouts) to Sankoff's algorithm including progressive alignment and partial-order graph alignment
-\item Hidden Markov Model theory for sequence profiling
-\item The Thorne-Kishino-Felsenstein (1991) model for indels and the related algorithm of Hein (2001)
-\item Algorithms for ancestral sequence reconstruction conditioned on an alignment (TreeHMM, Indelign, Ortheus)
+\item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods \cite{Felsenstein81}
+\item Sankoff's ${\cal O}(L^N)$ algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny \cite{SankoffCedergren83}
+\item Heuristic approximations (at ${\cal O}(NL^2)$ or thereabouts) to Sankoff's algorithm including progressive alignment \cite{HigginsSharp89} and partial-order graph alignment \cite{LeeGrassoSharlow2002}
+\item Hidden Markov Model theory for sequence profiling \cite{Durbin98}
+\item The Thorne-Kishino-Felsenstein model for indels \cite{ThorneEtal91}
+ and the related algorithm of Hein \cite{Hein2001}
+\item Algorithms for ancestral sequence reconstruction conditioned on an alignment:
+ TreeHMM \cite{DialloEtAl2007}, Indelign \cite{KimSinha2007}, Ortheus \cite{PatenEtAl2008}
 \end{itemize}
 
 The algorithm uses the theory of finite state transducers to connect these fields,
 and suggests a way to extend the literature on
-site-dependent and latent-variable substitution models \needcite{Yang,Goldman,Bruno,Holmes...}
+site-dependent and latent-variable substitution models \cite{Yang94,Bruno96,YangEtAl2000,HolmesRubin2002b}
 to indel models.
+
+We will begin with a narrative, ``tutorial'' overview that introduces the main theoretical concepts
+using a small worked example.
+Following this we will present general, precise, technical definitions.
 
 \subsection{Transducers as input-output machines}
 
@@ -63,7 +640,7 @@ $(\dagger\dagger\dagger)$ For a weighted transducer this mapping is,
 more generally, to the positive real axis $[0,\infty)$
 rather than just the binary set $\{0,1\}$.
 
-In this tutorial we are going to work through some small examples of using transducers on trees,
+In this tutorial section we are going to work through some small examples of using transducers on trees,
 for some tiny example protein sequences (MF, CS, LIV).
 Forbled example we will compute the likelihood of the symmetric binary tree shown in \figref{cs-mf-liv-tree},
 explaining the common descent of these three sequences
@@ -76,11 +653,9 @@ and parsers or {\em recognizers} (state machines that match/parse input sequence
 Both generators and recognizers are separate special cases of transducers.
 Of particular use in our treatment are generators/recognizers that generate/recognize a single unique sequence.
 \figref{mf-generator} is an example of a generator that uniquely generates the protein sequence MF;
-we write this as $\nabla(MF)$.
+we write this as $\generate(MF)$.
 \figref{liv-small} is an example of a recognizer that uniquely recognizes the protein sequence LIV;
-we write this as $\Delta(LIV)$.
-\todo{Change generators to $\Delta$ and recognizers to $\nabla$;
- implement this universally in figures, formal definitions, and tutorial}
+we write this as $\recognize(LIV)$.
 
 \pngfig{mf-generator}{Generator for protein sequence MF.}
 
@@ -266,7 +841,7 @@ The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 Note that the input and output sequences are always the same length...
 
 \figref{identity} shows the special case of the identity transducer (input = output) ...
-\pdffig{identity}{The identity transducer...}
+\pdffig{identity}{The identity transducer, $\identity$...}
 
 
 \subsubsection{TKF91}
@@ -277,7 +852,7 @@ rather, because it is canonical, widely-known, and illustrative of the general p
 
 \pdffig{tkf91}{...}
 
-Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R,t$
+Definitions of probabilities $a,b,c$ and parameters $\lambda,\mu,R,t$...
 
 \pdffig{tkf91-labeled}{
 The TKF91 transducer.
@@ -390,18 +965,6 @@ An open question is whether there are any such transducers for affine-gap versio
 we exclude TKF92 from this since it does not technically operate on strings, but rather
 sequences of strings (fragments) with immovable boundaries...
 
-\subsection{Removal of null states}
-
-In \figref{tkf91-tkf91}, the state $ID$ is null:
-it corresponds to an insertion by the first TKF91 transducer
-that is then immediately deleted by the second TKF91 transducer,
-so there is no net insertion or deletion.
-
-It is sometimes useful to remove these states,
-i.e. find an equivalent transducer that lacks them
-(e.g. if trying to transform a transducer into strict Moore-normal form)...
-
-
 \subsubsection{Composition of MF-generator with substituter}
 \needfig{mf-substituter}
 
@@ -420,7 +983,7 @@ The meaning of the various states in this model are
 \subsubsection{Composition of MF-generator with TKF91}
 \tallpdffig{mf-tkf91}{Composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
 
-\needfigref{mf-tkf91} is the composition of MF-generator with TKF91...
+\figref{mf-tkf91} is the composition of MF-generator with TKF91...
 
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
 where
@@ -461,6 +1024,16 @@ and the meaning (it is a probabilistic recognition profile for ancestral descend
 \subsubsection{Composition of TKF91 with MF-recognizer}
 
 \tallpdffig{tkf91-mf}{...}
+
+Compare the recognizer in \figref{tkf91-mf}
+with the analogous generator in \figref{mf-tkf91}...
+
+Note that the generator and the recognizer are not the same;
+for a sequence $S$,
+\figref{tkf91-mf} with $S$ as input computes $P(MF|S)$
+(probability that descendant of $S$ is $MF$), 
+whereas \figref{mf-tkf91} with $S$ as output computes $P(S|MF)$
+(probability that descendant of $MF$ is $S$)...
 
 \subsubsection{Composition of MF-generator, substituter and CS-recognizer}
 
@@ -505,6 +1078,18 @@ We could not do this with substituter instead of TKF91
 (or rather we could, but substituter does not change sequence length,
 so there would be no valid path, and probability would correctly come out as zero)
 
+\subsection{Removal of null states}
+
+In \figref{tkf91-tkf91}, the state $ID$ is null:
+it corresponds to an insertion by the first TKF91 transducer
+that is then immediately deleted by the second TKF91 transducer,
+so there is no net insertion or deletion.
+
+It is sometimes useful to remove these states,
+i.e. find an equivalent transducer that lacks them
+(e.g. if trying to transform a transducer into strict Moore-normal form)...
+
+
 \subsection{Fork}
 
 The second operation for connecting transducers that we consider
@@ -547,16 +1132,16 @@ M^{(n)}_{ij}=P(\mbox{node $n$ is in state $j$}|\mbox{parent of node $n$ is in st
 Then we can write the core recursion of Felsenstein's pruning algorithm in matrix form;
 $G^{(n)}$ is a vector, $M^{(n)}$ is a matrix, and the core recursion is
 \[
-G^{(n)} = \left( M^{(l)} \times G^{(l)} \right) \oplus \left( M^{(r)} \times G^{(r)} \right)
+G^{(n)} = \left( M^{(l)} \times G^{(l)} \right) \fork \left( M^{(r)} \times G^{(r)} \right)
 \]
 where $(l,r)$ are the left- and right-children of node $n$,
 $\times$ denotes matrix multiplication,
-and $\oplus$ denotes the vector {\em pointwise product} (also called the {\em Hadamard product}),
+and $\fork$ denotes the vector {\em pointwise product} (also called the {\em Hadamard product}),
 defined as follows for two vectors $A$ and $B$:
 \[
-(A \oplus B)_i = A_i B_i,
+(A \fork B)_i = A_i B_i,
 \quad \quad \quad
-A \oplus B = \left( \begin{array}{c}
+A \fork B = \left( \begin{array}{c}
 A_1 B_1 \\ A_2 B_2 \\ A_3 B_3 \\ \ldots \\ A_K B_K
 \end{array} \right)
 \]
@@ -604,17 +1189,16 @@ $d_1$ is the state of the exact-matcher for sequence CS (\figref{cs-labeled}),
 $b_2$ is the state of the substituter transducer on the MF-branch (\figref{substituter2}),
 $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
 
-In general we can write the I/O label for such a state as $(b_1 d_1) \oplus (b_2 d_2)$.
-For example consider the case where $(b_1,d_1,b_2,d_2) = (Q,\delta_C,R,\delta_M)$.
-Then $(Q,R)$ denote substitution matrices
-and $(\delta_C,\delta_M)$ denote vectors,
-so the label $(Q \delta_C) \oplus (R \delta_M)$
+The I/O label for the general case where $(b_1,d_1,b_2,d_2) = (Q,\delta_A,R,\delta_B)$
 denotes the vector whose elements given by
 \[
-\left( (Q \delta_C) \oplus (R \delta_M) \right)_x
+\left( (Q \delta_A) \fork (R \delta_B) \right)_x
 = Q_{xC} R_{xM}
 \]
-i.e. the $x$'th entry in this vector denotes the probability that an input symbol $x$
+where $\delta_A$ is the unit vector in the $A$-direction.
+So, for example,
+the I/O label for state $(Q,\delta_C,R,\delta_M)$
+is the vector whose $x$'th entry is the probability that an input symbol $x$
 would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \subsubsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
@@ -648,9 +1232,6 @@ $d_1$ is the state of the exact-matcher for sequence LIV (\figref{liv-labeled}),
 $b_2$ is the state of the TKF91 transducer on the MF-branch (\figref{tkf91-labeled}),
 $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
 
-In general we can label such a state as $(b_1 d_1) \oplus (b_2 d_2)$,
-as described in \figref{fork-subcs-submf}
-
 Note that, as with \figref{mf-tkf91-liv},
 underlying structure is somewhat like a DP matrix,
 with rows, columns and cells.
@@ -675,19 +1256,19 @@ There are, in fact, four delete states in each ``cell'' of the matrix,
 corresponding to four fates of the input symbol after it is duplicated:
 (a) both copies of input symbol pass successfully through respective TKF91 transducers
 and are then deleted by respective downstream exact-matchers for sequences LIV and MF
- (e.g. $M D_L \oplus M D_F$);
+ (e.g. $M D_L M D_F$);
 (b) one copy of input symbol deleted by TKF91 transducer on LIV-branch,
 leaving downstream LIV-matcher idling in a wait state;
 other copy passes through TKF91 transducer on MF-branch and is then deleted by downstream MF-matcher
- (e.g. $D W_0 \oplus M D_F$);
+ (e.g. $D W_0 M D_F$);
 (c) one copy of input symbol passes through TKF91 transducer on LIV-branch
 and is then deleted by downstream LIV-matcher;
 other copy is deleted by TKF91 transducer on MF-branch,
 leaving downstream MF-matcher idling in a wait state;
- (e.g. $M D_L \oplus D W_0$);
+ (e.g. $M D_L D W_0$);
 (d) both input symbols deleted by respective TKF91 transducers,
 while downstream exact-matchers idle in wait states without seeing any input
- (e.g. $D W_0 \oplus D W_0$).
+ (e.g. $D W_0 D W_0$).
 
 The other states in each cell of the matrix are insertion states
 (where the symbols in sequences LIV or MF are accounted for by insertions from the TKF91 transducers,
@@ -813,7 +1394,7 @@ on the probability computed by the full Felsenstein transducer in \needfigref{ro
 
 Again this is a ``sequence-profile'' alignment.
 Unlike in progressive alignment
- (but quite like e.g. partial order alignment \needcite{Grasso, Lee {\em et al}}),
+ (but quite like e.g. partial order alignment \cite{LeeGrassoSharlow2002}),
 one of the profiles is now branched
  (because we sampled more than one path to construct it in \needfigref{forward2-fork-tkf91mf-tkf91liv})...
 
@@ -823,5 +1404,1702 @@ one of the profiles is now branched
 introduces the prior at the root, and represents the final Felsenstein probability.
 
 If there were more levels of the tree above this, we would keep on sampling...
+
+
+\section{Formal definitions}
+This report makes our transducer-related definitions precise,
+ including notation for state types, weights (i.e. probabilities),
+ transducer composition, etc.
+
+Notation relating to mundane manipulations of sequences (sequence length, sequence concatenation, etc.) is deferred to the end of the document,
+ so as not to interrupt the flow.
+
+We first review the letter transducer $T$,
+ transduction weight $\wtrans{\weight}{x}{T}{y}$ and
+ equivalence $T \transequiv T'$.
+
+We then define two operations for combining transducers:
+ composition ($T \compose U$) which unifies $T$'s output with $U$'s input,
+and
+ fork ($T \fork U$) which unifies $T$'s and $U$'s input.
+
+We define our ``normal'' form for letter transducers,
+ partitioning the states and transitions into types $\{S,M,D,I,N,W,E\}$ based on their input/output labeling.
+This normal form is common in the bioinformatics literature \cite{Durbin98}
+ and forms the basis for our previous constructions of phylogenetic transducers \cite{Holmes2003,BradleyHolmes2009}.
+
+We define exact-match and identity transducers, and give constructions of these.
+
+We define our hierarchy of phylogenetic transducers, and give constructions and inference algorithms,
+including the concept of ``alignment envelopes'' for size-limiting of transducers.
+
+\subsection{Input-output automata}
+{\em The letter transducer} is a tuple $T = (\Omega_I, \Omega_O, \States, \startstate, \laststate, \Transitions, \weight)$
+where
+ $\Omega_I$ is an input alphabet,
+ $\Omega_O$ is an output alphabet,
+$\States$ is a set of states,
+$\startstate \in \States$ is the start state,
+$\laststate \in \States$ is the end state,
+$\Transitions \subseteq \States \times \gappedalphabet{I} \times \gappedalphabet{O} \times \States$ is the transition relation, and
+$\weight:\Transitions \to [0,\infty)$ is the transition weight function.
+
+{\em Transition paths:}
+The transitions in $\Transitions$ correspond to the edges of a labeled multidigraph over states in $\States$.
+Let $\Pi \subset \Transitions^\ast$ be the set of all labeled transition paths from $\startstate$ to $\laststate$.
+
+{\em I/O sequences:}
+Let
+$S_I:\Pi \to \Omega_I^\ast$ and
+$S_O:\Pi \to \Omega_O^\ast$
+be functions returning the input and output sequences of a transition path,
+obtained by concatenating the respective transition labels.
+
+{\em Transduction weight:}
+For a transition path $\pi \in \Pi$,
+define the path weight $\weight(\pi)$ and
+(for sequences $x \in \Omega_I^\ast, y \in \Omega_O^\ast$)
+the transduction weight $\wtrans{\weight}{x}{T}{y}$
+
+\begin{eqnarray*}
+\weight(\pi) & = & \prod_{\Transitions \in \pi} \weight(\Transitions) \\
+\wtrans{\weight}{x}{T}{y} & = & \sum_{\pi \in \Pi, S_I(\pi)=x, S_O(\pi)=y} \weight(\pi)
+\end{eqnarray*}
+
+{\em Equivalence:}
+If for transducers $T,T'$ it is true that $\wtrans{\weight}{x}{T}{y}=\wtrans{\weight'}{x}{T'}{y}\ \forall x,y$ then the transducers are equivalent in weight, $T \transequiv T'$.
+
+\subsection{State types and normal forms}
+{\em Types of state and transition:}
+If there exists a state type function, $\statetype:\States \to {\cal T}$, mapping states to types in ${\cal T} = \{S,M,D,I,N,W,E\}$,
+and functions $\transweightfun{}: \States^2 \to [0,\infty)$ and $\emitweightfun{}: \gappedpair{I}{O} \times \States \to [0,\infty)$,
+such that
+\begin{eqnarray*}
+\States_U & = & \{ \phi: \phi\in\States, \statetype(\phi) \in U \subseteq {\cal T} \} \\
+\statesoftype{S} & = & \{ \startstate \} \\
+\statesoftype{E} & = & \{ \laststate \} \\
+\States & \equiv & \statesoftype{SMDINWE} \\   
+\Transitions_M & \subseteq & \statesoftype{W} \times \Omega_I \times \Omega_O \times \statesoftype{M} \\
+\Transitions_D & \subseteq & \statesoftype{W} \times \Omega_I \times \{\epsilon\} \times \statesoftype{D} \\
+\Transitions_I & \subseteq & \statesoftype{SMDIN} \times \{\epsilon\} \times \Omega_O \times \statesoftype{I} \\
+\Transitions_N & \subseteq & \statesoftype{SMDIN} \times \{\epsilon\} \times \{\epsilon\} \times \statesoftype{N} \\
+\Transitions_W & \subseteq & \statesoftype{SMDIN} \times \{\epsilon\} \times \{\epsilon\} \times \statesoftype{W} \\
+\Transitions_E & \subseteq & \statesoftype{W} \times \{\epsilon\} \times \{\epsilon\} \times \statesoftype{E} \\
+\Transitions & = & \Transitions_M \cup \Transitions_D \cup \Transitions_I \cup \Transitions_N \cup \Transitions_W \cup \Transitions_E \\
+\weight(\phi_{\mbox{src}},\omega_{\mbox{in}},\omega_{\mbox{out}},\phi_{\mbox{dest}}) & \equiv & \transweightfun{}(\phi_{\mbox{src}},\phi_{\mbox{dest}}) \emitweightfun{}(\omega_{\mbox{in}},\omega_{\mbox{out}},\phi_{\mbox{dest}})
+\end{eqnarray*}
+then the transducer is in {\em (weak) normal form}.
+If, additionally, $\statesoftype{N} = \emptyset$, then the transducer is in {\em strict normal form}.
+
+{\em Interpretation:}
+A normal-form transducer can be thought of as associating inputs and outputs with states, rather than transitions.
+(Thus, it is like a Moore machine.)
+The state types are
+ start ($S$) and end ($E$);
+ wait ($W$), in which the transducer waits for input;
+ match ($M$) and delete ($D$), which process input symbols;
+ insert ($I$), which writes additional output symbols; and
+ null ($N$), which has no associated input or output.
+All transitions also fall into one of these types, via the destination states;
+thus, $\Transitions_M$ is the set of transitions ending in a match state, etc.
+The transition weight ($\weight$) factors into a term that is independent of the input/output label ($\transweightfun{}$)
+and a term that is independent of the source state ($\emitweightfun{}$).
+
+{\em Universality:}
+For any weak-normal form transducer $T$ there exists an equivalent in strict-normal form which can be found by applying the state-marginalization algorithm to eliminate null states.
+For any transducer, there is an equivalent letter transducer in weak normal form, and therefore, in strict normal form.
+
+\subsection{Moore and Mealy machines}
+
+The following terms in common usage relate approximately to our definitions:
+
+{\em Mealy machines} are transducers with I/O occurring on transitions, as with our general definition of the letter transducer.
+
+{\em Moore machines} are transducers whose I/O is associated with states, as with our normal form.
+
+\subsection{Composition ($T\compose U$) unifies output of $T$ with input of $U$}
+
+{\em Transducer composition:}
+Given letter transducers
+ $T = (\Omega_X, \Omega_Y, \States, \startstate, \laststate, \Transitions, \weight)$ and
+ $U = (\Omega_Y, \Omega_Z, \States', \startstate', \laststate', \Transitions', \weight')$,
+there exists a letter transducer $T\compose U = (\Omega_X, \Omega_Z, \States'' \ldots \weight'')$ 
+such that $\forall x \in \Omega_X^\ast, z \in \Omega_Z^\ast$:
+\[
+\wtrans{\weight''}{x}{T\compose U}{z} = \sum_{y\in\Omega_Y^\ast} \wtrans{\weight}{x}{T}{y} \wtrans{\weight'}{y}{U}{z}
+\]
+
+{\em Example construction:}
+Assume without loss of generality that $T$ and $U$ are in strict normal form.
+Then $\States'' \subset \States \times \States'$,
+$\startstate''=(\startstate,\startstate')$, $\laststate''=(\laststate,\laststate')$
+and
+\begin{eqnarray*}
+\lefteqn{\weight''((t,u),\omega_x,\omega_z,(t',u')) =} & & \\
+& & \left\{ \begin{array}{ll}
+\delta(t=t') \delta(\omega_x=\epsilon) \weight'(u,\epsilon,\omega_z,u') & \mbox{if $\statetype(u) \neq W$} \\
+\weight(t,\omega_x,\epsilon,t') \delta(\omega_z=\epsilon) \delta(u=u') & \mbox{if $\statetype(u) = W,\statetype(t') \notin \{M,I\}$} \\
+\displaystyle
+\sum_{\omega_y \in \Omega_Y} \weight(t,\omega_x,\omega_y,t') \weight'(u,\omega_y,\omega_z,u') & \mbox{if $\statetype(u) = W,\statetype(t') \in \{M,I\}$} \\
+0 & \mbox{otherwise}
+\end{array} \right.
+\end{eqnarray*}
+The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
+
+\subsection{Fork ($T\fork U$) unifies input of $T$ with input of $U$}
+
+{\em Transducer fork:}
+Given letter transducers
+ $T = (\Omega_X, \Omega_T, \States, \startstate, \laststate, \Transitions, \weight)$ and
+ $U = (\Omega_X, \Omega_U, \States', \startstate', \laststate', \Transitions', \weight')$,
+there exists a letter transducer $T\fork U = (\Omega_X, \Omega_V, \States'' \ldots \weight'')$
+where $\Omega_V \subseteq \gappedpair{T}{U}$
+such that $\forall x \in \Omega_X^\ast, t \in \Omega_T^\ast, u \in \Omega_U^\ast$:
+\[
+\wtrans{\weight}{x}{T}{t} \wtrans{\weight'}{x}{U}{u} = \wtrans{\weight''}{x}{T\fork U}{(t,u)}
+\]
+where the term on the right is defined as follows
+\[
+\wtrans{\weight''}{x}{T\fork U}{(t,u)} = \sum_{v \in \Omega_V^\ast, S_1(v)=t, S_2(v)=u } \wtrans{\weight''}{x}{T\fork U}{v}
+\]
+
+{\em Example construction:}
+Assume without loss of generality that $T$ and $U$ are in strict normal form.
+Then $\States'' \subset \States \times \States'$,
+$\startstate''=(\startstate,\startstate')$, $\laststate''=(\laststate,\laststate')$
+and
+\begin{eqnarray*}
+\lefteqn{\weight''((t,u),\omega_x,(\omega_y,\omega_z),(t',u')) =} & & \\
+ & & \left\{ \begin{array}{ll}
+\delta(t=t') \delta(\omega_x=\omega_y=\epsilon) \weight'(u,\epsilon,\omega_z,u') & \mbox{if $\statetype(u) \neq W$} \\
+\weight(t,\epsilon,\omega_x,t') \delta(\omega_x=\omega_z=\epsilon) \delta(u=u') & \mbox{if $\statetype(u) = W,\statetype(t) \neq W$} \\
+\weight(t,\omega_x,\omega_y,t') \weight'(u,\omega_x,\omega_z,u') & \mbox{if $\statetype(t) = \statetype(u) = W$} \\
+0 & \mbox{otherwise}
+\end{array} \right.
+\end{eqnarray*}
+The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
+
+\subsection{Identity transducers ($\identity$, $\idfork$)}
+
+{\em Identity:}
+There exists a transducer $\identity=(\Omega,\Omega\ldots)$ that copies its input identically to its output.
+An example construction (not in normal form) is
+\begin{eqnarray*}
+\identity & = & (\Omega,\Omega,\{\phi\},\phi,\phi,\transitionsof{\identity},1) \\
+\transitionsof{\identity} & = & \left\{(\phi,\omega,\omega,\phi):\omega\in\Omega\right\}
+\end{eqnarray*}
+
+{\em Identity-fork:}
+There exists a transducer $\idfork=(\Omega,\Omega^2\ldots)$ that duplicates its input in parallel.
+That is, for input $x_1 x_2 x_3 \ldots$ it gives output $\dup{x_1}\dup{x_2}\dup{x_3}\ldots$.
+An example construction (not in normal form) is
+\begin{eqnarray*}
+\idfork & = & (\Omega,\Omega^2,\{\phi\},\phi,\phi,\transitionsof{\idfork},1) \\
+\transitionsof{\idfork} & = & \left\{\left(\phi,\omega,\dup{\omega},\phi\right):\omega\in\Omega\right\}
+\end{eqnarray*}
+It can be seen that $\idfork \transequiv \identity \fork \identity$.
+
+A fork $T \fork U$ may be considered a parallel composition of $\idfork$ with $T$ and $U$.
+We write this as  $\forkfun{T}{U}$ or, diagrammatically,
+\begin{parsetree}
+ ( .. ( .$\idfork$. ( .$T$. ~ ) ( .$U$. ~ ) ) )
+\end{parsetree}
+
+We use the notation $\forkfun{T}{U}$ in several places, when it is convenient to have a placeholder transducer $\idfork$ at a bifurcating node in a tree.
+In our phylogenetic transducer, for example,
+\[
+H_n = (B_l \compose E_l) \fork (B_r \compose E_r) = \forkfun{B_l \compose E_l}{B_r \compose E_r}
+\]
+and we write $H_n$-states as a tuple $\hstate$
+where $\upsilon\in\{S,W,M,E\}$ denotes the state of a normal-form construction of $\idfork$.
+
+\subsection{Exact-match recognizers ($\recognize(S)$)}
+
+{\em Exact-match recognizer:}
+For $S \in \Omega^\ast$, there exists a transducer $\recognize(S) = (\Omega,\emptyset\ldots \weight)$
+that accepts the specific sequence $S$ with weight one, but rejects all other input sequences
+\[
+\wtrans{\weight}{x}{\recognize(S)}{\epsilon} = \delta(x=S)
+\]
+Note that $\recognize(S)$ has a null output alphabet, and so its only possible output is the empty string.
+
+In general, if $T=(\Omega_X,\Omega_Y \ldots \weight')$ is any transducer then $\forall x \in \Omega_X^\ast, y \in \Omega_Y^\ast$
+\[
+\wtrans{\weight'}{x}{T}{y} \equiv \wtrans{\weight}{x}{T \compose \recognize(y)}{\epsilon}
+\]
+
+An example construction (not in normal form) is
+\begin{eqnarray*}
+\recognize(S) & = & (\Omega,\emptyset,\mathbb{Z}_{\seqlen{S}+1},0,\seqlen{S},\transitionsof{\recognize},1) \\
+\transitionsof{\recognize} & = & \left\{\left(n,\charat{S}{n+1},\epsilon,n+1\right):n \in \mathbb{Z}_{\seqlen{S}}\right)\}
+\end{eqnarray*}
+where $\mathbb{Z}_N$ is the set of integers modulo $N$,
+ and $\charat{S}{k}$ is the $k$'th position of $S$ (for $1 \leq k \leq \seqlen{S}$).
+Note that this construction has $\seqlen{S}+1$ states.
+
+For later convenience it is useful to define the function
+\begin{eqnarray*}
+\profTrans{\recognize(S)}(i,j) & = & \transweightfun{\recognize(S)}(i,j) \\
+& = & \delta(i+1 = j)
+\end{eqnarray*}
+
+\subsection{Generative and singlet transducers}
+
+{\em Generative transducers:}
+A transducer $T$ is generative (or ``a {\em generator}'') if it has a null input alphabet, and so rejects any input except the empty string.
+Then $T$ may be regarded as a state machine that generates an output, equivalent to a Hidden Markov Model.
+Define the probability (weight) distribution over the output sequence
+\[
+P(x|T) \equiv \wtrans{\weight}{\epsilon}{T}{x}
+\]
+
+{\em Singlet generators:}
+If the output alphabet of a generative transducer $T$ is a simple alphabet $\Omega$, rather than (say) a compound alphabet $\gapsquared$,
+we refer to $T$ as a {\em singlet} transducer.
+
+\subsection{Algorithmic complexities}
+\begin{eqnarray*}
+\numberofstates{T \compose U} & = & \order{\numberofstates{T} \numberofstates{U}} \\
+\numberofstates{T \fork U} & = & \order{\numberofstates{T} \numberofstates{U}} \\
+\numberofstates{\recognize(S)} & = & \order{\seqlen{S}}
+\end{eqnarray*}
+
+The complexity of computing $\wtrans{\weight}{x}{T}{y}$ is similar to the Forward algorithm:
+the time complexity is $\order{\numberoftransitions{T} \seqlen{x} \seqlen{y}}$ and
+the memory complexity is $\order{\numberofstates{T} \min\left(\seqlen{x},\seqlen{y}\right)}$.
+Memory complexity rises to $\order{\numberofstates{T} \seqlen{x} \seqlen{y}}$ if a traceback is required.
+Analogously to the Forward algorithm, there are checkpointing versions which trade memory complexity for time complexity.
+
+
+\subsection{Chapman-Kolmogorov equation}
+
+If $T_t$ is a transducer parameterized by a continuous time parameter $t$,
+modeling the evolution of a sequence for time $t$ under a continuous-time Markov process,
+then the Chapman-Kolmogorov equation \cite{KarlinTaylor75} can be expressed as a transducer equivalence
+\[
+T_t \compose T_u \transequiv T_{t+u}
+\]
+
+The TKF91 transducers, for example, have this property.
+Furthermore, for TKF91, $T_{t+u}$ has the same number of states and transitions as $T_t$,
+so this is a kind of self-similarity.
+
+In this paper, we have deferred the difficult problem of finding time-parameterized transducers that solve this equation
+(and so may be appropriate for Felsenstein recursions).
+For studies of this problem the reader is referred to previous work \cite{ThorneEtal91,ThorneEtal92,KnudsenMiyamoto2003,MiklosLunterHolmes2004,Rivas05}.
+
+\section{Hierarchy of phylogenetic transducers}
+\label{hierarchy}
+
+\subsection{Model structure}
+
+\subsubsection{Phylogenetic tree ($n$, $\leaves$)}
+Suppose we have an evolutionary model defined on a rooted binary phylogenetic tree,
+and a set of $\numberofleaves$ observed sequences associated with the leaf nodes of the tree.
+
+The nodes are numbered in preorder, with internal nodes $(1 \ldots \numberofinternalnodes)$ preceding leaf nodes $\leaves = \{ \leafnode{1} \ldots \numberofnodes \}$. Node $1$ is the root.
+
+\subsubsection{Hidden and observed sequences ($\outputn{n}$)}
+
+Let $\outputn{n} \in \Omega^\ast$ denote the sequence at node $n$ and
+let $\outputs = \{ \outputn{n}, n \in \leaves \}$ denote the observed leaf-node sequences.
+
+\subsubsection{Model components ($B_n$, $R$)}
+
+Let $B_n=(\Omega,\Omega,\ldots)$ be a transducer modeling the evolution on the branch to node $n>1$, from $n$'s parent.
+Let $R=(\emptyset,\Omega,\ldots)$ be a singlet generator modeling the distribution of ancestral sequences at the root node.
+
+
+\subsubsection{The forward model ($F_n$)}
+
+If $n \geq 1$ is a leaf node, define $F_n = \identity$.
+Otherwise, let $(l,r)$ denote the left and right child nodes, and define
+\[
+F_n = (B_l \compose F_l) \fork (B_r \compose F_r)
+\]
+
+which we can represent as
+\begin{parsetree}
+ ( .. ( .$\idfork$. ( .$B_l$. ( .$F_l$. ~ ) ) ( .$B_r$. ( .$F_r$. ~ ) )  ) )
+\end{parsetree}
+\\
+
+The complete, generative transducer is
+$F_0 = R \compose F_1$
+
+The output alphabet of $F_0$ is $\gappedalphabet{}^\numberofleaves$ where $\numberofleaves$ is the number of leaf sequences.
+Letting $S_n:\Transitions^\ast \to \Omega^\ast$ denote the map from a transition path $\pi$ to the $n$'th output leaf sequence (with gaps removed),
+we define the output distribution
+\[
+P(\outputs|F_0) = \wtrans{\weight}{\epsilon}{F_0}{\outputs} = \sum_{\pi: S_n(\pi)=\outputn{n} \forall n \in \leaves_n} \weight(\pi)
+\]
+where $\leaves_n$ denotes the set of leaf nodes that have $n$ as a common ancestor.
+
+Note that $\numberofstates{F_0} \simeq \prod_n^{\numberofnodes} \numberofstates{B_n}$ where $\numberofnodes$ is the number of nodes in the tree.
+So the state space grows exponentially with the size of the tree---and this is before we have even introduced any sequences.
+We seek to avoid this with our hierarchy of approximate models, which will have state spaces that are bounded in size.
+
+First, however, we expand the state space even more, by introducing the observed sequences explicitly into the model.
+
+\subsubsection{The evidence-expanded model ($G_n$)}
+\label{sec:EvidenceExpandedModel}
+
+Inference with stochastic grammars often uses a dynamic programming matrix (e.g. the Inside matrix)
+to track the ways that a given evidential sequence can be produced by a given grammar.
+
+For our purposes it is useful to introduce the evidence in a different way,
+by transforming the model to incorporate the evidence directly.
+We augment the state space so that the model is no longer capable of generating any sequences {\em except} the observed $\{\outputn{n}\}$,
+by composing $F_0$ with exact-match transducers that will only accept the observed sequences.
+This yields a model whose state space is very large and, in fact, is directly analogous to the Inside dynamic programming matrix.
+
+If $n \geq 1$ is a leaf node, define $G_n = \recognize(\outputn{n})$.
+The number of states is $\numberofstates{G_n} = \order{\outseqlen{n}}$.
+
+Otherwise, let $(l,r)$ denote the left and right child nodes, and define
+\[
+G_n = (B_l \compose G_l) \fork (B_r \compose G_r)
+\]
+
+which we can represent as
+\begin{parsetree}
+ ( .. ( .$\idfork$. ( .$B_l$. .$G_l$. ) ( .$B_r$. .$G_r$. )  ) )
+\end{parsetree}
+\\
+
+The complete evidence-expanded model is
+$G_0 = R \compose G_1$.
+
+The probability that the forward model $F_0$ generates the evidential sequences $\outputs$
+is identical to the probability that the evidence-expanded model $G_0$ generates the empty string
+\[
+P(\outputs | F_0) = \wtrans{\weight}{\epsilon}{F_0}{\outputs} = \wtrans{\weight}{\epsilon}{G_0}{\epsilon}
+\]
+
+Note the astronomical number of states in $G_0$
+\[
+\numberofstates{G_0} \simeq \left( \prod_{n=1}^{\numberofleaves} \outseqlen{n} \right) \left( \prod_{n=1}^{\numberofnodes} \numberofstates{B_n} \right)
+\]
+This is even worse than $F_0$; in fact, it is the same as the number of cells in the Inside matrix for computing $P(\outputs|F_0)$.
+The good news is we are about to start constraining it.
+
+
+\subsubsection{The constrained-expanded model ($H_n$, $E_n$, $M_n$, $Q_n$)}
+\label{Constrained_expanded}
+We now introduce a progressive series of approximating constraints to make inference under the model more tractable.
+
+If $n \geq 1$ is a leaf node, define $H_n = \recognize(\outputn{n}) \equiv G_n$.
+The number of states is $\numberofstates{H_n} \simeq \outseqlen{n}$, just as with $G_n$.
+
+Otherwise, let $(l,r)$ denote the left and right child nodes, and define
+\[
+H_n = (B_l \compose E_l) \fork (B_r \compose E_r)
+\]
+
+where $\statesof{E_n} \subseteq \statesof{H_n}$.
+
+We can represent $H_n$ diagramatically as
+\begin{parsetree}
+ ( .. ( .$\idfork$. ( .$B_l$. .$E_l$. ) ( .$B_r$. .$E_r$. )  ) )
+\end{parsetree}
+\\
+
+Transducer $E_n$, which is what we mean by the ``constrained-expanded model'', is effectively a profile of sequences that might plausibly appear at node $n$, given the observed descendants of that node.
+The profile is constructed as follows.
+
+The general idea is to generate a set of candidate sequences at node $n$, by sampling from the posterior distribution of such sequences {\bf given only the descendants of node $n$,}
+ignoring (for the moment) the nodes outside the $n$-rooted subtree.
+To do this, we need to introduce a prior distribution over the sequence at node $n$.
+This prior is an approximation to replace the true (but as yet unknown) posterior distribution due to nodes outside the $n$-rooted subtree
+(including $n$'s parent, and ancestors all the way back to the root, as well as siblings, cousins etc.)
+
+A plausible choice for this prior, equivalent to assuming {\em stationarity} of the underlying evolutionary process, is the same prior that we use for the root node; that is, the singlet generator model $R$.
+We define
+\begin{eqnarray*}
+M_n & = & R \compose H_n \\
+& = & R \compose ((B_l \compose E_l) \fork (B_r \compose E_r))
+\end{eqnarray*}
+to be the corresponding generative transducer.
+
+We can represent $M_n$ diagramatically as
+\begin{parsetree}
+ ( .$R$. ( .$\idfork$. ( .$B_l$. .$E_l$. ) ( .$B_r$. .$E_r$. )  ) )
+\end{parsetree}
+\\
+
+The transducer $Q_n = R \compose (B_l \fork B_r)$, which forms the comparison kernel of $M_n$, is also useful.
+It can be represented as
+\begin{parsetree}
+ ( .$R$. ( .$\idfork$. ( .$B_l$. .. ) ( .$B_r$. .. ) ) )
+\end{parsetree}
+\\
+
+\subsubsection{Component state tuples $\mstate$}
+Suppose that $a \in \statesof{A}, b \in \statesof{B}, \upsilon \in \statesof{\idfork}$.
+Our construction of composite transducers allows us to represent any state in $A \fork B = \forkfun{A}{B}$ as a tuple $(\upsilon, a,b)$.
+Similarly, any state in $A \compose B$ can be represented as $(a,b)$.
+Each state in $M_n$ can thus be written as a tuple $\mstate$ of component states, where
+\begin{itemize}
+\item $\rho$ is the state of the singlet transducer $R$
+\item $\upsilon$ is the state of the identity-fork transducer $\idfork$
+\item $b_l$ is the state of the left-branch transducer $B_l$
+\item $e_l$ is the state of the left child profile transducer $E_l$
+\item $b_r$ is the state of the right-branch transducer $B_l$
+\item $e_r$ is the state of the right child profile transducer $E_r$
+\end{itemize}
+Similarly, each state in $H_n$ (and $E_n$) can be written as a tuple $\hstate$.
+
+\subsubsection{Constructing $E_n$ from $H_n$}
+The construction of $E_n$ as a sub-model of $H_n$ proceeds as follows:
+\begin{enumerate}
+\item sample a set of $K$ paths from $P(\pi | M_n) = \weight(\pi) / \wtrans{\weight}{\epsilon}{M_n}{\epsilon}$;
+\item identify the set of $M_n$-states $\{\mstate\}$ used by the sampled paths;
+\item strip off the leading $\rho$'s from these $M_n$-states to find the associated set of $H_n$-states $\{\hstate\}$;
+\item the set of $H_n$-states so constructed is the subset of $E_n$'s states that have type $D$ (wait states must be added to place it in strict normal form).
+\end{enumerate}
+
+Here $K$ plays the role of a bounding parameter.
+For the constrained-expanded transducer, $\numberofstates{E_n} \simeq KL$, where $L = \max_n \outseqlen{n}$.
+Models $H_n$ and $M_n$, however, contain $\order{b^2 K^2 L^2}$ states,
+where $b = \max_n \numberofstates{B_n}$,
+as they are constructed by forking two $\order{bKL}$-state transducers ($B_l \compose E_l$ and $B_r \compose E_r$).
+
+\subsection{Explicit construction of $Q_n$}
+\seclabel{Qn}
+\begin{eqnarray*}
+Q_n & = & R \compose (B_l \fork B_r) \\
+& = & (\emptyset,\gapsquared,\statesof{Q_n},\startstateof{Q_n},\laststateof{Q_n},\transitionsof{Q_n},\weightfunof{Q_n}) \\
+\startstateof{Q_n} & = & (\startstateof{R},\startstateof{\idfork},\startstateof{B_l},\startstateof{B_r}) \\
+\laststateof{Q_n} & = & (\laststateof{R},\laststateof{\idfork},\laststateof{B_l},\laststateof{B_r})
+\end{eqnarray*}
+
+\subsubsection{States of $Q_n$}
+
+Define $\statetype(\phi_1,\phi_2,\phi_3 \ldots) = (\statetype(\phi_1), \statetype(\phi_2), \statetype(\phi_3) \ldots)$.
+
+Let $q=\qstate\in\statesof{Q_n}$.
+We construct $\statesof{Q_n}$ from classes, adopting the convention that each class of states is defined by its associated types:
+\[
+\stateset{class} = \{ q: \statetype\qstate \in \typeset{class} \}
+\]
+
+The state typings are
+\begin{eqnarray*}
+\matchtypes & = & \{ (I,M,M,M) \}  \\
+\rightdeletetypes & = & \{ (I,M,M,D) \}  \\
+\leftdeletetypes & = & \{ (I,M,D,M) \}  \\
+\nulltypes & = & \{ (I,M,D,D) \}  \\
+\rightinserttypes & = & \{ (S,S,S,I),\ (I,M,M,I),\ (I,M,D,I) \}  \\
+\leftinserttypes & = & \{ (S,S,I,W),\ (I,M,I,W) \}  \\
+\qwaittypes & = & \{ (W,W,W,W) \} \\
+\rightemittypes & = & \leftdeletetypes\ \cup\ \rightinserttypes \\
+\leftemittypes & = & \leftinserttypes\ \cup\ \rightdeletetypes
+\end{eqnarray*}
+
+The state space of $Q_n$ is
+\[
+\statesof{Q_n} = \{ \startstateof{Q_n},\ \laststateof{Q_n} \}\ \cup\ \matchstates\ \cup\ \leftemitstates\ \cup\ \rightemitstates\ \cup\ \nullstates\ \cup\ \qwaitstates
+\]
+
+It is possible to calculate transition/emission weights of $Q_n$
+by starting with the example constructions given for $T \compose U$ and $T \fork U$,
+then eliminating states that are not in the above set.
+This gives the results described in the following sections.
+
+\subsubsection{Emission weights of $Q_n$}
+
+Let $(\omega_l,\omega_r)\ \in \gapsquared$.
+
+The emission weight function for $Q_n$ is
+\[
+\emitweightfun{Q_n}(\epsilon,(\omega_l,\omega_r),q) = \left\{
+\begin{array}{ll}
+\displaystyle
+\sum_{\omega \in \Omega} \emitweightfun{R}(\epsilon,\omega,R)
+ \emitweightfun{B_l}(\omega,\omega_l,b_l)
+ \emitweightfun{B_r}(\omega,\omega_r,b_r)
+ & \mbox{if $q \in \matchstates$} \\
+\displaystyle
+\sum_{\omega \in \Omega} \emitweightfun{R}(\epsilon,\omega,R)
+ \emitweightfun{B_r}(\omega,\omega_r,b_r)
+ & \mbox{if $q \in \leftdeletestates$} \\
+\displaystyle
+\sum_{\omega \in \Omega} \emitweightfun{R}(\epsilon,\omega,R)
+ \emitweightfun{B_l}(\omega,\omega_l,b_l)
+ & \mbox{if $q \in \rightdeletestates$} \\
+ \emitweightfun{B_l}(\epsilon,\omega_l,b_l)
+ & \mbox{if $q \in \leftinsertstates$} \\
+ \emitweightfun{B_r}(\epsilon,\omega_r,b_r)
+ & \mbox{if $q \in \rightinsertstates$} \\
+1
+ & \mbox{otherwise}
+\end{array}
+\right.
+\]
+
+
+\subsubsection{Transition weights of $Q_n$}
+The transition weight between two states
+$q=\qstate$ and
+$q'=\qstatedest$
+always takes the form
+\[
+\transweightfun{Q_n}(q,q') \equiv \sumoverpaths{R} . \sumoverpaths{\idfork} . \sumoverpaths{B_l} . \sumoverpaths{B_r}
+\]
+where $\sumoverpaths{T}$ represents a sum over a set of paths through component transducer $T$.
+The allowed paths $\{\pi_T\}$ are constrained by the types of $q,q'$ as shown in Table~\ref{QTransitionTypes}.
+\begin{table}
+\[
+\begin{array}{ll|cccc}
+\statetype\qstate & \statetype\qstatedest & |\pi_R| & |\pi_{\idfork}| & |\pi_{B_l}| & |\pi_{B_r}| \\
+\hline
+(S,S,S,*) & (S,S,S,I) & 0 & 0 & 0 & 1 \\
+          & (S,S,I,W) & 0 & 0 & 1 & 1 \\
+          & (I,M,M,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,M,D) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,D) & 1 & 2 & 2 & 2 \\
+          & (W,W,W,W) & 1 & 1 & 1 & 1 \\
+\hline
+(S,S,I,W) & (S,S,I,W) & 0 & 0 & 1 & 0 \\
+          & (I,M,M,M) & 1 & 2 & 2 & 1 \\
+          & (I,M,M,D) & 1 & 2 & 2 & 1 \\
+          & (I,M,D,M) & 1 & 2 & 2 & 1 \\
+          & (I,M,D,D) & 1 & 2 & 2 & 1 \\
+          & (W,W,W,W) & 1 & 1 & 1 & 0 \\
+\hline
+(I,M,M,*) & (I,M,M,I) & 0 & 0 & 0 & 1 \\
+          & (I,M,I,W) & 0 & 0 & 1 & 1 \\
+          & (I,M,M,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,M,D) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,D) & 1 & 2 & 2 & 2 \\
+          & (W,W,W,W) & 1 & 1 & 1 & 1 \\
+\hline
+(I,M,D,*) & (I,M,D,I) & 0 & 0 & 0 & 1 \\
+          & (I,M,I,W) & 0 & 0 & 1 & 1 \\
+          & (I,M,M,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,M,D) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,M) & 1 & 2 & 2 & 2 \\
+          & (I,M,D,D) & 1 & 2 & 2 & 2 \\
+          & (W,W,W,W) & 1 & 1 & 1 & 1 \\
+\hline
+(I,M,I,W) & (I,M,I,W) & 0 & 0 & 1 & 0 \\
+          & (I,M,M,M) & 1 & 2 & 2 & 1 \\
+          & (I,M,M,D) & 1 & 2 & 2 & 1 \\
+          & (I,M,D,M) & 1 & 2 & 2 & 1 \\
+          & (I,M,D,D) & 1 & 2 & 2 & 1 \\
+          & (W,W,W,W) & 1 & 1 & 1 & 0 \\
+\hline
+(W,W,W,W) & (E,E,E,E) & 1 & 1 & 1 & 1 \\
+\end{array}
+\]
+\caption[]{ \label{QTransitionTypes} Transition types of $Q_n$, the transducer described in  \secref{Qn}
+ This transducer requires its input to be empty: it is
+ `generative'. It jointly models a parent sequence (hidden) and a pair
+ of sibling sequences (outputs), and is somewhat analogous to a Pair 
+ HMM. It is used during progressive reconstruction.}
+\end{table}
+Table~\ref{QTransitionTypes} uses the following conventions:
+\begin{itemize}
+\item A $0$ in any column means that the corresponding state must remain unchanged.
+For example, if $|\pi_{B_l}|=0$ then
+\[
+\sumoverpaths{B_l} \equiv \delta(b_l=b'_l)
+\]
+\item A $1$ in any column means that the corresponding transducer makes a single transition.
+For example, if $|\pi_{B_l}|=1$ then
+\[
+\sumoverpaths{B_l} \equiv \transweightfun{B_l}(b_l,b'_l)
+\]
+\item A $2$ in any column means that the corresponding transducer makes two transitions, via an intermediate state.
+For example, if $|\pi_{B_l}|=2$ then
+\[
+\sumoverpaths{B_l} \equiv \sum_{b''_l \in \statesof{B_l}} \transweightfun{B_l}(b_l,b''_l) \transweightfun{B_l}(b''_l,b'_l)
+\]
+(Since the transducers are in strict normal form, and given the context in which the $2$'s appear,
+it will always be the case that the intermediate state $b''_l$ has type $W$.)
+\item An asterisk ($*$) in a type-tuple is interpreted as a wildcard; for example, $(S,S,S,*)$ corresponds to $\{ (S,S,S,S),\ (S,S,S,I) \}$.
+\item If a transition does not appear in the above table, or if any of the $\transweightfun{}$'s are zero,
+then $\nexists (h,\omega,\omega',h') \in \transitionsof{H_n}$.
+\end{itemize}
+
+
+\subsubsection{State types of $Q_n$}
+
+\[
+\statetype(q) = \left\{ \begin{array}{ll}
+S & \mbox{if $q = \startstateof{Q_n}$} \\
+E & \mbox{if $q = \laststateof{Q_n}$} \\
+W & \mbox{if $q \in \qwaitstates$} \\
+I & \mbox{if $q \in \matchstates\ \cup\ \leftemitstates\ \cup\ \rightemitstates$} \\
+N & \mbox{if $q \in \nullstates$}
+\end{array} \right.
+\]
+
+Note that $Q_n$ contains null states ($\nullstates$) corresponding to coincident deletions on branches $n \to l$ and $n \to r$.
+These states have $\statetype\qstate=(I,M,D,D)$.
+There are transition paths that go through these states, including paths that cycle indefinitely among these states.
+
+We need to eliminate these states before constructing $M_n$.
+Let $Q'_n \transequiv Q_n$ denote the transducer obtained from $Q_n$ by marginalizing $\nullstates$
+\[
+\statesof{Q'_n} = \{ \startstateof{Q_n},\ \laststateof{Q_n} \}\ \cup\ \matchstates\ \cup\ \leftemitstates\ \cup\ \rightemitstates\ \cup\ \qwaitstates
+\]
+
+The question arises, how to restore these states when constructing $E_n$?
+Ortheus samples them randomly,
+but (empirically) a lot of samples are needed before there is any chance of guessing the right number,
+and in practice it makes little difference to the accuracy of the reconstruction.
+In principle it might be possible to leave them in as self-looping delete states in $E_n$, but this would make $E_n$ cyclic.
+
+\subsection{Explicit construction of $M_n$ using $Q'_n$, $E_l$ and $E_r$}
+\seclabel{Mn}
+Refer to the previous section for definitions pertaining to $Q'_n$.
+
+\begin{eqnarray*}
+M_n & = & R \compose ((B_l \compose E_l) \fork (B_r \compose E_r)) \\
+Q'_n & \transequiv & R \compose (B_l \fork B_r)
+\end{eqnarray*}
+
+\subsubsection{States of $M_n$}
+The complete set of $M_n$-states is
+\begin{eqnarray*}
+\statesof{M_n} & = & \{ \startstateof{M_n},\ \laststateof{M_n} \} \\
+& & \quad \cup\ \{ \mstate: \qstate \in \matchstates,\ \statetype(e_l)=\statetype(e_r)=D \} \\
+& & \quad \cup\ \{ \mstate: \qstate \in \leftemitstates,\ \statetype(e_l)=D, \statetype(e_r)=W \} \\
+& & \quad \cup\ \{ \mstate: \qstate \in \rightemitstates,\ \statetype(e_l)=W, \statetype(e_r)=D \} \\
+& & \quad \cup\ \{ \mstate: \qstate \in \waitstates,\ \statetype(e_l)=\statetype(e_r)=W \}
+\end{eqnarray*}
+
+\subsubsection{Emission weights of $M_n$}
+Let $m = \mstate$ be an $M_n$-state and $q = \qstate$ the subsumed $Q'_n$-state.
+
+Similarly, let $m' = \mstatedest$ and $q' = \qstatedest$.
+
+The emission weight function for $M_n$ is
+\[
+\emitweightfun{M_n}(\epsilon,\epsilon,m) = \left\{
+\begin{array}{ll}
+\displaystyle
+\sum_{\omega_l \in \Omega}
+\sum_{\omega_r \in \Omega}
+ \emitweightfun{Q'_n}(\epsilon,(\omega_l,\omega_r),q)
+. \emitweightfun{E_l}(\omega_l,\epsilon,e_l)
+. \emitweightfun{E_r}(\omega_r,\epsilon,e_r)
+ & \mbox{if $q \in \matchstates$} \\
+\displaystyle
+\sum_{\omega_l \in \Omega}
+ \emitweightfun{Q'_n}(\epsilon,(\omega_l,\epsilon),q)
+. \emitweightfun{E_l}(\omega_l,\epsilon,e_l)
+ & \mbox{if $q \in \leftemitstates$} \\
+\displaystyle
+\sum_{\omega_r \in \Omega}
+ \emitweightfun{Q'_n}(\epsilon,(\epsilon,\omega_r),q)
+. \emitweightfun{E_r}(\omega_r,\epsilon,e_r)
+ & \mbox{if $q \in \rightemitstates$} \\
+1
+ & \mbox{otherwise}
+\end{array}
+\right.
+\]
+
+\subsubsection{Transitions of $M_n$}
+
+As before,
+\begin{eqnarray*}
+q & = & \qstate \\
+m & = & \mstate \\
+q' & = & \qstatedest \\
+m' & = & \mstatedest
+\end{eqnarray*}
+An ``upper bound'' (i.e. superset) of the transition set of $M_n$ is as follows
+\begin{eqnarray*}
+\transitionsof{M_n} & \subseteq & \{ (m,\epsilon,\epsilon,m'): q'\in\matchstates,\statetype(q)\in\{S,I\},\statetype(e'_l,e'_r)=(D,D) \} \\
+ & & \ \cup\ \{ (m,\epsilon,\epsilon,m'): q'\in\leftemitstates,\statetype(q)\in\{S,I\},\statetype(e'_l,e'_r)=(D,W) \} \\
+ & & \ \cup\ \{ (m,\epsilon,\epsilon,m'): q'\in\rightemitstates,\statetype(q)\in\{S,I\},\statetype(e'_l,e'_r)=(W,D) \} \\
+ & & \ \cup\ \{ (m,\epsilon,\epsilon,m'): q'\in\waitstates,\statetype(q)\in\{S,I\},\statetype(e'_l,e'_r)=(W,W) \} \\
+ & & \ \cup\ \{ (m,\epsilon,\epsilon,m'): \statetype(q,e_l,e_r)=(W,W,W),\statetype(q',e'_l,e'_r)=(E,E,E) \}
+\end{eqnarray*}
+More precisely, $\transitionsof{M_n}$ contains the transitions in the above set for which the transition weight (defined in the next section) is nonzero.
+(This ensures that the individual transition paths $q \to q'$, $e_l \to e'_l$ and $e_r \to e'_r$ exist with nonzero weight.)
+
+\subsubsection{Transition weights of $M_n$}
+
+Let $\transviawait{E_n}(e,e')$ be the weight of {\bf either} the direct transition $e \to e'$,
+{\bf or} a double transition $e \to e'' \to e'$ summed over all intermediate states $e''$
+\[
+\transviawait{E_n}(e,e') = \left\{
+\begin{array}{ll}
+\displaystyle
+\sum_{e'' \in \statesof{E_n}}
+\transweightfun{E_n}(e,e'')
+\transweightfun{E_n}(e'',e')
+& \mbox{if $\statetype(e) \in \{S,D\}$} \\
+\transweightfun{E_n}(e,e')
+& \mbox{if $\statetype(e) = W$} \\
+\end{array}
+\right.
+\]
+
+Let $\transtowait{E_n}(e,e')$ be the weight of a transition (or non-transition) that leaves $E_n$ in a wait state
+\[
+\transtowait{E_n}(e,e') = \left\{
+\begin{array}{ll}
+\transweightfun{E_n}(e,e')
+& \mbox{if $\statetype(e) \in \{S,D\},\ \statetype(e') = W$} \\
+1
+& \mbox{if $e=e',\ \statetype(e') = W$} \\
+0
+& \mbox{otherwise} \\
+\end{array}
+\right.
+\]
+
+The transition weight function for $M_n$ is
+\[
+\transweightfun{M_n}(m,m') = \transweightfun{Q'_n}(q,q') \times \left\{
+\begin{array}{ll}
+\transviawait{E_l}(e_l,e'_l) \transviawait{E_r}(e_r,e'_r)
+ & \mbox{if $q' \in \matchstates $} \\
+\transviawait{E_l}(e_l,e'_l) \transtowait{E_r}(e_r,e'_r)
+ & \mbox{if $q' \in \leftemitstates$} \\
+\transtowait{E_l}(e_l,e'_l) \transviawait{E_r}(e_r,e'_r)
+ & \mbox{if $q' \in \rightemitstates$} \\
+\transtowait{E_l}(e_l,e'_l) \transtowait{E_r}(e_r,e'_r)
+ & \mbox{if $q' \in \waitstates$} \\
+\transweightfun{E_l}(e_l,e'_l) \transweightfun{E_r}(e_r,e'_r)
+ & \mbox{if $q' = \laststateof{Q'_n}$}
+\end{array}
+\right.
+\]
+
+
+\subsection{Explicit construction of $H_n$}
+\seclabel{Hn}
+This construction is somewhat redundant, since we construct $M_n$ from $Q_n$, $E_l$ and $E_r$, rather than from $R \compose H_n$.
+It is retained for comparison.
+
+\begin{eqnarray*}
+H_n & = & (B_l \compose E_l) \fork (B_r \compose E_r) \\
+& = & (\Omega,\emptyset,\statesof{H_n},\startstateof{H_n},\laststateof{H_n},\transitionsof{H_n},\weightfunof{H_n}) \\
+\end{eqnarray*}
+
+Assume $B_l,B_r,E_l,E_r$ in strict-normal form.
+
+\subsubsection{States of $H_n$}
+
+Define $\statetype(\phi_1,\phi_2,\phi_3 \ldots) = (\statetype(\phi_1), \statetype(\phi_2), \statetype(\phi_3) \ldots)$.
+
+Let $h=\hstate\in\statesof{H_n}$.
+We construct $\statesof{H_n}$ from classes, adopting the convention that each class of states is defined by its associated types:
+\[
+\stateset{class} = \{ h: \statetype\hstate \in \typeset{class} \}
+\]
+
+Define $\externalcascades \subset \statesof{H_n}$ to be the subset of $H_n$-states that follow {\em externally-driven cascades}
+\begin{eqnarray*}
+\externaltypes & = & \{ (M,M,D,M,D),\ (M,M,D,D,W), \\
+& & \quad (M,D,W,M,D),\ (M,D,W,D,W) \}
+\end{eqnarray*}
+
+Define $\internalcascades \subset \statesof{H_n}$ to be the subset of $H_n$-states that follow {\em internal cascades}
+\begin{eqnarray*}
+\internaltypes & = & \lefttypes \cup \righttypes \\
+\lefttypes & = & \{ (S,I,D,W,W),\ (M,I,D,W,W) \} \\
+\righttypes & =  & \{ (S,S,S,I,D),\ (M,M,D,I,D),\ (M,D,W,I,D) \}
+\end{eqnarray*}
+
+Remaining states are the start, end, and wait states:
+\begin{eqnarray*}
+\startstateof{H_n} & = & (\startstateof{\idfork},\startstateof{B_l},\startstateof{E_l},\startstateof{B_r},\startstateof{E_r}) \\
+\laststateof{H_n} & = & (\laststateof{\idfork},\laststateof{B_l},\laststateof{E_l},\laststateof{B_r},\laststateof{E_r}) \\
+\waittypes & = & \{ (W,W,W,W,W) \}
+\end{eqnarray*}
+The complete set of $H_n$-states is
+\[
+\statesof{H_n} = \{ \startstateof{H_n},\ \laststateof{H_n} \}\ \cup\ \externalcascades\ \cup\ \internalcascades\ \cup\ \waitstates
+\]
+
+It is possible to calculate transition/emission weights of $H_n$
+by starting with the example constructions given for $T \compose U$ and $T \fork U$,
+then eliminating states that are not in the above set.
+This gives the results described in the following sections.
+
+\subsubsection{Emission weights of $H_n$}
+
+Let $\omega,\omega' \in \gappedalphabet{}$.
+
+Let $C_n(b_n,e_n)$ be the emission weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$ where $\statetype(b_n,e_n)=(I,D)$
+\[
+C_n(b_n,e_n) = \sum_{\omega \in \Omega} \emitweightfun{B_n}(\epsilon,\omega,b_n) \emitweightfun{E_n}(\omega,\epsilon,e_n)
+\]
+
+Let $D_n(\omega,b_n,e_n)$ be the emission weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$
+ where $\statetype(b_n,e_n) \in \{(M,D),(D,W)\}$ with input symbol $\omega$ 
+\[
+D_n(\omega,b_n,e_n) = \left\{
+\begin{array}{ll}
+\displaystyle
+\sum_{\omega' \in \Omega} \emitweightfun{B_n}(\omega,\omega',b_n) \emitweightfun{E_n}(\omega',\epsilon,e_n)
+ & \mbox{if $\statetype(b_n,e_n)=(M,D)$} \\
+\emitweightfun{B_n}(\omega,\epsilon,b_n)
+ & \mbox{if $\statetype(b_n,e_n)=(D,W)$}
+\end{array}
+\right.
+\]
+
+The emission weight function for $H_n$ is
+\[
+\emitweightfun{H_n}(\omega,\epsilon,h) = \left\{
+\begin{array}{ll}
+D_l(\omega,b_l,e_l) D_r(\omega,b_r,e_r)
+ & \mbox{if $h \in \externalcascades$} \\
+C_l(b_l,e_l)
+ & \mbox{if $h \in \leftcascades$} \\
+C_r(b_r,e_r)
+ & \mbox{if $h \in \rightcascades$} \\
+1
+ & \mbox{otherwise}
+\end{array}
+\right.
+\]
+
+\subsubsection{Transition weights of $H_n$}
+
+The transition weight between two states
+$h=\hstate$ and
+$h'=\hstatedest$
+always takes the form
+\[
+\transweightfun{H_n}(h,h') \equiv \sumoverpaths{\idfork} . \sumoverpaths{B_l} . \sumoverpaths{E_l} . \sumoverpaths{B_r} . \sumoverpaths{E_r}
+\]
+where the RHS terms again represent sums over paths, with the allowed paths depending on the types of $h,h'$ as shown in Table~\ref{HTransitionTypes}.
+\begin{table}
+\[
+\begin{array}{ll|ccccc}
+\statetype\hstate & \statetype\hstatedest & |\pi_{\idfork}| & |\pi_{B_l}| & |\pi_{E_l}| & |\pi_{B_r}| & |\pi_{E_r}| \\
+\hline
+(S,S,S,S,S) & (S,S,S,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (S,I,D,W,W) & 0 & 1 & 2 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 1 & 1 \\
+\hline
+(S,S,S,I,D) & (S,S,S,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (S,I,D,W,W) & 0 & 1 & 2 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 1 & 1 \\
+\hline
+(S,I,D,W,W) & (S,I,D,W,W) & 0 & 1 & 2 & 0 & 0 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 0 & 0 \\
+\hline
+(W,W,W,W,W) & (M,M,D,M,D) & 1 & 1 & 1 & 1 & 1 \\
+            & (M,M,D,D,W) & 1 & 1 & 1 & 1 & 0 \\
+            & (M,D,W,M,D) & 1 & 1 & 0 & 1 & 1 \\
+            & (M,D,W,D,W) & 1 & 1 & 0 & 1 & 0 \\
+            & (E,E,E,E,E) & 1 & 1 & 1 & 1 & 1 \\
+\hline
+(M,M,D,M,D) & (M,M,D,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (M,I,D,W,W) & 0 & 1 & 2 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 1 & 1 \\
+\hline
+(M,M,D,D,W) & (M,M,D,I,D) & 0 & 0 & 0 & 1 & 1 \\
+            & (M,I,D,W,W) & 0 & 1 & 2 & 1 & 0 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 1 & 0 \\
+\hline
+(M,D,W,M,D) & (M,D,W,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (M,I,D,W,W) & 0 & 1 & 1 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 0 & 1 & 1 \\
+\hline
+(M,D,W,D,W) & (M,D,W,I,D) & 0 & 0 & 0 & 1 & 1 \\
+            & (M,I,D,W,W) & 0 & 1 & 1 & 1 & 0 \\
+            & (W,W,W,W,W) & 1 & 1 & 0 & 1 & 0 \\
+\hline
+(M,M,D,I,D) & (M,M,D,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (M,I,D,W,W) & 0 & 1 & 2 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 1 & 1 \\
+\hline
+(M,D,W,I,D) & (M,D,W,I,D) & 0 & 0 & 0 & 1 & 2 \\
+            & (M,I,D,W,W) & 0 & 1 & 1 & 1 & 1 \\
+            & (W,W,W,W,W) & 1 & 1 & 0 & 1 & 1 \\
+\hline
+(M,I,D,W,W) & (M,I,D,W,W) & 0 & 1 & 2 & 0 & 0 \\
+            & (W,W,W,W,W) & 1 & 1 & 1 & 0 & 0 \\
+\end{array}
+\]
+\caption{
+\label{HTransitionTypes}
+Transition types of $H_n$, the transducer described in  \secref{Hn}
+ This transducer requires non-empty input: it is
+ a `recognizing profile' or 'recognizer'. It  models a subtree of sequences
+ conditional on an absorbed parental sequence. 
+It is used during progressive reconstruction.}
+\end{table}
+Table~\ref{HTransitionTypes} uses the same conventions as Table~\ref{QTransitionTypes}.
+
+\subsubsection{State types of $H_n$}
+
+\[
+\statetype(h) = \left\{ \begin{array}{ll}
+S & \mbox{if $h = \startstateof{H_n}$} \\
+E & \mbox{if $h = \laststateof{H_n}$} \\
+W & \mbox{if $h \in \waitstates$} \\
+D & \mbox{if $h \in \externalcascades$} \\
+N & \mbox{if $h \in \internalcascades$}
+\end{array} \right.
+\]
+
+Since $H_n$ contains states of type $N$ (the internal cascades),
+it is necessary to eliminate these states from $E_n$ (after sampling paths through $M_n$),
+so as to guarantee that $E_n$ will be in strict normal form.
+
+
+
+\subsection{Explicit construction of $M_n$ using $R$ and $H_n$}
+
+This construction is somewhat redundant, since we construct $M_n$ from $Q_n$, $E_l$ and $E_r$, rather than from $R \compose H_n$.
+It is retained for comparison.
+
+The following construction uses the fact that $M_n = R \compose H_n$ so that we can compactly define $M_n$ by referring back to the previous construction of $H_n$.
+In practice, it will be more efficient to precompute $Q_n = R \compose (B_l \fork B_r)$.
+
+Refer to the previous section (``Explicit construction of $H_n$'') for definitions of
+$\externalcascades,\internalcascades,\waitstates,\transweightfun{H_n}(h,h'),\emitweightfun{H_n}(\omega,\omega',h)$.
+
+Assume that $R$ is in strict normal form.
+
+\begin{eqnarray*}
+M_n & = & R \compose H_n \\
+& = & R \compose ((B_l \compose E_l) \fork (B_r \compose E_r)) \\
+& = & (\emptyset,\emptyset,\statesof{M_n},\startstateof{M_n},\laststateof{M_n},\transitionsof{M_n},\weightfunof{M_n}) \\
+\startstateof{M_n} & = & (\startstateof{R},\startstateof{\idfork},\startstateof{B_l},\startstateof{E_l},\startstateof{B_r},\startstateof{E_r}) \\
+\laststateof{M_n} & = & (\laststateof{R},\laststateof{\idfork},\laststateof{B_l},\laststateof{E_l},\laststateof{B_r},\laststateof{E_r})
+\end{eqnarray*}
+
+\subsubsection{States of $M_n$}
+The complete set of $M_n$-states is
+\begin{eqnarray*}
+\statesof{M_n} & = & \{ \startstateof{M_n},\ \laststateof{M_n} \} \\
+& & \quad \cup\ \{ \mstate: \hstate \in \externalcascades,\ \statetype(\rho)=I \} \\
+& & \quad \cup\ \{ \mstate: \hstate \in \waitstates,\ \statetype(\rho)=W \} \\
+& & \quad \cup\ \{ \mstate: \hstate \in \internalcascades,\ \statetype(\rho)=\statetype(\upsilon)=S \} \\
+& & \quad \cup\ \{ \mstate: \hstate \in \internalcascades,\ \statetype(\rho)=I,\ \statetype(\upsilon)=M \}
+\end{eqnarray*}
+
+\subsubsection{Emission weights of $M_n$}
+Let $m = \mstate$ be an $M_n$-state and $h = \hstate$ the subsumed $H_n$-state.
+
+Similarly, let $m' = \mstatedest$ and $h' = \hstatedest$.
+
+The emission weight function for $M_n$ is
+\[
+\emitweightfun{M_n}(\epsilon,\epsilon,m) = \left\{
+\begin{array}{ll}
+\displaystyle
+\sum_{\omega \in \Omega} \emitweightfun{R}(\epsilon,\omega,\rho) \emitweightfun{H_n}(\omega,\epsilon,h)
+ & \mbox{if $h \in \externalcascades$} \\
+\emitweightfun{H_n}(\epsilon,\epsilon,h)
+ & \mbox{otherwise}
+\end{array}
+\right.
+\]
+
+\subsubsection{Transition weights of $M_n$}
+The transition weight function for $M_n$ is
+\[
+\transweightfun{M_n}(m,m') = \left\{
+\begin{array}{ll}
+\displaystyle
+\transweightfun{H_n}(h,h')
+ & \mbox{if $h' \in \internalcascades$} \\
+\displaystyle
+\transweightfun{R}(\rho,\rho') \sum_{h'' \in \waitstates} \transweightfun{H_n}(h,h'') \transweightfun{H_n}(h'',h')
+ & \mbox{if $h' \in \externalcascades$} \\
+\transweightfun{R}(\rho,\rho') \transweightfun{H_n}(h,h')
+ & \mbox{otherwise}
+\end{array}
+\right.
+\]
+
+If $E_l$ and $E_r$ are acyclic, then $H_n$ and $E_n$ will be acyclic too.
+However, $M_n$ does contain cycles among states of type $(I,M,D,W,D,W)$.
+These correspond to characters output by $R$ that are then deleted by both $B_l$ and $B_r$.
+It is necessary to eliminate these states from $M_n$ by marginalization, and to then restore them probabilistically when sampling paths through $M_n$.
+
+\section{Inference algorithms}
+
+\subsection{Dynamic programming}
+
+The recursion for $\wtrans{\weight}{\epsilon}{M_n}{\epsilon}$ is
+\begin{eqnarray*}
+\wtrans{\weight}{\epsilon}{M_n}{\epsilon} & = & Z(\laststate) \\
+Z(m') & = & \sum_{m : (m,\epsilon,\epsilon,m') \in \Transitions} Z(m) \weightfunof{}(m,\epsilon,\epsilon,m')  \quad\quad \forall m' \neq \startstate \\
+Z(\startstate) & = & 1
+\end{eqnarray*}
+
+The algorithm to fill $Z(m)$ has the general structure shown in Algorithm~\ref{ForwardTransducer}.
+(Some optimization of this algorithm is desirable, since not all tuples $\mstate$ are states of $M_n$.
+If $E_n$ is in strict-normal form its $W$- and $D$-states will occur in pairs
+(c.f. the strict-normal version of the exact match transducer $\recognize(S)$).
+These $(D,W)$ pairs are largely redundant: the choice between $D$ and $W$ is dictated by the parent $B_n$,
+as can be seen from Table~\ref{HTransitionTypes} and the construction of $\statesof{H_n}$.)
+
+\begin{algorithm}
+  Initialize $Z(\startstate) \leftarrow 1$;
+  \BlankLine
+  \ForEach(\tcc*[f]{topologically-sorted}){$e_l \in \statesof{E_l}$} {
+    \ForEach(\tcc*[f]{topologically-sorted}){$e_r \in \statesof{E_r}$} {
+      \ForEach(\tcc*[f]{topologically-sorted}){$\qstate \in \statesof{Q_n}$} {
+        Let $m = \mstate$;
+        \BlankLine
+        \If{$m \in \statesof{M_n}$}{
+          Compute $Z(m)$;
+        }
+      }
+    }
+  }
+  Return $Z(\laststate)$.
+\caption{\label{ForwardTransducer}
+The analog of the Forward algorithm for transducer $M_n$, described in \secref{Mn}. This is used during progressive reconstruction to store the sum-over-paths likelihood up to each state in $\statesof{M_n}$.  The value of $Z(\laststateof)$ is the likelihood of sequences descended from node $n$. 
+}
+\end{algorithm}
+
+For comparison, the Forward algorithm for computing the probability of two sequences $(S_l,S_r)$
+being generated by a Pair Hidden Markov Model $(M)$ has the general structure shown in Algorithm~\ref{ForwardPairHMM}.
+
+\begin{algorithm}
+  Initialize cell $(0,0,\mbox{START})$;
+  \BlankLine
+  \ForEach(\tcc*[f]{ascending order}){$0 \leq i_l \leq \seqlen{S_l}$} {
+    \ForEach(\tcc*[f]{ascending order}){$0 \leq i_r \leq \seqlen{S_r}$} {
+      \ForEach(\tcc*[f]{topologically-sorted}){$\sigma \in M$} {
+        Compute the sum-over-paths up to cell $(i_l,i_r,\sigma)$;
+      }
+    }
+  }
+  Return cell $(\seqlen{S_l},\seqlen{S_r},\mbox{END})$.
+\caption{\label{ForwardPairHMM}
+The general form of the Forward algorithm for computing the joint probability of two sequences generated by the model $M$, a  Pair HMM.  
+}
+\end{algorithm}
+
+The generative transducer $Q_n \equiv R \compose (B_l \fork B_r)$
+in Algorithm~\ref{ForwardTransducer} is effectively identical to the Pair HMM in Algorithm~\ref{ForwardPairHMM}.
+
+
+
+
+
+
+\subsection{Pseudocode for DP recursion}
+
+We outline a more precise version of the Forward-like DP recursion in Algorithm~\ref{ForwardTransducerFull} and the associated Function $\addToDPFunction$. 
+Let $\getprofiletype(q,side)$ return the state type for the profile on $side$ which is consistent with $q$.  
+
+\subsubsection{Transition sets}
+
+Since  all transitions in the state spaces $Q'_n, E_l$, and $E_r$ are known, we can define the following sets :
+\begin{eqnarray*}
+\incomingLeftProfile{j} &=& \{i: \newTransName{l}(i,j) \neq 0 \} \\
+\incomingRightProfile{j} &=& \{i: \newTransName{r}(i,j) \neq 0 \} \\
+\incomingM{q'} &=& \{ q:q \in \matchstates, \transweightfun{Q'_n}(q,q') \neq 0 \}\\
+\incomingL{q'} &=& \{ q:q \in \leftemitstates, \transweightfun{Q'_n}(q,q') \neq 0 \}\\
+\incomingR{q'} &=& \{ q:q \in \rightemitstates, \transweightfun{Q'_n}(q,q') \neq 0 \}
+\end{eqnarray*}
+
+
+\begin{algorithm}
+  Initialize $Z(\startstate) \leftarrow 1$;
+  \BlankLine
+  \ForEach{$1 \leq \rightToI \leq N_r$}{ 
+    \ForEach{$\qTo \in \{ q:type(q) = (S,S,S,I)\}$}{ 
+      Let $(\leftProfTo,\rightProfTo)  = (\startstate, \profiledelete{\rightToI})$; \\
+      $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+    }
+  }
+
+  \ForEach{$1 \leq \leftToI \leq N_l$}{ 
+    \ForEach{ $1 \leq \rightToI \leq N_r$}{ 
+      \If{$\envelope{\leftToI}{\rightToI}$  }{
+      % q' is a match state.  
+      \ForEach{$\qTo \in \matchstates $} { 
+        Let $(\leftProfTo,\rightProfTo)  = (\profiledelete{\leftToI}, \profiledelete{\rightToI})$; \\
+        $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+        }
+
+      % q' is a left-emit state.  
+      \ForEach{$\qTo \in \leftemitstates $} { 
+        Let $(\leftProfTo, \rightProfTo) = (\profiledelete{\leftToI}, \profilewait{\rightToI})$; \\
+        $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+    }
+      % q' is a right-emit state.  
+      \ForEach{$\qTo \in \rightemitstates$} { 
+        \If{$type(\qTo) == (S,S,S,I)$}{continue}
+        Let $\tau = \getprofiletype(\qTo, left)$; \\
+        $(\leftProfTo, \rightProfTo) = (\profileunknown{\leftToI}, \profiledelete{\rightToI})$; \\
+        $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+      }
+      % q' is a wait state.  
+      \ForEach{$\qTo \in \waitstates $} { 
+        Let $(\leftProfTo, \rightProfTo) = (\profilewait{\leftToI}, \profilewait{\rightToI})$; \\
+        $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+      }
+      }
+    }
+  }
+  % left emit, right side is profileterminate
+  \ForEach{$1 \leq \leftToI \leq N_l$}{ 
+    \ForEach{$\qTo \in \leftemitstates $} { 
+      Let $(\leftProfTo, \rightProfTo) = (\profiledelete{\leftToI},  \profileterminate )$; \\
+      $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+    }
+  }
+  % right emit, left side is profileterminate
+    \ForEach{ $1 \leq \rightToI \leq N_r$}{ 
+      \ForEach{$\qTo \in \rightemitstates $} { 
+      Let $(\leftProfTo, \rightProfTo) = (\profileterminate, \profiledelete{\rightToI})$; \\
+      $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+    }
+  }
+      
+
+  % q' is a wait state and both profiles are in the terminating-wait state
+  \ForEach{$\qTo \in \waitstates $} { 
+    Let $(\leftProfTo, \rightProfTo) = (\profileterminate, \profileterminate)$; \\
+    $\addToDP{\qTo}{\leftProfTo}{\rightProfTo}$;
+  }
+
+
+  % q' is the end state.  
+  Initialize $Z(\laststate) \leftarrow 0$; \\
+  \ForEach{$\qFrom \in \waitstates $ } {
+    Let $\mFrom = (\qFrom,\profileterminate, \profileterminate)$; \\
+    $Z(\laststate) \leftarrow Z(\laststate) + Z(\mFrom) \transweightfun{Q'_n}(\qFrom,\laststateof{Q'_n})$;
+  }
+
+\caption{\label{ForwardTransducerFull}
+The full version of the analog of the Forward algorithm for transducer $M_n$, 
+described in \secref{Mn}. 
+This to visit each state in $\statesof{M_n}$ 
+in the proper order, storing the sum-over-paths likelihood
+ up to that state using \addToDPFunction(\ldots) (defined separately).
+The value of $Z(\laststateof)$ is the likelihood of sequences descended from node $n$. 
+}
+\end{algorithm}
+
+\begin{function}
+\KwIn{$(\qTo, \leftProfTo, \rightProfTo)$.}
+\KwResult{The cell in $Z$ for $m=(\qTo, \leftProfTo, \rightProfTo)$ is filled.}
+\BlankLine
+Let $\mTo = (\qTo,\leftProfTo, \rightProfTo)$; \\
+% Let $(\leftToI, \rightToI) = (\stateindex{E_l}{\leftProfTo}, \stateindex{E_r}{\rightProfTo})$\\
+Let $\emitProb = \emitweightfun{M_n}(\epsilon,\epsilon,\mTo)$; \\
+
+Initialize $Z(\mTo) \leftarrow \transweightfun{Q'_n}(\startstate,\qTo) \profTrans{l}(0,\leftToI) \profTrans{r}(0,\rightToI) \emitProb$; \\
+\ForEach{ $\leftFromI \in \incomingLeftProfile{\leftToI} $}{
+  \ForEach{ $\rightFromI \in \incomingRightProfile{\rightToI} $} {
+      Let $(\leftProfFrom, \rightProfFrom) = (\profiledelete{\leftFromI}, \profiledelete{\rightFromI})$; \\
+    % incoming q is also a match state.  both profiles are D states
+    \ForEach{ $\qFrom \in \incomingM{\qTo} $ } {
+      
+      Let $\mFrom = (\qFrom,\leftProfFrom, \rightProfFrom)$; \\
+      $Z(\mTo) \leftarrow Z(\mTo) + Z(\mFrom) \transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{l}(\leftFromI,\leftToI)
+      \profTrans{r}(\rightFromI,\rightToI) \emitProb$
+     }
+    }
+}
+
+  
+\ForEach{ $\leftFromI \in \incomingLeftProfile{\leftToI} $}{
+  \ForEach{ $\qFrom \in \incomingL{\qTo} $ } {
+  % incoming q is a left-insert state.  l,r profiles are D,W states,respectively. Note we've exited loop rightFromI 
+  %Note we've exited loop rightFromI and initiated a new leftFromI
+    Let $(\leftProfFrom, \rightProfFrom) = (\profiledelete{\leftFromI}, \profilewait{\rightToI})$; \\
+    Let $\mFrom =( \qFrom,\leftProfFrom, \rightProfFrom)$; \\
+    $Z(\mTo) \leftarrow Z(\mTo) + Z(\mFrom) \transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{l}(\leftFromI,\leftToI)\emitProb$;
+  }    
+}
+
+
+\ForEach{ $\rightFromI \in \incomingRightProfile{\rightToI} $} {
+ % incoming q is a right-insert state.  l,r profiles are W,D states,respectively. 
+  %Note we've exited loop leftFromI and initiated a new rightFromI
+  \ForEach{ $\qFrom \in \incomingR{\qTo} $ } {
+    Let $\tau = \getprofiletype(\qFrom, left)$; \\
+    Let $(\leftProfFrom, \rightProfFrom) = (\profileunknown{\leftToI}, \profiledelete{\rightFromI})$; \\
+    Let $\mFrom = (\qFrom,\leftProfFrom, \rightProfFrom)$; \\
+    $Z(\mTo) \leftarrow Z(\mTo) + Z(\mFrom) \transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{r}(\leftFromI,\leftToI)\emitProb$;
+  }
+}
+
+\label{fillZ}
+\caption{\addToDPFunction()   used by Algorithm \ref{ForwardTransducerFull}.  
+This is used during the Forward algorithm to compute the sum-over-paths likelihood ending at a given
+state.  This quantity is later used to guide stochastic sampling (Algorithms \ref{traceback.short} and \ref{traceback.full}).  
+}
+
+\end{function}
+
+
+\subsubsection{Traceback}
+Sampling a path from $P(\pi|M_n)$ is analogous to stochastic traceback through the Forward matrix.  The basic traceback algorithm is presented in Algorithm~\ref{traceback.short}, and a more precise version is presented in Algorithm~\ref{traceback.full}.  
+
+Let the function $\sample(set, weights)$ input two equal-length vectors and return a randomly-chosen element of $set$, such that  $set_i$ is sampled
+with probability $\frac{weights_i}{sum(weights)}$.
+
+
+\begin{algorithm}
+\KwIn{Z}
+\KwOut{A path  $\pi$ through $M_n$ sampled proportional to $\transweightfun{M_n}(\pi)$.}
+\BlankLine
+Initialize $\pi \leftarrow  (\laststateof{M_n})$ \\
+Initialize $\currentstate \leftarrow \laststateof{M_n}$ \\
+\BlankLine
+\While { $\currentstate \neq \startstateof{M_n}$ } {
+Let $K = \{ k \in M_n: \transweightfun{M_n}(k,\currentstate) \neq 0 \} $ \\
+With probability $\frac{Z(\newstate)\transweightfun{M_n}(\newstate, \currentstate)}
+{\sum_{k \in K} Z(k)\transweightfun{M_n}(k, \currentstate)}$, prepend $\newstate$ to $\pi$.\\
+Set $\currentstate \leftarrow \newstate$
+}
+\KwRet{$\pi$}
+
+\label{traceback.short}
+\caption{
+Pseudocode for Stochastic traceback for sampling paths through the transducer $M_n$, described
+in \secref{Mn}. 
+Stochastic sampling is done such that a path $\pi$ through $M_n$ is visited proportional to its
+likelihood weight.  
+By tracing a series of paths through $M_n$ and storing the union of these paths as a sequence
+profile, we are able to limit the number of solutions considered during progressive
+ reconstruction, reducing time and memory complexity. 
+} 
+\end{algorithm}
+
+
+
+
+\begin{algorithm}
+\KwIn{Z}
+\KwOut{A path  $\pi$ through $M_n$ sampled proportional to $\transweightfun{M_n}(\pi)$.}
+\BlankLine
+Initialize $\pi \leftarrow  (\laststateof{M_n})$ \\
+Initialize $\currentstate \leftarrow \laststateof{M_n}$ \\
+\BlankLine
+\While { $\currentstate \neq \startstateof{M_n}$ } {
+Initialize $\instates \leftarrow \emptyarray $ \\
+Initialize $\inweights \leftarrow \emptyarray $ \\
+Set $ (\qTo, \leftProfTo, \rightProfTo) \leftarrow \mTo $\\
+
+\If {$\currentstate = \laststateof{M_n}$}{
+\ForEach { $\qFrom \in \waitstates$ } {
+  Add $(\qTo, \profileterminate, \profileterminate)$ to $\instates$ \\
+  Add $Z((\qFrom, \profileterminate, \profileterminate))\transweightfun{Q'_n}(\qFrom, \laststateof{Q'_n})$ to $\inweights$\\
+}
+}
+\Else{
+  \If {$\transweightfun{Q'_n}(\startstateof{Q'_n}, qTo) \profTrans{l}(0, \leftToI)\profTrans{r}(0, \rightToI) \neq0$}{
+    Add $(\startstateof{Q'_n}, \startstate, \startstate)$ to $\instates$ \\
+    Add $\transweightfun{Q'_n}(\startstateof{Q'_n}, qTo) \profTrans{l}(0, \leftToI) \profTrans{r}(0, \rightToI)$ to $\inweights$\\
+  }
+  \ForEach{ $\leftFromI \in \incomingLeftProfile{\leftToI} $}{
+    \ForEach{ $\rightFromI \in \incomingRightProfile{\rightToI} $} {
+      Let $(\leftProfFrom, \rightProfFrom) = (\profiledelete{\leftFromI}, \profiledelete{\rightFromI})$; \\
+      % q is a match state.  both profiles are D states                                                           
+      \ForEach{ $\qFrom \in \incomingM{\qTo} $ } {
+        
+        Add $(\qFrom,\leftProfFrom, \rightProfFrom)$ to $\instates$; \\
+        Add $Z((\qFrom, \leftProfFrom, \rightProfFrom))\transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{l}(\leftFromI,\leftToI)\profTrans{r}(\rightFromI,\rightToI)$ to $\inweights$; \\  
+      }
+    }
+  }
+  
+
+\ForEach{ $\leftFromI \in \incomingLeftProfile{\leftToI} $}{
+    Let $(\leftProfFrom, \rightProfFrom) = (\profiledelete{\leftFromI}, \profilewait{\rightToI})$; \\
+    \ForEach{ $\qFrom \in \incomingL{\qTo} $ } {
+  % incoming q is a left-insert state.  l,r profiles are D,W states,respectively. Note we've exited loop rightFromI     
+   Add $(\qFrom,\leftProfFrom, \rightProfFrom)$ to $\instates$; \\
+   Add $Z((\qFrom, \leftProfFrom, \rightProfFrom))\transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{l}(\leftFromI,\leftToI)$ to $\inweights$; \\  
+   }
+}
+
+\ForEach{ $\rightFromI \in \incomingRightProfile{\rightToI} $} {
+  Let $\tau = \getprofiletype(\qTo, left)$; \\
+  Let $(\leftProfFrom, \rightProfFrom) = (\profileunknown{\leftToI}, \profiledelete{\rightFromI})$; \\
+  % incoming q is a right-insert state.  l,r profiles are W,unknown states,respectively.           
+    \ForEach{ $\qFrom \in \incomingR{\qTo} $ } {
+    Add $(\qFrom,\leftProfFrom, \rightProfFrom)$ to $\instates$; \\
+    Add $Z((\qFrom, \leftProfFrom, \rightProfFrom))\transweightfun{Q'_n}(\qFrom,\qTo) \profTrans{r}(\rightFromI,\rightToI)$ to $\inweights$; \\  
+    }
+  }
+}
+\BlankLine
+Set $ \newstate \leftarrow \sample(\instates, \inweights)$\\
+Prepend $\newstate$ to $\pi$\\
+Set $\currentstate \leftarrow \newstate$\\
+} 
+
+
+\KwRet{$\pi$}
+
+\label{traceback.full}
+\caption{
+Pseudocode for stochastic traceback for sampling paths through the transducer $M_n$, 
+described in \secref{Mn}. 
+Stochastic sampling is done such that a path $\pi$ through $M_n$ is visited proportional to its
+likelihood weight.  
+By tracing a series of paths through $M_n$ and storing the union of these paths as a sequence
+profile, we are able to limit the number of solutions considered during progressive
+ reconstruction, reducing time and memory complexity. }
+\end{algorithm}
+
+
+
+
+\subsection{Alignment envelopes}
+
+Note that states $e \in \statesof{E_n}$ of the constrained-expanded model, as with states $g \in \statesof{G_n}$ of the expanded model,
+can be associated with a vector of subsequence co-ordinates
+(one subsequence co-ordinate for each leaf-sequence in the clade descended from node $n$).
+For example, in our non-normal construction of $\recognize(S)$, the state $\phi \in \mathbb{Z}_{|S|+1}$ is itself the co-ordinate.
+The co-ordinate information associated with $e_l$ and $e_r$ can, therefore, be used to define some sort of {\em alignment envelope}, as in \cite{Holmes2005}.
+For example, we could exclude $(e_l,e_r)$ pairs if they result in alignment cutpoints that are too far from the main diagonal of the sequence co-ordinate hypercube.  
+
+Let the function $\envelope{i_l}{i_r}$ return true if the state-index pair $(i_l,i_r)$ is allowed by the alignment envelope, and false otherwise.
+Further, assume that $Z$ is a sparse container data structure, such that
+$Z(m)$ always evaluates to zero if $m=\mstate$ is not in the envelope.
+
+\subsubsection{Construction of alignment envelopes}
+
+Let $\recognize(S)$ be defined such that it has only one nonzero-weighted path
+\[
+X_0 \to W_0 \stackrel{S_1}{\to} M_1 \to W_1 \stackrel{S_2}{\to} M_2 \to \ldots \to W_{L-1} \stackrel{S_L}{\to} M_L \to W_L \to X_L
+\]
+so a $\recognize(S)$-state is either the start state ($X_0$), the end state ($X_L$), a wait state ($W_i$) or a match state ($M_i$).
+All these states have the form $\phi_i$ where $i$ represents the number of symbols of $S$ that have to be read in order to reach that state,
+i.e. a ``co-ordinate'' into $S$.
+All $\recognize(S)$-states are labeled with such co-ordinates, as are the states of
+any transducer that is a composition involving $\recognize(S)$,
+such as $G_n$ or $H_n$.
+
+For example, in a simple case involving a root node (1) with two children (2,3) whose sequences are constrained to be $S_2,S_3$,
+the evidence transducer is $G = R \compose G_{\mbox{root}} = R \compose (G_2 \fork G_3) = R \compose (\forkfun{B_2 \compose \recognize(S_2)}{B_3 \compose \recognize(S_3)})$
+=
+\begin{parsetree}
+ ( .$R$. ( .$B_2$. .$\recognize[S_2]$. ) ( .$B_3$. .$\recognize[S_3]$. )  )
+\end{parsetree}
+
+All states of $G$ have the form $g=(r,b_2,\phi_2 i_2,b_3,\phi_3 i_3)$ where $\phi_2, \phi_3 \in \{ X, W, M \}$,
+so $\phi_2 i_2 \in \{ X_{i_2}, W_{i_2}, M_{i_2} \}$ and similarly for $\phi_3 i_3$.
+Thus, each state in $G$ is associated with a co-ordinate pair $(i_2,i_3)$ into $(S_2,S_3)$, as well as a state-type pair $(\phi_2,\phi_3)$.
+
+Let $n$ be a node in the tree,
+let ${\cal L}_n$ be the set of indices of leaf nodes descended from $n$,
+and let $G_n$ be the phylogenetic transducer for the subtree rooted at $n$,
+defined in Section~\ref{sec:EvidenceExpandedModel}.
+Let $\States_n$ be the state space of $G_n$.
+
+If $m \in {\cal L}_n$ is a leaf node descended from $n$,
+then $G_n$ includes, as a component, the transducer $\recognize(S_m)$.
+Any $G_n$-state, $g \in \States_n$, is a tuple, one element of which is a $\recognize(S_m)$-state, $\phi_i$, where $i$ is a co-ordinate (into sequence $S_m$) and $\phi$ is a state-type.
+Define $i_m(g)$ to be the co-ordinate and $\phi_m(g)$ to be the corresponding state-type.
+
+Let $A_n:\States_n \to 2^{{\cal L}_n}$ be the function returning the set of {\em absorbing leaf indices} for a state, such that the existence of a finite-weight transition $g' \to g$ implies that $i_m(g) = i_m(g') + 1$ for all $m \in A_n(g)$.
+
+Let $(l,r)$ be two sibling nodes.
+The {\em alignment envelope} is the set of sibling state-pairs from $G_l$ and $G_r$ that can be aligned.
+The function $E\colon \States_l \times \States_r \to \{ 0,1 \}$ indicates membership of the envelope.
+For example, this basic envelope allows only sibling co-ordinates separated by a distance $s$ or less
+
+\[
+E_{\mbox{basic}}(f,g) = \max_{m \in A_l(f), n \in A_r(g)} |i_m(f)-i_n(g)| \leq s
+\]
+
+An alignment envelope can be based on a {\em guide alignment}. 
+For leaf nodes $x,y$ and $1 \leq i \leq \seqlen{S_x}$, let $\mathcal{G}(x,i,y)$ be the number of residues of sequence $S_y$
+in the section of the guide alignment from the first column, up to and including the column containing residue $i$ of sequence $S_x$.
+
+This envelope excludes a pair of sibling states if they include a homology between residues which is more than $s$ from the homology of those characters contained in the guide alignment:
+\[
+E_{\mbox{guide}}(f,g) = \max_{m \in A_l(f), n \in A_r(g)} \max(\ |\mathcal{G}(m,i_m(f),n)-i_n(g)| \ ,  |\mathcal{G}(n,i_n(g),m)-i_m(f)|\ ) \leq s
+\]
+
+
+Let $K(x,i,y,j)$ be the number of match columns (those alignment columns in which both $S_x$ and $S_y$ have a non-gap character) between the column containing residue $i$ of sequence $S_x$ and the column containing residue $j$ of sequence $S_y$.  
+This envelope excludes a pair of sibling states if they include a homology between residues which is more than $s$ {\em matches} from the homology of those characters contained in the guide alignment:
+
+\begin{align*}
+E_{\mbox{guide}}(f,g) & = & \max_{m \in A_l(f), n \in A_r(g)} \max(\ |\mathcal{G}(m,i_m(f),n)-K(m,i_m(f),n,i_n(g))|, \ \\
+& &|\mathcal{G}(n,i_n(g),m)-K(n,i_n(g),m,i_m(f))|\ ) \leq s
+\end{align*}
+
+
+
+
+
+
+
+
+\subsection{Explicit construction of profile $E_n$ from $M_n$, following DP}
+\seclabel{Mn2En}
+
+Having sampled a set of paths through $M_n$, profile $E_n$ is constructed by applying a series of transformations.
+
+Refer to the previous sections for definitions pertaining to $M_n$ and $E_n$.
+
+\subsubsection{Transformation $M_n \to M'_n$: sampled paths}
+
+Let $\Pi' \subseteq \Pi_{M'_n}$ be a set of complete paths through $M_n$,
+corresponding to $K$ random samples from $P(\pi|M_n)$.
+
+The state space of $M'_n$ is the union of all states used by the paths in  $\Pi_{M'_n}$
+
+\[ 
+\statesof{M'_n} = \bigcup_{\pi \in \Pi'} \bigcup_{i=1}^{|\pi|} \pi_i  
+\]
+where $\pi_i$ is the $i^{th}$ state in a path $\pi \in (\transitionsof{M_n})^\ast$.
+
+The emission and transition weight functions for $M'_n$ are the same as those of $M_n$:
+
+\begin{eqnarray*}
+\transweightfun{M'_n}(m,m') & = & \transweightfun{M_n}(m,m') \\
+\emitweightfun{M'_n}(\epsilon,\epsilon,m') & = & \emitweightfun{M_n}(\epsilon,\epsilon,m')
+\end{eqnarray*}
+
+
+\subsubsection{Transformation $M'_n \to E''_n$: stripping out the prior}
+
+Let $E''_n$ be a the transducer constructed via removing the $R$ states from the states of $M'_n$.  
+
+\[
+\statesof{E''_n} = \{ \hstate : \exists \mstate \in M'_n \}
+\]
+
+The emission and transition weight functions for $E''_n$ are the same as those of $H_n$:
+
+\begin{eqnarray*}
+\transweightfun{E''_n}(e,e') & = & \transweightfun{H_n}(e,e') \\
+\emitweightfun{E''_n}(\epsilon,\epsilon,e') & = & \emitweightfun{H_n}(\epsilon,\epsilon,e')
+\end{eqnarray*}
+
+
+\subsubsection{Transformation $E''_n \to E'_n$: eliminating null states}
+Let $E'_n$ be the transducer derived from $E''_n$ by marginalizing its null states.  
+
+The state space of $E'_n$ is the set of non-null states in $E''_n$:
+
+\[
+\statesof{E'_n} = \{ e : e \in E''_n, type(e) \in \{S,E,D,W\} \}
+\]
+
+The transition weight function is the same as that of $H_n$ (and also $E''_n$) with paths through null states marginalized.
+Let 
+
+\begin{eqnarray*}
+\pi_{ {E''_n}(e,e')} &  =  & \{  \pi: \pi_1 =e, \pi_{|\pi|}=e', type(\pi_i) = N\ \forall\ i: 2 \leq i < |\pi| \} \\
+ \transweightfun{E'_n}(e,e') & = & \sum_{\pi \in \pi_{E''_n(e,e') }} \transweightfun{H_n}(\pi) 
+\end{eqnarray*}
+
+The transition weight function resulting from summing over null states in $E''_n$ can be done with a preorder traversal of the state graph, outlined in Algorithm~\ref{removeNullStates}.   The $stack$ data structure has operations $stack.push(e)$, which adds $e$ to the top of the stack, and $stack.pop()$, which removes and returns the top element of the stack.  The $weights$ container maps states in $\statesof{E''_n}$ to real-valued weights.  
+
+\newcommand\newTransHash{t_{\mbox{new}}}
+\begin{algorithm}
+\KwIn{$\statesof{E''_n}, \transweightfun{E''_n}$}
+\KwOut{$\transweightfun{E'_n}$}
+Let $\statesof{E'_n} = \{ e : e \in E''_n, type(e) \in \{S,E,D,W\} \}$\\
+Initialize $\newTransHash(e,e') = 0$ $ \forall (e,e') \in \statesof{E'_n}$\\
+\ForEach { $source\_state \in \statesof{E''_n}$}{
+Initialize $stack = [source\_state]$\\
+Initialize $weights[source\_state] = 0$\\
+
+
+\BlankLine
+
+\While{$stack \neq [] $}{
+
+Set $e=stack.pop()$\\
+\ForEach {$e' \in \{e' \in \statesof{E''_n}: \transweightfun{E''_n}(e,e') \neq 0\}$ }{
+
+\If{ $type(e') \neq N$}{ 
+  $\newTransHash(source, e') += weights[e]\cdot  \transweightfun{E''_n}(e,e')$\\
+}
+\Else{
+$stack.push(e')$\\
+$weights[e'] = weight[e] \cdot \transweightfun{E''_n}(e,e')$\\
+}
+
+}  
+}  
+}  
+\KwRet{ $\transweightfun{E'_n}(e,e') \equiv \newTransHash(e,e')$ $\forall (e,e') \in \statesof{E'_n}$}
+\label{removeNullStates}
+\caption{Pseudocode for transforming the transition weight function of $E''_n$ into that of $E'_n$ via summing over null state paths (insertions).  
+This is done after stochastic sampling as the first of two steps transforming a sampled $M_n$ transducer into a recognizer $E_n$, described in \secref{Mn2En}.
+  Summing over null states ensures that these states cannot align to sibling states in the parent round
+of profile - profile alignment.  
+An insertion at branch $n$ is, by definition, not homologous to any characters outside the $n$-rooted subtree, and null state elimination is how this is explicitly enforced in our algorithm.} 
+\end{algorithm}
+
+
+Besides the states $\{ \startstate, \laststate, \profileterminate \}$, the remaining states in $E'_n$ are of type $D$, which we now index in ascending topological order: 
+
+\[
+\statesof{E'_n} = \{ \startstate, \laststate , \profileterminate \} \cup  \{\profiledelete{n} : 1 \leq n \leq \numStates{n} \}
+\]
+
+where $ 1\leq i,j\leq \numStates{n}$,
+
+\begin{eqnarray*}
+\newTransName{n}(i,j) & \equiv & \transweightfun{E'_n}(\profiledelete{i},\profiledelete{j}) \\
+\newTransName{n}(0,j) & \equiv & \transweightfun{E'_n}(\startstate,\profiledelete{j})  \\
+\newTransName{n}(i,\numStates{n}+1) & \equiv & \transweightfun{E'_n}(\profiledelete{i}, \profileterminate)  \\
+\end{eqnarray*}
+
+
+
+
+\subsubsection{Transformation $E'_n \to E_n$: adding wait states}
+
+Let $E_n$ be the transducer derived from transforming $E'_n$ into strict normal form.  Since $N$ states were removed in the transformation from $E''_n \rightarrow E'_n$, we need only add $W$ states before each $D$ state:
+
+\[
+\statesof{E_n} = \{ \startstate, \laststate , \profileterminate \} \cup  \{\profiledelete{n} : 1 \leq n \leq N \}
+\cup  \{\profilewait{n} : 1 \leq n \leq N \}
+\]
+
+Note the following correspondences between the previously-defined  $\transweightfun{E_n}(e,e')$ and new notation. 
+
+\begin{eqnarray*}
+\transweightfun{E_n}(\profiledelete{i},\profilewait{j}) & = & \newTransName{n}(i,j) \\
+\transweightfun{E_n}(\profilewait{j},\profiledelete{j}) & = & 1 \\
+\transviawait{E_n}(\profiledelete{i},\profiledelete{j}) & = & \newTransName{n}(i,j) \\
+\transtowait{E_n}(\profiledelete{i},\profilewait{j}) & = & \newTransName{n}(i,j) \\
+\transtowait{E_n}(\profilewait{i},\profilewait{j}) & = & \delta(i=j) \\
+\end{eqnarray*}
+
+\section{Message-passing interpretation}
+
+In the interpretation of Felsenstein's pruning algorithm \cite{Felsenstein81} and Elston and Stewart's more general peeling algorithm \cite{ElstonStewart71} as message-passing on factor graphs \cite{KschischangEtAl98},
+the tip-to-root messages are functions of the form
+$P(\outputs_n|\outputn{n}=x)$ where $\outputn{n}$ (a random variable) denotes the sequence at node $n$,
+$x$ denotes a particular value for this r.v.,
+and
+$\outputs_n = \{ \outputn{m} : m \in \leaves_n \}$
+denotes the observation of sequences at nodes in $\leaves_n$, the set of leaf nodes that have $n$ as a common ancestor.
+
+These tip-to-root messages are equivalent to our evidence-expanded transducers (Section~\ref{sec:EvidenceExpandedModel}):
+\[
+P(\outputs_n|\outputn{n}=x) = \wtrans{\weight}{x}{G_n}{\epsilon}
+\]
+
+The corresponding root-to-tip messages take the form
+$P(\bar{\outputs}_n,\outputn{n}=x)$
+where
+$\bar{\outputs}_n = \{ \outputn{m} : m \in \leaves, m \notin \leaves_n \}$ 
+denotes the observation of sequences at leaf nodes that do {\em not} have $n$ as a common ancestor.
+These messages can be combined with the tip-to-root messages to yield posterior probabilities of ancestral sequences
+\[
+P(\outputn{n}=x|\outputs) = \frac{ P(\bar{\outputs}_n,\outputn{n}=x) P(\outputs_n|\outputn{n}=x)}{P(\outputs)}
+\]
+
+We can define a recursion for transducers that model these root-to-tip messages, just as with the tip-to-root messages.
+
+First, define $J_1 = R$.
+
+Next, suppose that $n>1$ is a node with parent $p$ and sibling $s$.
+Define
+\[
+J_n = J_p \compose (B_n \fork (B_s \compose G_s))
+=
+\begin{parsetree}
+ ( .$J_p$. ( .$\idfork$. ( .$B_n$. .. ) ( .$B_s$. .$G_s$. )  ) )
+\end{parsetree}
+\]
+
+Note that $J_n$ is a singlet generator that outputs only the sequence at node $n$
+(because $G_s$ has null output).
+Note also that $J_n G_n \transequiv G_0$.
+
+The root-to-tip message is
+\[
+P(\bar{\outputs}_n,\outputn{n}=x) = \wtrans{\weight}{\epsilon}{J_n}{x}
+\]
+
+The equations for $G_n$ and $J_n$ are transducer formulations of the pruning and peeling recursions
+
+\begin{eqnarray*}
+P(\outputs_n|\outputn{n}=x) & = & \left( \sum_y P(\outputn{l}=y|\outputn{n}=x) P(\outputs_l|\outputn{l}=y) \right) \left( \sum_z P(\outputn{r}=z|\outputn{n}=x) P(\outputs_r|\outputn{r}=z) \right) \\
+P(\bar{\outputs}_n,\outputn{n}=x) & = & \sum_y P(\bar{\outputs}_p,\outputn{p}=y) P(\outputn{n}=x|\outputn{p}=y) \sum_z P(\outputn{s}=z|\outputn{p}=y) P(\outputs_s|\outputn{s}=z)
+\end{eqnarray*}
+where $(l,r)$ are the left and right children of node $n$.
+For comparison,
+\begin{eqnarray*}
+G_n & = & (B_l \compose G_l) \fork (B_r \compose G_r) \\
+J_n & = & J_p \compose (B_n \fork (B_s \compose G_s)) \\
+\wtrans{\weight}{x}{B_n}{y} & = & P(\outputn{n}=y|\outputn{p}=x) \\
+\wtrans{\weight}{x}{T\compose U}{z} & = & \sum_{y} \wtrans{\weight}{x}{T}{y} \wtrans{\weight}{y}{U}{z} \\
+\wtrans{\weight}{x}{T_l}{\outputs_l} \wtrans{\weight}{x}{T_r}{\outputs_r} & = & \wtrans{\weight}{x}{T_l \fork T_r}{\outputs_n}
+\end{eqnarray*}
+
+\section{Conclusions}
+
+In this article we have presented an algorithm that may be viewed in two equivalent ways: a form of Felsenstein's pruning algorithm generalized from individual characters to entire sequences, 
+or a phylogenetic generalization of progressive alignment.   
+Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
+
+We described a hierarchical  approximation technique enabling inference in ${\cal O}(L^2N)$ time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$). 
+Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to ${\cal O}(LN)$, making the algorithm practical for typical alignment problems.  
+
+Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
+Further, most alignment programs account for the phylogeny relating sequences either in a heuristic sense, or not at all.  
+Previous studies have indicated that alignment uncertainty and/or accuracy  strongly affects downstream analyses \cite{WongEtAl2008}, particularly if evolutionary inferences are to be made \cite{LoytynojaGoldman2008}.
+
+In this work we have described  the mathematics and algorithms required for an alignment algorithm that is simultaneously explicitly phylogenetic and avoids conditioning on a single multiple alignment.
+  In extensive simulations (in separate work, submitted), we find that our implementation of this algorithm recovers significantly more accurate reconstructions of simulated indel histories, 
+indicating the need for mathematically rigorous alignment algorithms, particularly for evolutionary applications. 
+
+
+\paragraph{Authors' contributions:} OW and IH developed the algorithm and wrote the paper.  BP and GL made substantial intellectual contributions to developing the algorithm.  
+
+\paragraph{Funding:} OW and IH were partially supported by NIH/NHGRI grant R01-GM076705.
+
+\appendix
+\section{Additional notation}
+This section defines commonplace notation used earlier in the document.
+\subsection{Sequences and alignments}
+{\em Sequence notation:}
+Let $\Omega^\ast$ be the set of sequences over $\Omega$, including the empty sequence $\epsilon$.
+Let $x \cdot y$ denote the concatenation of sequences $x$ and $y$, and $\bigodot_n x_n$ the concatenation of sequences $\{ x_n \}$.
+
+{\em Gapped-pair alignment:}
+A gapped pairwise alignment is a sequence of individual columns of the form $(\omega_1,\omega_2)$ where $\omega_1 \in \gappedalphabet{1}$ and $\omega_2 \in \gappedalphabet{2}$.
+
+{\em Map from alignment to sequences:}
+The function $S_k:\left(\gappedpair{1}{2}\right)^\ast \to \Omega_k^\ast$ returns the $k$'th row of a pairwise alignment, with gaps removed
+\begin{eqnarray*}
+S_1(x) & = & \bigodot_{(\omega_1,\omega_2) \in x} \omega_1 \\
+S_2(x) & = & \bigodot_{(\omega_1,\omega_2) \in x} \omega_2
+\end{eqnarray*}
+
+{\em Transition paths:}
+A transition path $\pi \in \Pi$ 
+is a sequence of transitions of the form $(\phi_1,\omega_I,\omega_O,\phi_2)$
+where
+$\phi_1,\phi_2 \in \States$,
+$\omega_I \in \gappedalphabet{I}$, and
+$\omega_O \in \gappedalphabet{O}$.
+
+{\em Input and output sequences:}
+Define the input and output sequences
+$S_I:\Pi \to \Omega_I^\ast$ and
+$S_O:\Pi \to \Omega_O^\ast$
+\begin{eqnarray*}
+S_I(\pi) & = & \bigodot_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_I \\
+S_O(\pi) & = & \bigodot_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
+\end{eqnarray*}
+
+
+
+\bibliography{../latex-inputs/alignment,../latex-inputs/ncrna,../latex-inputs/genomics,../latex-inputs/reconstruction}
+
+
 
 \end{document}
