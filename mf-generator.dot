@@ -5,8 +5,8 @@ digraph G {
     I1 [label="", shape=circle];
     I2 [label="", shape=circle];
 
-S->I1 [label="-/M"];
-I1->I2 [label="-/F"];
+S->I1 [label="-/M", fontcolor=blue];
+I1->I2 [label="-/F", fontcolor=blue];
 I2->E;
 
 

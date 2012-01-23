@@ -11,7 +11,7 @@ ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG))
 ALLFIGJUNK := $(addsuffix .tex,$(ALLFIG)) $(addsuffix .aux,$(ALLFIG)) $(addsuffix .log,$(ALLFIG)) $(addsuffix -pics.pdf,$(ALLFIG))
 
 # The following source files currently only render properly as PNGs
-BAD := condensed-emission fanned-emission fanned-indel fanned-match
+BAD := condensed-emission fanned-emission fanned-indel fanned-match mf-generator liv-small transitions
 BADPNG := $(addsuffix .png,$(BAD))
 GOODPDF := $(addsuffix -fig.pdf,$(filter-out $(BAD),$(ALLFIG)))
 

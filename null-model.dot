@@ -1,12 +1,16 @@
 digraph G {
-    S [label="$S$", shape=circle, color=red];
-    E [label="$E$", shape=diamond, color=red];
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+    W [label="", shape=octagon, color=red];
 
     I [label="$\pi(y)$", shape=house, color=red];
 
-S->I;
+S->I [label="$p$"];
+S->W [label="$1-p$"];
 I->I [label="$p$"];
-I->E [label="$1-p$"];
+I->W [label="$1-p$"];
+W->E;
+
 
 
 }

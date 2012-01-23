@@ -6,9 +6,9 @@ digraph G {
     D2 [label="", shape=circle];
     D3 [label="", shape=circle];
 
-    S->D1 [label="L/-"];
-    D1->D2 [label="I/-"];
-    D2->D3 [label="V/-"];
+    S->D1 [label="L/-", fontcolor=blue];
+    D1->D2 [label="I/-", fontcolor=blue];
+    D2->D3 [label="V/-", fontcolor=blue];
     D3->E;
 
 

@@ -1,0 +1,18 @@
+digraph G {
+	ancestor [label="Ancestral sequence", shape=oval];
+	intermediate [label="Intermediate sequence", shape=oval];
+	LIV [label="Sequence LIV", shape=oval];
+	MF [label="Sequence MF", shape=oval];
+	CS [label="Sequence CS", shape=oval];
+	tkf_inter [label="TKF91 model", shape=box3d];
+	tkf_liv [label="TKF91 model", shape=box3d];
+	tkf_mf [label="TKF91 model", shape=box3d];
+	tkf_cs [label="TKF91 model", shape=box3d];
+	
+	ancestor->tkf_cs->CS;
+	ancestor->tkf_inter->intermediate;
+	intermediate->tkf_liv->LIV;
+	intermediate->tkf_mf->MF;
+	
+
+}

@@ -1,12 +1,16 @@
 digraph G {
     S [label="$S$", shape=circle, color=red];
     E [label="$E$", shape=diamond, color=red];
+    
+    W [label="", shape=octagon, color=red];
 
     I [label="$\pi(y)$", shape=house, color=red];
 
-S->I;
+S->I [label="$\lambda/\mu$"];
 I->I [label="$\lambda/\mu$"];
-I->E [label="$1-\lambda/\mu$"];
+S->W [label="$1-\lambda/\mu$"];
+I->W [label="$1-\lambda/\mu$"];
+W->E;
 
 
 }

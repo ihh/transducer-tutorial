@@ -10,22 +10,22 @@ digraph G {
     M [label="Match", shape=rect, color=red];
     D [label="Delete", shape=invhouse, color=red];
 
-S->I [label="-/y"];
-S->W [style=dashed];
+S->I [label="-/y", fontcolor=blue];
+S->W [label="-/-", fontcolor=blue];
 
-W->E [style=dashed];
+W->E [label="-/-", fontcolor=blue];
 
-W->M [label="x/y"];
-W->D [label="x/-"];
+W->M [label="x/y", fontcolor=blue];
+W->D [label="x/-", fontcolor=blue];
 
-I->I [label="-/y"];
-I->W [style=dashed];
+I->I [label="-/y", fontcolor=blue];
+I->W [label="-/-", fontcolor=blue];
 
-M->I [label="-/y"];
-M->W [style=dashed];
+M->I [label="-/y", fontcolor=blue];
+M->W [label="-/-", fontcolor=blue];
 
-D->I [label="-/y"];
-D->W [style=dashed];
+D->I [label="-/y", fontcolor=blue];
+D->W [label="-/-", fontcolor=blue];
 
 
 }

@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\newcommand{\secref}[1]{Section~\ref{sec.#1}}
+\newcommand{\secref}[1]{Subsection~\ref{sec.#1}}
 \newcommand{\seclabel}[1]{\label{sec.#1}}
 
 \newcommand{\figref}[1]{Figure~\ref{Figures.#1}}
@@ -33,7 +33,7 @@
 \date{}
 \maketitle
 
-\section{Overview}
+\section{Tutorial overview}
 
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
@@ -50,7 +50,7 @@ and suggests a way to extend the literature on
 site-dependent and latent-variable substitution models \needcite{Yang,Goldman,Bruno,Holmes...}
 to indel models.
 
-\section{Transducers as input-output machines}
+\subsection{Transducers as input-output machines}
 
 We begin with a brief definition of transducers from Wikipedia...
 
@@ -65,11 +65,10 @@ rather than just the binary set $\{0,1\}$.
 
 In this tutorial we are going to work through some small examples of using transducers on trees,
 for some tiny example protein sequences (MF, CS, LIV).
-For example we will compute the likelihood of the symmetric binary tree shown in \figref{mf-liv-tree},
-explaining the common descent of two sequences (MF and LIV)
+Forbled example we will compute the likelihood of the symmetric binary tree shown in \figref{cs-mf-liv-tree},
+explaining the common descent of these three sequences
 under the TKF91 model.
-\todo{Change this from (MF,LIV) to (CS,(MF,LIV)) in both text \& figure}
-\pdffig{mf-liv-tree}{Example tree used in this tutorial.}
+\pdffig{cs-mf-liv-tree}{Example tree used in this tutorial.}
 
 As noted in the Wikipedia quote, transducers can be thought of as generalizations of the related
 concepts of {\em generators} (state machines that emit output sequences, such as HMMs)
@@ -83,9 +82,9 @@ we write this as $\Delta(LIV)$.
 \todo{Change generators to $\Delta$ and recognizers to $\nabla$;
  implement this universally in figures, formal definitions, and tutorial}
 
-\pdffig{mf-generator}{Generator for protein sequence MF.}
+\pngfig{mf-generator}{Generator for protein sequence MF.}
 
-\pdffig{liv-small}{Recognizer for protein sequence LIV.}
+\pngfig{liv-small}{Recognizer for protein sequence LIV.}
 
 These figures illustrate the notation we use in this tutorial.
 States and transitions are shown as a graph.
@@ -134,7 +133,7 @@ The exact-match transducer of \figref{liv-small} is a (trivial and extreme) exam
 later we will see that the conditional probabilities in the Felsenstein pruning recursion can also
 be thought of as recognition profiles.
 
-\section{Moore machines}
+\subsection{Moore machines}
 
 Mealy machines: input/output associated with transitions.
 This is the way we define things mathematically...
@@ -178,7 +177,10 @@ or a column vector of conditional probabilities
 \end{itemize}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-\widepdffig{legend}{Transducer state types.}
+\widepdffig{legend}{Transducer state types.
+For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
+as they are implied by the state type of the destination state.
+}
 
 Types of state: Start, Match, Insert, Delete, End, Wait, Null
 
@@ -190,21 +192,27 @@ are immediately preceded in the transition graph by these Wait states.
 This is useful e.g. for co-ordinating multiple transducers connected together, as we shall soon see...
 
 \figref{transitions} shows the allowed types of transition in Moore-normal form transducers.
-\pdffig{transitions}{Allowed transitions...}
+\pngfig{transitions}{Allowed transitions...
+For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
+as they are implied by the state type of the destination state.
+}
 
 
-\subsection{Moore-machine generators and recognizers}
+\subsubsection{Moore-machine generators and recognizers}
 
 \figref{moore-mf-generator} uses our Moore-machine visual representation
 to depict the generator in \figref{mf-generator}.
-The state labeled $\imath_Z$ (for $Z \in \{M,F\}$) has I/O function $\delta(y=Z)$.
 
 \pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.
-\todo{Most of the definitions of the state labels in figures like this should go in the captions...} }
+The states are labeled $S$ (Start), $E$ (End),
+$\imath_M$ and $\imath_F$ (Insert states that emit the respective amino acid symbols),
+and $W_F$ (a Wait state that pauses after emitting the final amino acid;
+this is a requirement imposed by our Moore normal form).
+The state labeled $\imath_Z$ (for $Z \in \{M,F\}$) has I/O function $\delta(y=Z)$.}
 
 A few further examples of exact generators and recognizers, useful for the examples:
 \begin{itemize}
-\item \figref{liv-labeled} is a Moore-form recognizer for sequence LIV, with all states given an explicit label.
+\item \figref{liv-labeled} is a Moore-form recognizer for sequence LIV.
 The state labeled $\delta_Z$  (for $Z \in \{L,I,V\}$) has I/O function $\delta(x=Z)$,
 defined to be 1 if $x=Z$, 0 otherwise.
 \item \figref{mf-labeled} is the Moore-machine recognizer for MF,
@@ -215,14 +223,42 @@ with given geometric length distribution and residue frequencies
 \end{itemize}
 
 \tallpdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV.
+The states are labeled $S$ (Start), $E$ (End),
+$\delta_L$, $\delta_I$ and $\delta_V$ (Delete states that recognize the respective amino acid symbols),
+$W_L$, $W_I$ and $W_V$ (Wait states that pause after recognizing each amino acid;
+these are requirements imposed by our Moore normal form).
+The states have been grouped (enclosed by a rectangle) to show four clusters:
+ states that are visited before any of the sequence has been recognized,
+ states that are visited after ``L'' has been recognized,
+ states that are visited after ``I'' has been recognized,
+and
+ states that are visited after ``V'' has been recognized.
 The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 \pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.
+The states are labeled $S$ (Start), $E$ (End),
+$\delta_M$ and $\delta_F$ (Delete states that recognize the respective amino acid symbols),
+$W_M$ and $W_F$ (Wait states that pause after recognizing each amino acid;
+these are requirements imposed by our Moore normal form).
+The states have been grouped (enclosed by a rectangle) to show four clusters:
+ states that are visited before any of the sequence has been recognized,
+ states that are visited after ``M'' has been recognized,
+and
+ states that are visited after ``F'' has been recognized.
 The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 \pdffig{cs-labeled}{Moore-normal form recognizer for protein sequence CS.
+The states are labeled $S$ (Start), $E$ (End),
+$\delta_C$ and $\delta_S$ (Delete states that recognize the respective amino acid symbols),
+$W_C$ and $W_S$ (Wait states that pause after recognizing each amino acid;
+these are requirements imposed by our Moore normal form).
+The states have been grouped (enclosed by a rectangle) to show four clusters:
+ states that are visited before any of the sequence has been recognized,
+ states that are visited after ``C'' has been recognized,
+and
+ states that are visited after ``S'' has been recognized.
 The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 \pdffig{null-model}{A simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
 
-\subsection{Substitution and identity}
+\subsubsection{Substitution and identity}
 
 \figref{substituter} shows how the Moore-normal notation is used to represent a substitution matrix...
 \pdffig{substituter}{A transducer that introduces substitutions (matrix $Q$) but no indels.}
@@ -233,7 +269,7 @@ Note that the input and output sequences are always the same length...
 \pdffig{identity}{The identity transducer...}
 
 
-\subsection{TKF91}
+\subsubsection{TKF91}
 
 We use the TKF91 model as an example, not because it is the best model of indels
  (it has deficiencies, most notably the linear gap penalty);
@@ -243,31 +279,39 @@ rather, because it is canonical, widely-known, and illustrative of the general p
 
 Definitions of probabilities $a,b,c...$ and parameters $\lambda,\mu,R,t$
 
-\pdffig{tkf91-labeled}{...}
+\pdffig{tkf91-labeled}{
+The TKF91 transducer.
+So that we can later refer to the states by name,
+rather than writing the I/O weight functions directly on each state
+we have instead written a state label
+ $S,M,I,D,E,W$ (Start, Match, Insert, Delete, End, Wait).
+It so happens that the TKF91 transducer has one of each of these kinds of state.
+For each of the I/O states ($I$, $D$ and $M$) we must, of course, still specify an I/O weight function.
+So,
+ $\exp(Rt)$ is the substitution matrix for the $M$ (Match) state,
+ $\pi$ is the vector of weights
+  corresponding to the probability distribution of inserted characters for the $I$ (Insert) state,
+ and
+ $(1,1,\ldots,1)$
+ is the vector of weights corresponding to
+ the conditional probabilities that any given character will be deleted by the $D$ (Delete) state
+ (in the TKF91 model, deletion rate is independent of the actual character being deleted, so these are all 1).
+}
 
-In this diagram, $S,M,I,D,E,W$ have the usual interpretations
- (Start, Match, Insert, Delete, End, Wait).
-It so happens that TKF91 has one of each of these kinds of state.
-% Rewrite the following - not always labels=weight functions, instead we'll observe the connections in the text
-% e.g. ``$MM$ has emit $QR$...''
-However we are also using these labels to denote the I/O weight functions associated with
-each state in this Moore machine.
-Specifically
- $M=\exp(Rt)$ is the substitution matrix for the Match state,
- $I=\pi$ is the vector of weights
-  corresponding to the probability distribution of inserted characters for the Insert state,
- $D=\left( \begin{array}{c} 1 \\ 1 \\ \ldots \\ 1 \end{array} \right)$
- is the vector of weights
-  corresponding to the conditional probabilities that any given character will be deleted by the Delete state
-  (in the TKF91 model, deletion rate is independent of the actual character being deleted, so these are all 1);
- and $S,W,N$ are all scalars that we set equal to 1.
+\figref{tkf91-labeled} is a version of \figref{tkf91}
+where, rather than writing the I/O weight functions directly on each state (as in \figref{tkf91}),
+we have instead written a state label (as in \figref{liv-labeled}, \figref{mf-labeled} and \figref{cs-labeled}).
+The state labels are $S,M,I,D,E,W$ (interpretation: Start, Match, Insert, Delete, End, Wait).
 
 \pdffig{tkf91-root}{The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null} but with $p=\lambda/\mu$.}
 
 Equilibrium (root) generator for TKF91...
 
 
-\section{Composition}
+\subsection{Composition}
+
+There are various ways of connecting transducers by constraining some of their tapes to be the same.
+The first of these that we will consider is transducer ``composition''.
 
 Composition is when you feed the output of one transducer, $T$, into the input of another, $U$...
 the two transducers are now connected in a sense (outputs of $T$ can be synchronized with inputs from $U$)
@@ -282,7 +326,7 @@ when we sum over paths through $TU$,
 we are summing over the intermediate sequence
 (the output of $T$, which is the input of $U$)...
 
-\subsection{Multiplying two substitution models}
+\subsubsection{Multiplying two substitution models}
 
 \pdffig{substituter2}{A transducer that introduces substitutions (matrix $R$) but no indels. Compare to \figref{substituter}, which is the same model but with substitution matrix $Q$ instead of $R$.}
 
@@ -291,9 +335,17 @@ we are summing over the intermediate sequence
 Like two consecutive branches $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$...
 each branch is modeled by a different substitution matrix, $Q$ and $R$
 
-Note how the match state emit function is now a matrix multiplication...
+The I/O function for the composite Match state is the matrix multiplication, $QR$...
+that is,
+if $x$ denotes the input symbol to the two-transducer ensemble (input into the Q-substituter),
+$y$ denotes the output symbol from the two-transducer ensemble (output from the R-substituter),
+and $z$ denotes the unobserved intermediate symbol (output from Q and input to R),
+then the I/O weight function for the composite state QR in the two-transducer ensemble is
+\[
+(QR)_{xy} = \sum_z Q_{xz} R_{zy}
+\]
 
-\subsection{Multiplying TKF91 with itself}
+\subsubsection{Multiplying TKF91 with itself}
 
 \widepdffig{tkf91-tkf91}{Composition of TKF91 model (\figref{tkf91-labeled}) with itself.}
 
@@ -338,7 +390,19 @@ An open question is whether there are any such transducers for affine-gap versio
 we exclude TKF92 from this since it does not technically operate on strings, but rather
 sequences of strings (fragments) with immovable boundaries...
 
-\subsection{Composition of MF-generator with substituter}
+\subsection{Removal of null states}
+
+In \figref{tkf91-tkf91}, the state $ID$ is null:
+it corresponds to an insertion by the first TKF91 transducer
+that is then immediately deleted by the second TKF91 transducer,
+so there is no net insertion or deletion.
+
+It is sometimes useful to remove these states,
+i.e. find an equivalent transducer that lacks them
+(e.g. if trying to transform a transducer into strict Moore-normal form)...
+
+
+\subsubsection{Composition of MF-generator with substituter}
 \needfig{mf-substituter}
 
 \needfigref{mf-substituter} is the composition of MF-generator with TKF91...
@@ -353,7 +417,7 @@ The meaning of the various states in this model are
 \item List of states...
 \end{itemize}
 
-\subsection{Composition of MF-generator with TKF91}
+\subsubsection{Composition of MF-generator with TKF91}
 \tallpdffig{mf-tkf91}{Composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
 
 \needfigref{mf-tkf91} is the composition of MF-generator with TKF91...
@@ -377,7 +441,7 @@ so the entire ensemble accepts no input
 
 Note that this is quite similar to a profile HMM trained on a single sequence...
 
-\subsection{Composition of TKF91 with LIV-recognizer}
+\subsubsection{Composition of TKF91 with LIV-recognizer}
 
 \tallpdffig{tkf91-liv}{...}
 
@@ -394,11 +458,11 @@ Note that there are only delete states in this (as in LIV-recognizer)...
 explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
 and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
 
-\subsection{Composition of TKF91 with MF-recognizer}
+\subsubsection{Composition of TKF91 with MF-recognizer}
 
 \tallpdffig{tkf91-mf}{...}
 
-\subsection{Composition of MF-generator, substituter and CS-recognizer}
+\subsubsection{Composition of MF-generator, substituter and CS-recognizer}
 
 An alternative way of computing the weight, that expands the model to include the data...
 \needfig{mf-substituter-cs}
@@ -409,7 +473,7 @@ there would be no valid path, and probability would come out as zero,
 which is the correctly computed probability of transforming MF to LIV by point substitutions alone)
 
 
-\subsection{Composition of MF-generator, TKF91 and LIV-recognizer}
+\subsubsection{Composition of MF-generator, TKF91 and LIV-recognizer}
 
 \widepdffig{mf-tkf91-liv}{...}
 
@@ -441,7 +505,12 @@ We could not do this with substituter instead of TKF91
 (or rather we could, but substituter does not change sequence length,
 so there would be no valid path, and probability would correctly come out as zero)
 
-\section{Fork}
+\subsection{Fork}
+
+The second operation for connecting transducers that we consider
+ is one that we call ``fork''.
+It is also commonly called the ``intersection'' of two transducers
+ (e.g. that is the name used by Wikipedia).
 
 Fork is when you feed the same input tape into two transducers in parallel...
 
@@ -451,7 +520,7 @@ From two transducers $T$ and $U$,
 we make a new transducer $TU$
 wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states...
 
-\subsection{Compositions, forks and Felsenstein's algorithm}
+\subsubsection{Compositions, forks and Felsenstein's algorithm}
 \seclabel{Felsenstein}
 
 If a composition is like matrix multiplication,
@@ -513,7 +582,7 @@ The initialization step is
 G^{(n)}(x) = \delta(x=y)
 \]
 
-\subsection{Fork of substituter-CS with substituter-MF}
+\subsubsection{Fork of substituter-CS with substituter-MF}
 \seclabel{fork-subcs-submf}
 
 \needfig{fork-subcs-submf}
@@ -548,7 +617,7 @@ denotes the vector whose elements given by
 i.e. the $x$'th entry in this vector denotes the probability that an input symbol $x$
 would mutate to C on the $Q$-branch and M on the $R$-branch.
 
-\subsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
+\subsubsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
 
 \needfig{root-fork-submf-subcs}
 
@@ -559,7 +628,7 @@ Note also that it computes the final Felsenstein probability.
 
 Sample traceback path yields sample from posterior distribution over ancestral sequences...
 
-\subsection{Fork of TKF91-LIV with TKF91-MF}
+\subsubsection{Fork of TKF91-LIV with TKF91-MF}
 
 \widepdffig{fork-tkf91liv-tkf91mf}{ Autogenerated ...}
 
@@ -627,7 +696,7 @@ and wait states (where the recognizer waits for the next input symbol).
 
 
 
-\subsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
+\subsubsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
 
 \needfig{root-fork-tkf91mf-tkf91liv}
 
@@ -635,7 +704,7 @@ Forward sum computes final Felsenstein probability...
 
 Sample traceback path yields sample from posterior distribution over ancestral sequences...
 
-\subsection{Best reconstruction of ancestor to MF and LIV}
+\subsubsection{Best reconstruction of ancestor to MF and LIV}
 
 \needfig{viterbi-root-fork-tkf91mf-tkf91liv}
 
@@ -655,7 +724,7 @@ as might be computed by progressive alignment...
 
 Note that this is a recognition profile (all delete states)...
 
-\subsection{Sampling reconstructions of ancestor to MF and LIV}
+\subsubsection{Sampling reconstructions of ancestor to MF and LIV}
 
 \needfig{forward2-root-fork-tkf91mf-tkf91liv}
 
@@ -681,12 +750,12 @@ reflecting the possible uncertainty in our alignment...
 Note that these are all still approximations to the full
 recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}
 
-\subsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
+\subsubsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
 \needfig{fork-tkf91cs-fork-tkf91mf-tkf91liv
  Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
-\subsection{Felsenstein probability for (CS,(LIV,MF))}
+\subsubsection{Felsenstein probability for (CS,(LIV,MF))}
 
 \needfig{root-fork-tkf91cs-fork-tkf91mf-tkf91liv
  Composition of prior with (fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF))}
@@ -702,7 +771,7 @@ constructing ancestral recognition profiles as you go.
 At the root, you compose the root generator with the root recognition profile,
 and compute the Forward probability.
 
-\subsection{Progressive alignment version of Felsenstein recursion}
+\subsubsection{Progressive alignment version of Felsenstein recursion}
 
 The ``progressive alignment'' version,
 equivalent to doing Felsenstein's pruning recursion on a single alignment
@@ -724,7 +793,7 @@ except that we don't really make a distinction between a sequence and a profile
 
 \needfigref{viterbi-root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv} is the recognition profile for the root node...
 
-\section{Stochastic lower bound version of Felsenstein recursion}
+\subsection{Stochastic lower bound version of Felsenstein recursion}
 
 Our stochastic lower bound version is intermediate to these two.
 Rather than just sampling the best linear profile for each parent

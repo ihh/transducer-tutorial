@@ -5,7 +5,7 @@ digraph G {
 
     W [label="", shape=octagon, color=red];
 
-    M [label="Q", shape=rect, color=red];
+    M [label="$Q_{xy}$", shape=rect, color=red];
 
 S->W;
 
