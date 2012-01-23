@@ -199,17 +199,14 @@ This is useful e.g. for co-ordinating multiple transducers connected together, a
 to depict the generator in \figref{mf-generator}.
 The state labeled $\imath_Z$ (for $Z \in \{M,F\}$) has I/O function $\delta(y=Z)$.
 
-\pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.}
-
-\figref{liv} is the Moore-machine version of the recognizer in \figref{liv-small}.
-$\delta(x=y)$ is defined to be 1 if $x=y$, 0 otherwise.
-
-\pdffig{liv}{Moore-normal form recognizer for protein sequence LIV.}
+\pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.
+\todo{Most of the definitions of the state labels in figures like this should go in the captions...} }
 
 A few further examples of exact generators and recognizers, useful for the examples:
 \begin{itemize}
-\item \figref{liv-labeled} is a version of \figref{liv-small} with all states given an explicit label.
-The state labeled $\delta_Z$  (for $Z \in \{L,I,V\}$) has I/O function $\delta(x=Z)$.
+\item \figref{liv-labeled} is a Moore-form recognizer for sequence LIV, with all states given an explicit label.
+The state labeled $\delta_Z$  (for $Z \in \{L,I,V\}$) has I/O function $\delta(x=Z)$,
+defined to be 1 if $x=Z$, 0 otherwise.
 \item \figref{mf-labeled} is the Moore-machine recognizer for MF,
 the same sequence whose generator is shown in \figref{moore-mf-generator}.
 \item \figref{cs-labeled} is the Moore-machine recognizer for sequence CS.
@@ -217,9 +214,12 @@ the same sequence whose generator is shown in \figref{moore-mf-generator}.
 with given geometric length distribution and residue frequencies
 \end{itemize}
 
-\tallpdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV, with all states labeled.}
-\pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.}
-\pdffig{cs-labeled}{Moore-normal form recognizer for protein sequence CS.}
+\tallpdffig{liv-labeled}{Moore-normal form recognizer for protein sequence LIV.
+The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
+\pdffig{mf-labeled}{Moore-normal form recognizer for protein sequence MF.
+The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
+\pdffig{cs-labeled}{Moore-normal form recognizer for protein sequence CS.
+The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 \pdffig{null-model}{A simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
 
 \subsection{Substitution and identity}
