@@ -966,9 +966,9 @@ we exclude TKF92 from this since it does not technically operate on strings, but
 sequences of strings (fragments) with immovable boundaries...
 
 \subsubsection{Composition of MF-generator with substituter}
-\needfig{mf-substituter}
+\pdffig{mf-substituter}{...}
 
-\needfigref{mf-substituter} is the composition of MF-generator with TKF91...
+\figref{mf-substituter} is the composition of MF-generator with TKF91...
 Note that this is quite similar to a probabilistic weight matrix trained on a single sequence...
 
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
@@ -1004,6 +1004,12 @@ so the entire ensemble accepts no input
 
 Note that this is quite similar to a profile HMM trained on a single sequence...
 
+\subsubsection{Composition of substituter with MF- and CS-recognizers}
+
+\pdffig{substituter-mf}{...}
+
+\pdffig{substituter-cs}{...}
+
 \subsubsection{Composition of TKF91 with LIV-recognizer}
 
 \tallpdffig{tkf91-liv}{...}
@@ -1038,7 +1044,7 @@ whereas \figref{mf-tkf91} with $S$ as output computes $P(S|MF)$
 \subsubsection{Composition of MF-generator, substituter and CS-recognizer}
 
 An alternative way of computing the weight, that expands the model to include the data...
-\needfig{mf-substituter-cs}
+\pdffig{mf-substituter-cs}{...}
 
 Note that we could not e.g. compose MF-generator$\to$substituter$\to$LIV-recognizer
 (or rather we could, but since substituter does not change sequence length,
@@ -1171,6 +1177,8 @@ G^{(n)}(x) = \delta(x=y)
 \seclabel{fork-subcs-submf}
 
 \needfig{fork-subcs-submf}
+
+Fork of \figref{substituter-mf} and \figref{substituter-cs}
 
 Note that this transducer is a recognizer (all delete states).
 Note also that it computes $G^{(n)}$ from \secref{Felsenstein}...

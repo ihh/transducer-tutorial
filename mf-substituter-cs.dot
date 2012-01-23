@@ -1,0 +1,16 @@
+digraph G {
+	
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+
+    W [label="", shape=octagon, color=red];
+
+    M1 [label="", shape=circle];
+    M2 [label="", shape=circle];
+
+S->M1 [label="$Q_{MC}$"];
+M1->M2 [label="$Q_{FS}$"];
+M2->W;
+W->E;
+
+}

@@ -1,0 +1,13 @@
+digraph G {
+	
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+
+    W [label="", shape=octagon, color=red];
+
+    I1 [label="$Q_{My}$", shape=house, color=red];
+    I2 [label="$Q_{Fy}$", shape=house, color=red];
+
+S->I1->I2->W->E;
+
+}
