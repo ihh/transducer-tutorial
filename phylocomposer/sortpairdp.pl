@@ -1,6 +1,14 @@
 #!/usr/bin/perl -w
 
-my (%order, @rest, %name, %shape);
+my %match = ('S' => 'S',
+	     'E' => 'E',
+	     'W' => 'W',
+	     'D' => '\delta');
+
+my %global = ('Start' => 'SSSS',
+	      'End' => 'EEEE');
+
+my (%order, @rest, %name, %longname, %shape);
 my $nodes_to_print = 0;
 while (<>) {
     if (/^\s*(\S+).*label=<<(.*)>>/) {
@@ -9,37 +17,42 @@ while (<>) {
 	if ($label =~ /([\*\-])(.).*([SWEMDI]).([SWD])([0mflivcs]?).*([SWEMDI]).([WD])([0mflivcs])/) {
 	    my ($input, $root, $tkf1, $state1, $pos1, $tkf2, $state2, $pos2) = ($1, $2, $3, $4, $5, $6, $7, $8);
 	    $pos1 = "0" if $pos1 eq "";
-	    $name{$node} = "${root}__${tkf1}_${state1}${pos1}__${tkf2}_${state2}${pos2}";
+	    my $name = $tkf1.$match{$state1}.'_'.uc($pos1).$tkf2.$match{$state2}.'_'.uc($pos2);
+	    my $longname = "${root}${tkf1}_${state1}_${pos1}__${tkf2}_${state2}_${pos2}";
+	    die "Duplicate name $name:  $longname  $longname{$node}" if exists $name{$node};
+	    $name{$node} = $name;
+	    $longname{$node} = $longname;
 	    push @{$order{$pos1}->{$pos2}}, $node;
 	    $shape{$node} =
 		$input eq '*'
-		? 'shape=invhouse, color=red'
+		? 'invhouse, color=red'
 		: ("$root$tkf1$state1$tkf2$state2" eq "WWWWW"
-		   ? 'shape=octagon, color=red'
-		   : 'shape=circle');
+		   ? 'octagon, color=red'
+		   : 'circle');
 	} else {
-	    $name{$node} = $node;
+	    $longname{$node} = $node;
+	    $name{$node} = $global{$node};
 	    push @rest, $node;
 	    $shape{$node} =
 		$node eq 'Start'
-		? "shape=circle, color=red"
+		? "circle, color=red"
 		: ($node eq 'End'
-		   ? "shape=diamond, color=red"
-		   : "shape=circle");
+		   ? "diamond, color=red"
+		   : "circle");
 	}
 	$nodes_to_print = 1;
     } elsif (/(\S+)\s*->\s*(\S+)/) {
 	my ($src, $dest) = ($1, $2);
 	if ($nodes_to_print) {
 	    for my $node (@rest) {
-		print "$name{$node} [$shape{$node}, label=\"\"];\n";
+		print_node ($node);
 	    }
 	    for my $pos1 (sort keys %order) {
 		print "subgraph cluster_$pos1 {\n";
 		for my $pos2 (sort keys %{$order{$pos1}}) {
 		    print "subgraph cluster_$pos1$pos2 {\n";
 		    for my $node (@{$order{$pos1}->{$pos2}}) {
-			print "$name{$node} [$shape{$node}, label=\"\"];\n";
+			print_node ($node);
 		    }
 		    print "}\n";
 		}
@@ -47,8 +60,14 @@ while (<>) {
 	    }
 	    $nodes_to_print = 0;
 	}
-	print "$name{$src} -> $name{$dest};\n";
+	print "$longname{$src} -> $longname{$dest};\n";
     } else {
 	print unless /plaintext/;
     }
+}
+
+sub print_node {
+    my ($node) = @_;
+    my $label = $shape{$node} eq 'circle' ? "" : "\$$name{$node}\$";
+    print "$longname{$node} [shape=$shape{$node}, label=\"$label\"];\n";
 }

@@ -38,13 +38,14 @@
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
 \item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods
-\item Sankoff's algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny
-\item Fast heuristic approximations to Sankoff's algorithm including progressive alignment and partial-order graph alignment
+\item Sankoff's ${\cal O}(L^N)$ algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny
+\item Heuristic approximations (at ${\cal O}(NL^2)$ or thereabouts) to Sankoff's algorithm including progressive alignment and partial-order graph alignment
 \item Hidden Markov Model theory for sequence profiling
+\item The Thorne-Kishino-Felsenstein (1991) model for indels and the related algorithm of Hein (2001)
 \item Algorithms for ancestral sequence reconstruction conditioned on an alignment (TreeHMM, Indelign, Ortheus)
 \end{itemize}
 
-The algorithm uses the theory of finite state transducers to make explicit certain connections between these fields,
+The algorithm uses the theory of finite state transducers to connect these fields,
 and suggests a way to extend the literature on
 site-dependent and latent-variable substitution models \needcite{Yang,Goldman,Bruno,Holmes...}
 to indel models.
