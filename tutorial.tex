@@ -7,7 +7,10 @@
 \newcommand{\figlabel}[1]{\label{Figures.#1}}
 
 \newcommand{\needfig}[1]{{\bf Need figure: } #1 }
-\newcommand{\needfigref}{Figure~??? }
+\newcommand{\needfigref}[1]{Figure~??? [#1] }
+
+\newcommand{\needcite}[1]{[CITE #1]}
+\newcommand{\todo}[1]{[TODO: #1]}
 
 \newcommand{\easyfig}[4]{
 \begin{figure}
@@ -48,6 +51,7 @@ for some tiny example protein sequences (MF, CS, LIV).
 For example we will compute the likelihood of the symmetric binary tree shown in \figref{mf-liv-tree},
 explaining the common descent of two sequences (MF and LIV)
 under the TKF91 model.
+\todo{Change this from (MF,LIV) to (CS,(MF,LIV)) in both text \& figure}
 \pdffig{mf-liv-tree}{Example tree used in this tutorial.}
 
 As noted in the Wikipedia quote, transducers can be thought of as generalizations of the related
@@ -59,6 +63,8 @@ Of particular use in our treatment are generators/recognizers that generate/reco
 we write this as $\nabla(MF)$.
 \figref{liv-small} is an example of a recognizer that uniquely recognizes the protein sequence LIV;
 we write this as $\Delta(LIV)$.
+\todo{Change generators to $\Delta$ and recognizers to $\nabla$;
+ implement this universally in figures, formal definitions, and tutorial}
 
 \pdffig{mf-generator}{Generator for protein sequence MF.}
 
@@ -174,7 +180,7 @@ This is useful e.g. for co-ordinating multiple transducers connected together, a
 
 \figref{moore-mf-generator} uses our Moore-machine visual representation
 to depict the generator in \figref{mf-generator}.
-% should be \imath_X instead of \delta_X when it's a generator
+\todo{Change state name from $\delta_X$ to $\imath_X$ for insert states in generators}
 
 \pdffig{moore-mf-generator}{Moore-normal form generator for protein sequence MF.}
 
@@ -318,13 +324,31 @@ sequences of strings (fragments) with immovable boundaries...
 \subsection{Composition of MF-generator with substituter}
 \needfig{mf-substituter}
 
-\needfigref is the composition of MF-generator with TKF91...
+\needfigref{mf-substituter} is the composition of MF-generator with TKF91...
 Note that this is quite similar to a probabilistic weight matrix trained on a single sequence...
+
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+where
+$i$ is the state of the generator transducer and
+$b$ is the state of the substituter transducer.
+The meaning of the various states in this model are
+\begin{itemize}
+\item List of states...
+\end{itemize}
 
 \subsection{Composition of MF-generator with TKF91}
 \tallpdffig{mf-tkf91}{Composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
 
-\needfigref is the composition of MF-generator with TKF91...
+\needfigref{mf-tkf91} is the composition of MF-generator with TKF91...
+
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+where
+$i$ is the state of the generator transducer and
+$b$ is the state of the TKF91 transducer.
+The meaning of the various states in this model are
+\begin{itemize}
+\item List of states...
+\end{itemize}
 
 Note that the only state types are Start, End, Insert, and Null;
 there are no Match or Delete states, even though these states occur in the TKF91 transducer.
@@ -339,6 +363,15 @@ Note that this is quite similar to a profile HMM trained on a single sequence...
 \subsection{Composition of TKF91 with LIV-recognizer}
 
 \tallpdffig{tkf91-liv}{...}
+
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(b,d)$
+where
+$b$ is the state of the TKF91 transducer and
+$d$ is the state of the recognizer transducer.
+The meaning of the various states in this model are
+\begin{itemize}
+\item List of states...
+\end{itemize}
 
 Note that there are only delete states in this (as in LIV-recognizer)...
 explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
@@ -364,6 +397,16 @@ which is the correctly computed probability of transforming MF to LIV by point s
 \widepdffig{mf-tkf91-liv}{...}
 
 In this diagram, transitions are unlabeled to avoid clutter...
+
+Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
+where
+$i$ is the state of the generator transducer,
+$b$ is the state of the TKF91 transducer and
+$d$ is the state of the recognizer transducer.
+The meaning of the various states in this model are
+\begin{itemize}
+\item List of states...
+\end{itemize}
 
 Note that there are no match/insert/delete states --- only null states...
 thus this is more like a straightforward Markov model...
@@ -470,9 +513,9 @@ output fed into exact-matcher for MF (\figref{mf-labeled})...
 
 Since it is an ensemble of four transducers, every state corresponds to a tuple $(b_1,d_1,b_2,d_2)$
 where
-$b_1$ is the state of the transducer on the CS-branch (\figref{substituter}),
+$b_1$ is the state of the substituter transducer on the CS-branch (\figref{substituter}),
 $d_1$ is the state of the exact-matcher for sequence CS (\figref{cs-labeled}),
-$b_2$ is the state of the transducer on the MF-branch (\figref{substituter2}),
+$b_2$ is the state of the substituter transducer on the MF-branch (\figref{substituter2}),
 $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
 
 In general we can write the I/O label for such a state as $(b_1 d_1) \oplus (b_2 d_2)$.
@@ -492,7 +535,7 @@ would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \needfig{root-fork-submf-subcs}
 
-Forward sum computes final Felsenstein probability...
+Forward sum computes final Felsenstein probability for this two-branch tree...
 
 Note that this transducer is a pure Markov chain (no input/output states).
 Note also that it computes the final Felsenstein probability.
@@ -501,7 +544,8 @@ Sample traceback path yields sample from posterior distribution over ancestral s
 
 \subsection{Fork of TKF91-LIV with TKF91-MF}
 
-\widepdffig{fork-tkf91liv-tkf91mf}{...}
+\widepdffig{fork-tkf91liv-tkf91mf}{
+ \todo{Further develop \& use scripts in phylocomposer directory to build this figure automatically} ...}
 
 \figref{fork-tkf91liv-tkf91mf} is the recognition profile for the common ancestor of LIV and MF...
 
@@ -575,7 +619,9 @@ Forward sum computes final Felsenstein probability...
 
 Sample traceback path yields sample from posterior distribution over ancestral sequences...
 
-\needfig{root-fork-tkf91mf-tkf91liv-viterbi-traceback}
+\subsection{Best reconstruction of ancestor to MF and LIV}
+
+\needfig{viterbi-root-fork-tkf91mf-tkf91liv}
 
 Highlighted Viterbi traceback path...
 
@@ -585,7 +631,7 @@ L & I & V \\
 M & F & -
 \end{tabular}
 
-\needfig{fork-tkf91mf-tkf91liv-viterbi-traceback}
+\needfig{viterbi-fork-tkf91mf-tkf91liv}
 
 Relabeling (removing the root generator) we now have a reconstructed linear profile
 for the sequence at the ancestral node,
@@ -593,7 +639,9 @@ as might be computed by progressive alignment...
 
 Note that this is a recognition profile (all delete states)...
 
-\needfig{root-fork-tkf91mf-tkf91liv-forward-tracebacks}
+\subsection{Sampling reconstructions of ancestor to MF and LIV}
+
+\needfig{forward2-root-fork-tkf91mf-tkf91liv}
 
 Instead of just doing Viterbi, we can sample more than one traceback path...
 
@@ -609,7 +657,7 @@ L & I & V \\
 - & M & F
 \end{tabular}
 
-\needfig{fork-tkf91mf-tkf91liv-forward-tracebacks}
+\needfig{forward2-fork-tkf91mf-tkf91liv}
 
 Relabeling again, we still have a recognition profile, but it is now branched,
 reflecting the possible uncertainty in our alignment...
@@ -617,14 +665,17 @@ reflecting the possible uncertainty in our alignment...
 Note that these are all still approximations to the full
 recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}
 
-By sampling a fixed number of traceback paths,
-we can construct a recognition profile for the ancestral sequence
-that is linearly bounded in size and offers a stochastic ``lower bound''
-on the probability computed by the full transducer in \figref{fork-tkf91liv-tkf91mf}.
+\subsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
-\section{Overview of Felsenstein recursion}
+\needfig{fork-tkf91cs-fork-tkf91mf-tkf91liv
+ Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
-We have already seen the individual steps of the transducer version of the Felsenstein recursion...
+\subsection{Felsenstein probability for (CS,(LIV,MF))}
+
+\needfig{root-fork-tkf91cs-fork-tkf91mf-tkf91liv
+ Composition of prior with fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
+
+We have now seen the individual steps of the transducer version of the Felsenstein recursion...
 
 The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm
 for simultaneously aligning $N$ sequences of length $L$, ignoring secondary structure)
@@ -635,11 +686,29 @@ constructing ancestral recognition profiles as you go.
 At the root, you compose the root generator with the root recognition profile,
 and compute the Forward probability.
 
+\subsection{Progressive alignment version of Felsenstein recursion}
+
 The ``progressive alignment'' version,
 equivalent to doing Felsenstein's pruning recursion on a single alignment
 found using the progressive alignment algorithm,
 involves sampling the single best linear recognition profile of the parent,
 as in \figref{fork-tkf91mf-tkf91liv-viterbi-traceback}...
+
+\needfig{fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
+
+This can be recognized as a form of ``sequence-profile'' alignment as familiar from progressive alignment,
+except that we don't really make a distinction between a sequence and a profile
+(in that we convert sequences into recognition profiles anyway).
+
+\needfig{root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
+
+\needfigref{root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv} introduces the prior at the root...
+
+\needfig{viterbi-root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
+
+\needfigref{viterbi-root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv} is the recognition profile for the root node...
+
+\section{Stochastic lower bound version of Felsenstein recursion}
 
 Our stochastic lower bound version is intermediate to these two.
 Rather than just sampling the best linear profile for each parent
@@ -649,5 +718,25 @@ we sample some fixed number of such paths
 This allows us to sum over some amount of alignment uncertainty,
 while avoiding the full complexity of the complete ancestral profile
 (\figref{fork-tkf91mf-tkf91liv-viterbi-traceback})...
+
+By sampling a fixed number of traceback paths,
+we can construct a recognition profile for the ancestral sequence
+that is linearly bounded in size and offers a stochastic ``lower bound''
+on the probability computed by the full Felsenstein transducer in \needfigref{root-fork-tkf91mf-tkf91liv}.
+
+\needfig{fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
+
+Again this is a ``sequence-profile'' alignment.
+Unlike in progressive alignment
+ (but quite like e.g. partial order alignment \needcite{Grasso, Lee {\em et al}}),
+one of the profiles is now branched
+ (because we sampled more than one path to construct it in \needfigref{forward2-fork-tkf91mf-tkf91liv})...
+
+\needfig{root-fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
+
+\needfigref{root-fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
+introduces the prior at the root, and represents the final Felsenstein probability.
+
+If there were more levels of the tree above this, we would keep on sampling...
 
 \end{document}
