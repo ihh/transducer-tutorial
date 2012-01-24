@@ -6,9 +6,10 @@ digraph G {
     D1 [label="", shape=circle];
     D2 [label="", shape=circle];
 
-S->D1 [label="$\sum_x \pi_x Q_{xM} Q_{xC}$"];
-D1->D2 [label="$\sum_x \pi_x Q_{xF} Q_{xS}$"];
-D2->W->E;
+S->D1 [label="$p\sum_x \pi_x Q_{xM} Q_{xC}$"];
+D1->D2 [label="$p\sum_x \pi_x Q_{xF} Q_{xS}$"];
+D2->W [label="$1-p$"];
+W->E;
 
 
 }
