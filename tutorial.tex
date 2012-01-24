@@ -1314,6 +1314,8 @@ Relabeling (removing the root generator) we now have a reconstructed linear prof
 for the sequence at the ancestral node,
 as might be computed by progressive alignment...
 
+\tallpdffig{viterbi-profile}{...}
+
 Note that this is a recognition profile (all delete states)...
 
 \subsubsection{Sampling reconstructions of ancestor to MF and LIV}
@@ -1341,6 +1343,8 @@ Sequence 2         & M & - & F
 Relabeling again, we still have a recognition profile, but it is now branched,
 reflecting the possible uncertainty in our alignment...
 
+\tallpdffig{forward2-profile}{...}
+
 Note that these are all still approximations to the full
 recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}
 
@@ -1353,8 +1357,9 @@ For clarity, many transitions in this diagram have been removed or collapsed...
 
 \subsubsection{Felsenstein probability for (CS,(LIV,MF))}
 
-\needfig{root-fork-tkf91cs-fork-tkf91mf-tkf91liv
- Composition of prior with (fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF))}
+% This commented out because it just doesn't look good...
+%\needfig{root-fork3-tkf91liv-tkf91mf-tkf91cs
+% Composition of prior with (fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF))}
 
 We have now seen the individual steps of the transducer version of the Felsenstein recursion...
 
@@ -1375,19 +1380,15 @@ found using the progressive alignment algorithm,
 involves sampling the single best linear recognition profile of the parent,
 as in \figref{fork-tkf91mf-tkf91liv-viterbi-traceback}...
 
-\needfig{fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
+\widepdffig{fork-tkf91viterbi-tkf91cs}{...}
 
 This can be recognized as a form of ``sequence-profile'' alignment as familiar from progressive alignment,
 except that we don't really make a distinction between a sequence and a profile
 (in that we convert sequences into recognition profiles anyway).
 
-\needfig{root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
-
-\needfigref{root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv} introduces the prior at the root...
-
-\needfig{viterbi-root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv}
-
-\needfigref{viterbi-root-fork-tkf91cs-viterbi-fork-tkf91mf-tkf91liv} is the recognition profile for the root node...
+We can keep going in this way...
+introduce the prior at the root...
+get the Viterbi recognition profile for the root...
 
 \subsection{Stochastic lower bound version of Felsenstein recursion}
 
@@ -1403,20 +1404,23 @@ while avoiding the full complexity of the complete ancestral profile
 By sampling a fixed number of traceback paths,
 we can construct a recognition profile for the ancestral sequence
 that is linearly bounded in size and offers a stochastic ``lower bound''
-on the probability computed by the full Felsenstein transducer in \needfigref{root-fork-tkf91mf-tkf91liv}.
+on the probability computed by the full Felsenstein transducer in \figref{root-fork-tkf91liv-tkf91mf}.
 
-\needfig{fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
+\widepngfig{fork-tkf91forward2-tkf91cs}{...}
 
 Again this is a ``sequence-profile'' alignment.
 Unlike in progressive alignment
  (but quite like e.g. partial order alignment \cite{LeeGrassoSharlow2002}),
 one of the profiles is now branched
- (because we sampled more than one path to construct it in \needfigref{forward2-fork-tkf91mf-tkf91liv})...
+ (because we sampled more than one path to construct it in \figref{forward2-fork-tkf91liv-tkf91mf})...
 
-\needfig{root-fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
+% This commented out because it just doesn't look good...
+%\needfig{root-fork-tkf91forward2-tkf91cs}
 
-\needfigref{root-fork-tkf91cs-forward2-fork-tkf91mf-tkf91liv}
-introduces the prior at the root, and represents the final Felsenstein probability.
+Finally we compose the root generator \figref{tkf91-root}
+with \figref{fork-tkf91forward2-tkf91cs}.
+The sum of all path weights through the resulting state graph represents the stochastic lower-bound
+on the final Felsenstein probability for this tree.
 
 If there were more levels of the tree above this, we would keep on sampling...
 

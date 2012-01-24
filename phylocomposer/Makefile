@@ -34,6 +34,9 @@ comp2-%.bigdot: comp2-%.html.dot
 fork3-%.fdpdot: fork3-%.html.dot
 	./sort-fork3.pl $< >$@
 
+root-fork3-%.fdpdot: root-fork3-%.html.dot
+	./sort-fork3.pl $< >$@
+
 # Landscape orientation, A1 paper (workaround to avoid cropping big graphs)
 %.tex: %.bigdot
 	dot2tex --autosize --crop --format pstricks --texmode raw $< | perl -ne 'if(/documentclass/){print"\\documentclass[a1paper]{article}\n\\usepackage[x11names,rgb]{xcolor}\n\\usepackage{auto-pst-pdf}\n\\usepackage[landscape]{geometry}\n"}else{print unless /usepackage.*xcolor/}' >$@

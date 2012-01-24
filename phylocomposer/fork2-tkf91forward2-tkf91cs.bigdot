@@ -1,0 +1,366 @@
+digraph transmat {
+Start [shape=circle, color=red, label=""];
+End [shape=diamond, color=red, label=""];
+subgraph cluster_0 {
+subgraph cluster_00 {
+WW_W0__W_W0 [shape=octagon, color=red, label=""];
+MD_W0__D_W0 [shape=invhouse, color=red, label=""];
+}
+subgraph cluster_0c {
+SS_S0__I_Dc [shape=circle, label=""];
+WW_W0__W_Wc [shape=octagon, color=red, label=""];
+MD_W0__M_Dc [shape=invhouse, color=red, label=""];
+MD_W0__D_Wc [shape=invhouse, color=red, label=""];
+MD_W0__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_0s {
+SS_S0__I_Ds [shape=circle, label=""];
+WW_W0__W_Ws [shape=octagon, color=red, label=""];
+MD_W0__M_Ds [shape=invhouse, color=red, label=""];
+MD_W0__D_Ws [shape=invhouse, color=red, label=""];
+MD_W0__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_1 {
+subgraph cluster_10 {
+SI_D1__W_W0 [shape=circle, label=""];
+WW_W1__W_W0 [shape=octagon, color=red, label=""];
+MM_D1__D_W0 [shape=invhouse, color=red, label=""];
+MD_W1__D_W0 [shape=invhouse, color=red, label=""];
+MI_D1__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_1c {
+SI_D1__W_Wc [shape=circle, label=""];
+WW_W1__W_Wc [shape=octagon, color=red, label=""];
+MM_D1__M_Dc [shape=invhouse, color=red, label=""];
+MD_W1__M_Dc [shape=invhouse, color=red, label=""];
+MM_D1__D_Wc [shape=invhouse, color=red, label=""];
+MD_W1__D_Wc [shape=invhouse, color=red, label=""];
+MI_D1__W_Wc [shape=circle, label=""];
+MM_D1__I_Dc [shape=circle, label=""];
+MD_W1__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_1s {
+SI_D1__W_Ws [shape=circle, label=""];
+WW_W1__W_Ws [shape=octagon, color=red, label=""];
+MM_D1__M_Ds [shape=invhouse, color=red, label=""];
+MD_W1__M_Ds [shape=invhouse, color=red, label=""];
+MM_D1__D_Ws [shape=invhouse, color=red, label=""];
+MD_W1__D_Ws [shape=invhouse, color=red, label=""];
+MI_D1__W_Ws [shape=circle, label=""];
+MM_D1__I_Ds [shape=circle, label=""];
+MD_W1__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_2 {
+subgraph cluster_20 {
+SI_D2__W_W0 [shape=circle, label=""];
+WW_W2__W_W0 [shape=octagon, color=red, label=""];
+MM_D2__D_W0 [shape=invhouse, color=red, label=""];
+MD_W2__D_W0 [shape=invhouse, color=red, label=""];
+MI_D2__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_2c {
+SI_D2__W_Wc [shape=circle, label=""];
+WW_W2__W_Wc [shape=octagon, color=red, label=""];
+MM_D2__M_Dc [shape=invhouse, color=red, label=""];
+MD_W2__M_Dc [shape=invhouse, color=red, label=""];
+MM_D2__D_Wc [shape=invhouse, color=red, label=""];
+MD_W2__D_Wc [shape=invhouse, color=red, label=""];
+MI_D2__W_Wc [shape=circle, label=""];
+MM_D2__I_Dc [shape=circle, label=""];
+MD_W2__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_2s {
+SI_D2__W_Ws [shape=circle, label=""];
+WW_W2__W_Ws [shape=octagon, color=red, label=""];
+MM_D2__M_Ds [shape=invhouse, color=red, label=""];
+MD_W2__M_Ds [shape=invhouse, color=red, label=""];
+MM_D2__D_Ws [shape=invhouse, color=red, label=""];
+MD_W2__D_Ws [shape=invhouse, color=red, label=""];
+MI_D2__W_Ws [shape=circle, label=""];
+MM_D2__I_Ds [shape=circle, label=""];
+MD_W2__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_3 {
+subgraph cluster_30 {
+SI_D3__W_W0 [shape=circle, label=""];
+WW_W3__W_W0 [shape=octagon, color=red, label=""];
+MM_D3__D_W0 [shape=invhouse, color=red, label=""];
+MD_W3__D_W0 [shape=invhouse, color=red, label=""];
+MI_D3__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_3c {
+SI_D3__W_Wc [shape=circle, label=""];
+WW_W3__W_Wc [shape=octagon, color=red, label=""];
+MM_D3__M_Dc [shape=invhouse, color=red, label=""];
+MD_W3__M_Dc [shape=invhouse, color=red, label=""];
+MM_D3__D_Wc [shape=invhouse, color=red, label=""];
+MD_W3__D_Wc [shape=invhouse, color=red, label=""];
+MI_D3__W_Wc [shape=circle, label=""];
+MM_D3__I_Dc [shape=circle, label=""];
+MD_W3__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_3s {
+SI_D3__W_Ws [shape=circle, label=""];
+WW_W3__W_Ws [shape=octagon, color=red, label=""];
+MM_D3__M_Ds [shape=invhouse, color=red, label=""];
+MD_W3__M_Ds [shape=invhouse, color=red, label=""];
+MM_D3__D_Ws [shape=invhouse, color=red, label=""];
+MD_W3__D_Ws [shape=invhouse, color=red, label=""];
+MI_D3__W_Ws [shape=circle, label=""];
+MM_D3__I_Ds [shape=circle, label=""];
+MD_W3__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_4 {
+subgraph cluster_40 {
+SI_D4__W_W0 [shape=circle, label=""];
+MM_D4__D_W0 [shape=invhouse, color=red, label=""];
+MI_D4__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_4c {
+SI_D4__W_Wc [shape=circle, label=""];
+MM_D4__M_Dc [shape=invhouse, color=red, label=""];
+MM_D4__D_Wc [shape=invhouse, color=red, label=""];
+MI_D4__W_Wc [shape=circle, label=""];
+MM_D4__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_4s {
+SI_D4__W_Ws [shape=circle, label=""];
+MM_D4__M_Ds [shape=invhouse, color=red, label=""];
+MM_D4__D_Ws [shape=invhouse, color=red, label=""];
+MI_D4__W_Ws [shape=circle, label=""];
+MM_D4__I_Ds [shape=circle, label=""];
+}
+}
+Start -> SI_D1__W_W0;
+Start -> SS_S0__I_Dc;
+Start -> WW_W0__W_W0;
+SI_D1__W_W0 -> SI_D2__W_W0;
+SI_D1__W_W0 -> SI_D4__W_W0;
+SI_D1__W_W0 -> WW_W1__W_W0;
+SI_D2__W_W0 -> SI_D3__W_W0;
+SI_D2__W_W0 -> WW_W2__W_W0;
+SI_D3__W_W0 -> WW_W3__W_W0;
+SI_D4__W_W0 -> WW_W3__W_W0;
+SI_D1__W_Wc -> SI_D2__W_Wc;
+SI_D1__W_Wc -> SI_D4__W_Wc;
+SI_D1__W_Wc -> WW_W1__W_Wc;
+SI_D2__W_Wc -> SI_D3__W_Wc;
+SI_D2__W_Wc -> WW_W2__W_Wc;
+SI_D3__W_Wc -> WW_W3__W_Wc;
+SI_D4__W_Wc -> WW_W3__W_Wc;
+SI_D1__W_Ws -> SI_D2__W_Ws;
+SI_D1__W_Ws -> SI_D4__W_Ws;
+SI_D1__W_Ws -> WW_W1__W_Ws;
+SI_D2__W_Ws -> SI_D3__W_Ws;
+SI_D2__W_Ws -> WW_W2__W_Ws;
+SI_D3__W_Ws -> WW_W3__W_Ws;
+SI_D4__W_Ws -> WW_W3__W_Ws;
+SS_S0__I_Dc -> SI_D1__W_Wc;
+SS_S0__I_Dc -> SS_S0__I_Ds;
+SS_S0__I_Dc -> WW_W0__W_Wc;
+SS_S0__I_Ds -> SI_D1__W_Ws;
+SS_S0__I_Ds -> WW_W0__W_Ws;
+WW_W0__W_W0 -> MM_D1__M_Dc;
+WW_W0__W_W0 -> MD_W0__M_Dc;
+WW_W0__W_W0 -> MM_D1__D_W0;
+WW_W0__W_W0 -> MD_W0__D_W0;
+WW_W1__W_W0 -> MM_D2__M_Dc;
+WW_W1__W_W0 -> MM_D4__M_Dc;
+WW_W1__W_W0 -> MD_W1__M_Dc;
+WW_W1__W_W0 -> MM_D2__D_W0;
+WW_W1__W_W0 -> MM_D4__D_W0;
+WW_W1__W_W0 -> MD_W1__D_W0;
+WW_W2__W_W0 -> MM_D3__M_Dc;
+WW_W2__W_W0 -> MD_W2__M_Dc;
+WW_W2__W_W0 -> MM_D3__D_W0;
+WW_W2__W_W0 -> MD_W2__D_W0;
+WW_W3__W_W0 -> MD_W3__M_Dc;
+WW_W3__W_W0 -> MD_W3__D_W0;
+WW_W0__W_Wc -> MM_D1__M_Ds;
+WW_W0__W_Wc -> MD_W0__M_Ds;
+WW_W0__W_Wc -> MM_D1__D_Wc;
+WW_W0__W_Wc -> MD_W0__D_Wc;
+WW_W1__W_Wc -> MM_D2__M_Ds;
+WW_W1__W_Wc -> MM_D4__M_Ds;
+WW_W1__W_Wc -> MD_W1__M_Ds;
+WW_W1__W_Wc -> MM_D2__D_Wc;
+WW_W1__W_Wc -> MM_D4__D_Wc;
+WW_W1__W_Wc -> MD_W1__D_Wc;
+WW_W2__W_Wc -> MM_D3__M_Ds;
+WW_W2__W_Wc -> MD_W2__M_Ds;
+WW_W2__W_Wc -> MM_D3__D_Wc;
+WW_W2__W_Wc -> MD_W2__D_Wc;
+WW_W3__W_Wc -> MD_W3__M_Ds;
+WW_W3__W_Wc -> MD_W3__D_Wc;
+WW_W0__W_Ws -> MM_D1__D_Ws;
+WW_W0__W_Ws -> MD_W0__D_Ws;
+WW_W1__W_Ws -> MM_D2__D_Ws;
+WW_W1__W_Ws -> MM_D4__D_Ws;
+WW_W1__W_Ws -> MD_W1__D_Ws;
+WW_W2__W_Ws -> MM_D3__D_Ws;
+WW_W2__W_Ws -> MD_W2__D_Ws;
+WW_W3__W_Ws -> End;
+WW_W3__W_Ws -> MD_W3__D_Ws;
+MM_D1__M_Dc -> WW_W1__W_Wc;
+MM_D1__M_Dc -> MI_D2__W_Wc;
+MM_D1__M_Dc -> MI_D4__W_Wc;
+MM_D1__M_Dc -> MM_D1__I_Ds;
+MM_D2__M_Dc -> WW_W2__W_Wc;
+MM_D2__M_Dc -> MI_D3__W_Wc;
+MM_D2__M_Dc -> MM_D2__I_Ds;
+MM_D3__M_Dc -> WW_W3__W_Wc;
+MM_D3__M_Dc -> MM_D3__I_Ds;
+MM_D4__M_Dc -> WW_W3__W_Wc;
+MM_D4__M_Dc -> MM_D4__I_Ds;
+MM_D1__M_Ds -> WW_W1__W_Ws;
+MM_D1__M_Ds -> MI_D2__W_Ws;
+MM_D1__M_Ds -> MI_D4__W_Ws;
+MM_D2__M_Ds -> WW_W2__W_Ws;
+MM_D2__M_Ds -> MI_D3__W_Ws;
+MM_D3__M_Ds -> WW_W3__W_Ws;
+MM_D4__M_Ds -> WW_W3__W_Ws;
+MD_W0__M_Dc -> WW_W0__W_Wc;
+MD_W0__M_Dc -> MI_D1__W_Wc;
+MD_W0__M_Dc -> MD_W0__I_Ds;
+MD_W1__M_Dc -> WW_W1__W_Wc;
+MD_W1__M_Dc -> MI_D2__W_Wc;
+MD_W1__M_Dc -> MI_D4__W_Wc;
+MD_W1__M_Dc -> MD_W1__I_Ds;
+MD_W2__M_Dc -> WW_W2__W_Wc;
+MD_W2__M_Dc -> MI_D3__W_Wc;
+MD_W2__M_Dc -> MD_W2__I_Ds;
+MD_W3__M_Dc -> WW_W3__W_Wc;
+MD_W3__M_Dc -> MD_W3__I_Ds;
+MD_W0__M_Ds -> WW_W0__W_Ws;
+MD_W0__M_Ds -> MI_D1__W_Ws;
+MD_W1__M_Ds -> WW_W1__W_Ws;
+MD_W1__M_Ds -> MI_D2__W_Ws;
+MD_W1__M_Ds -> MI_D4__W_Ws;
+MD_W2__M_Ds -> WW_W2__W_Ws;
+MD_W2__M_Ds -> MI_D3__W_Ws;
+MD_W3__M_Ds -> WW_W3__W_Ws;
+MM_D1__D_W0 -> WW_W1__W_W0;
+MM_D1__D_W0 -> MI_D2__W_W0;
+MM_D1__D_W0 -> MI_D4__W_W0;
+MM_D1__D_W0 -> MM_D1__I_Dc;
+MM_D2__D_W0 -> WW_W2__W_W0;
+MM_D2__D_W0 -> MI_D3__W_W0;
+MM_D2__D_W0 -> MM_D2__I_Dc;
+MM_D3__D_W0 -> WW_W3__W_W0;
+MM_D3__D_W0 -> MM_D3__I_Dc;
+MM_D4__D_W0 -> WW_W3__W_W0;
+MM_D4__D_W0 -> MM_D4__I_Dc;
+MM_D1__D_Wc -> WW_W1__W_Wc;
+MM_D1__D_Wc -> MI_D2__W_Wc;
+MM_D1__D_Wc -> MI_D4__W_Wc;
+MM_D1__D_Wc -> MM_D1__I_Ds;
+MM_D2__D_Wc -> WW_W2__W_Wc;
+MM_D2__D_Wc -> MI_D3__W_Wc;
+MM_D2__D_Wc -> MM_D2__I_Ds;
+MM_D3__D_Wc -> WW_W3__W_Wc;
+MM_D3__D_Wc -> MM_D3__I_Ds;
+MM_D4__D_Wc -> WW_W3__W_Wc;
+MM_D4__D_Wc -> MM_D4__I_Ds;
+MM_D1__D_Ws -> WW_W1__W_Ws;
+MM_D1__D_Ws -> MI_D2__W_Ws;
+MM_D1__D_Ws -> MI_D4__W_Ws;
+MM_D2__D_Ws -> WW_W2__W_Ws;
+MM_D2__D_Ws -> MI_D3__W_Ws;
+MM_D3__D_Ws -> WW_W3__W_Ws;
+MM_D4__D_Ws -> WW_W3__W_Ws;
+MD_W0__D_W0 -> WW_W0__W_W0;
+MD_W0__D_W0 -> MI_D1__W_W0;
+MD_W0__D_W0 -> MD_W0__I_Dc;
+MD_W1__D_W0 -> WW_W1__W_W0;
+MD_W1__D_W0 -> MI_D2__W_W0;
+MD_W1__D_W0 -> MI_D4__W_W0;
+MD_W1__D_W0 -> MD_W1__I_Dc;
+MD_W2__D_W0 -> WW_W2__W_W0;
+MD_W2__D_W0 -> MI_D3__W_W0;
+MD_W2__D_W0 -> MD_W2__I_Dc;
+MD_W3__D_W0 -> WW_W3__W_W0;
+MD_W3__D_W0 -> MD_W3__I_Dc;
+MD_W0__D_Wc -> WW_W0__W_Wc;
+MD_W0__D_Wc -> MI_D1__W_Wc;
+MD_W0__D_Wc -> MD_W0__I_Ds;
+MD_W1__D_Wc -> WW_W1__W_Wc;
+MD_W1__D_Wc -> MI_D2__W_Wc;
+MD_W1__D_Wc -> MI_D4__W_Wc;
+MD_W1__D_Wc -> MD_W1__I_Ds;
+MD_W2__D_Wc -> WW_W2__W_Wc;
+MD_W2__D_Wc -> MI_D3__W_Wc;
+MD_W2__D_Wc -> MD_W2__I_Ds;
+MD_W3__D_Wc -> WW_W3__W_Wc;
+MD_W3__D_Wc -> MD_W3__I_Ds;
+MD_W0__D_Ws -> WW_W0__W_Ws;
+MD_W0__D_Ws -> MI_D1__W_Ws;
+MD_W1__D_Ws -> WW_W1__W_Ws;
+MD_W1__D_Ws -> MI_D2__W_Ws;
+MD_W1__D_Ws -> MI_D4__W_Ws;
+MD_W2__D_Ws -> WW_W2__W_Ws;
+MD_W2__D_Ws -> MI_D3__W_Ws;
+MD_W3__D_Ws -> WW_W3__W_Ws;
+MI_D1__W_W0 -> WW_W1__W_W0;
+MI_D1__W_W0 -> MI_D2__W_W0;
+MI_D1__W_W0 -> MI_D4__W_W0;
+MI_D2__W_W0 -> WW_W2__W_W0;
+MI_D2__W_W0 -> MI_D3__W_W0;
+MI_D3__W_W0 -> WW_W3__W_W0;
+MI_D4__W_W0 -> WW_W3__W_W0;
+MI_D1__W_Wc -> WW_W1__W_Wc;
+MI_D1__W_Wc -> MI_D2__W_Wc;
+MI_D1__W_Wc -> MI_D4__W_Wc;
+MI_D2__W_Wc -> WW_W2__W_Wc;
+MI_D2__W_Wc -> MI_D3__W_Wc;
+MI_D3__W_Wc -> WW_W3__W_Wc;
+MI_D4__W_Wc -> WW_W3__W_Wc;
+MI_D1__W_Ws -> WW_W1__W_Ws;
+MI_D1__W_Ws -> MI_D2__W_Ws;
+MI_D1__W_Ws -> MI_D4__W_Ws;
+MI_D2__W_Ws -> WW_W2__W_Ws;
+MI_D2__W_Ws -> MI_D3__W_Ws;
+MI_D3__W_Ws -> WW_W3__W_Ws;
+MI_D4__W_Ws -> WW_W3__W_Ws;
+MM_D1__I_Dc -> WW_W1__W_Wc;
+MM_D1__I_Dc -> MI_D2__W_Wc;
+MM_D1__I_Dc -> MI_D4__W_Wc;
+MM_D1__I_Dc -> MM_D1__I_Ds;
+MM_D2__I_Dc -> WW_W2__W_Wc;
+MM_D2__I_Dc -> MI_D3__W_Wc;
+MM_D2__I_Dc -> MM_D2__I_Ds;
+MM_D3__I_Dc -> WW_W3__W_Wc;
+MM_D3__I_Dc -> MM_D3__I_Ds;
+MM_D4__I_Dc -> WW_W3__W_Wc;
+MM_D4__I_Dc -> MM_D4__I_Ds;
+MM_D1__I_Ds -> WW_W1__W_Ws;
+MM_D1__I_Ds -> MI_D2__W_Ws;
+MM_D1__I_Ds -> MI_D4__W_Ws;
+MM_D2__I_Ds -> WW_W2__W_Ws;
+MM_D2__I_Ds -> MI_D3__W_Ws;
+MM_D3__I_Ds -> WW_W3__W_Ws;
+MM_D4__I_Ds -> WW_W3__W_Ws;
+MD_W0__I_Dc -> WW_W0__W_Wc;
+MD_W0__I_Dc -> MI_D1__W_Wc;
+MD_W0__I_Dc -> MD_W0__I_Ds;
+MD_W1__I_Dc -> WW_W1__W_Wc;
+MD_W1__I_Dc -> MI_D2__W_Wc;
+MD_W1__I_Dc -> MI_D4__W_Wc;
+MD_W1__I_Dc -> MD_W1__I_Ds;
+MD_W2__I_Dc -> WW_W2__W_Wc;
+MD_W2__I_Dc -> MI_D3__W_Wc;
+MD_W2__I_Dc -> MD_W2__I_Ds;
+MD_W3__I_Dc -> WW_W3__W_Wc;
+MD_W3__I_Dc -> MD_W3__I_Ds;
+MD_W0__I_Ds -> WW_W0__W_Ws;
+MD_W0__I_Ds -> MI_D1__W_Ws;
+MD_W1__I_Ds -> WW_W1__W_Ws;
+MD_W1__I_Ds -> MI_D2__W_Ws;
+MD_W1__I_Ds -> MI_D4__W_Ws;
+MD_W2__I_Ds -> WW_W2__W_Ws;
+MD_W2__I_Ds -> MI_D3__W_Ws;
+MD_W3__I_Ds -> WW_W3__W_Ws;
+}

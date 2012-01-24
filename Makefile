@@ -12,7 +12,7 @@ ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG))
 ALLFIGJUNK := $(addsuffix .tex,$(ALLFIG)) $(addsuffix .aux,$(ALLFIG)) $(addsuffix .log,$(ALLFIG)) $(addsuffix -pics.pdf,$(ALLFIG))
 
 # The following source files currently only render properly as PNGs
-BAD := condensed-emission fanned-emission fanned-indel fanned-match mf-generator liv-small transitions fork3-tkf91liv-tkf91mf-tkf91cs root-fork-tkf91liv-tkf91mf viterbi-root-fork-tkf91liv-tkf91mf forward2-root-fork-tkf91liv-tkf91mf
+BAD := condensed-emission fanned-emission fanned-indel fanned-match mf-generator liv-small transitions fork3-tkf91liv-tkf91mf-tkf91cs root-fork-tkf91liv-tkf91mf viterbi-root-fork-tkf91liv-tkf91mf forward2-root-fork-tkf91liv-tkf91mf fork-tkf91forward2-tkf91cs
 BADPNG := $(addsuffix .png,$(BAD))
 GOODPDF := $(addsuffix -fig.pdf,$(filter-out $(BAD),$(ALLFIG)))
 

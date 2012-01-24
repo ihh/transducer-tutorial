@@ -1,0 +1,97 @@
+(branch
+ (from $NULL) (to $ROOT)
+ (transducer IDENTITY)
+ (branch
+  (to $L)
+  (transducer TKF91_BRANCH)
+  (branch
+   (to $L1)
+   (transducer FORWARD2)))
+ (branch
+  (to $R)
+  (transducer TKF91_BRANCH)
+  (branch
+   (to $R1)
+   (transducer CS_MATCH))))
+
+(token (x))
+
+(transducer
+ (name IDENTITY)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name M) (type match))
+
+ (transition (from S) (to W))
+ (transition (from W) (to M))
+ (transition (from M) (to W))
+ (transition (from W) (to E)))
+
+
+(transducer
+ (name TKF91_BRANCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name M) (type match))
+ (state (name D) (type delete))
+ (state (name I) (type insert))
+
+ (transition (from S) (to I))
+ (transition (from S) (to W))
+ (transition (from W) (to M))
+ (transition (from W) (to D))
+ (transition (from W) (to E))
+ (transition (from M) (to I))
+ (transition (from M) (to W))
+ (transition (from D) (to I))
+ (transition (from D) (to W))
+ (transition (from I) (to I))
+ (transition (from I) (to W)))
+
+
+(transducer
+ (name FORWARD2)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W0) (type wait))
+ (state (name W1) (type wait))
+ (state (name W2) (type wait))
+ (state (name W3) (type wait))
+ (state (name D1) (type delete))
+ (state (name D2) (type delete))
+ (state (name D3) (type delete))
+ (state (name D4) (type delete))
+
+ (transition (from S) (to W0))
+ (transition (from W0) (to D1))
+ (transition (from D1) (to W1))
+ (transition (from W1) (to D2))
+ (transition (from D2) (to W2))
+ (transition (from W2) (to D3))
+ (transition (from D3) (to W3))
+ (transition (from W1) (to D4))
+ (transition (from D4) (to W3))
+ (transition (from W3) (to E)))
+
+(transducer
+ (name CS_MATCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W0) (type wait))
+ (state (name Wc) (type wait))
+ (state (name Ws) (type wait))
+ (state (name Dc) (type delete))
+ (state (name Ds) (type delete))
+
+ (transition (from S) (to W0))
+ (transition (from W0) (to Dc))
+ (transition (from Dc) (to Wc))
+ (transition (from Wc) (to Ds))
+ (transition (from Ds) (to Ws))
+ (transition (from Ws) (to E)))

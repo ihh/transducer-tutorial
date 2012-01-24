@@ -27,7 +27,7 @@ while (<>) {
     if (/^\s*(\S+).*label=<<(.*)>>/) {
 	my ($node, $label) = ($1, $2);
 	while ($label =~ s/<[^>]+>//) { }
-	if ($label =~ /([\*\-])([SWME]).([SWEMDI]).([SWEMDI]).([SWD])([0mflivcs]?).([SWEMDI]).([SWD])([0mflivcs]?).([SWEMDI]).([SWD])([0mflivcs]?)/) {
+	if ($label =~ /([\*\-])([SWMIE]).([SWEMDI]).([SWEMDI]).([SWD])([0mflivcs]?).([SWEMDI]).([SWD])([0mflivcs]?).([SWEMDI]).([SWD])([0mflivcs]?)/) {
 	    my ($input, $root, $tkf0, $tkf1, $state1, $pos1, $tkf2, $state2, $pos2, $tkf3, $state3, $pos3) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
 	    my $suffix1 =
 		$state1 eq 'S'

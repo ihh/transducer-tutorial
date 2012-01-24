@@ -11,11 +11,12 @@ my %global = ('Start' => 'SSSS',
 my (%order, @rest, %name, %longname, %shape);
 my $nodes_to_print = 0;
 my $has_IO = 0;
+my $has_pos4 = 0;
 while (<>) {
     if (/^\s*(\S+).*label=<<(.*)>>/) {
 	my ($node, $label) = ($1, $2);
 	while ($label =~ s/<[^>]+>//) { }
-	if ($label =~ /([\*\-])(.).*([SWEMDI]).([SWD])([0mflivcs]?).*([SWEMDI]).([WD])([0mflivcs])/) {
+	if ($label =~ /([\*\-])(.).*([SWEMDI]).([SWD])([0mflivcs\d]?).*([SWEMDI]).([WD])([0mflivcs\d])/) {
 	    my ($input, $root, $tkf1, $state1, $pos1, $tkf2, $state2, $pos2) = ($1, $2, $3, $4, $5, $6, $7, $8);
 	    my $suffix1 =
 		$state1 eq 'S'
@@ -24,6 +25,7 @@ while (<>) {
 	    my $suffix2 = '_' . ($pos2 eq "" ? "0" : uc($pos2));
 	    $pos1 = "0" if $pos1 eq "";
 	    $pos2 = "0" if $pos2 eq "";
+	    ++$has_pos4 if $pos1 == 4;
 	    my $name = $tkf1.$match{$state1}.$suffix1.$tkf2.$match{$state2}.$suffix2;
 	    my $longname = "${root}${tkf1}_${state1}${pos1}__${tkf2}_${state2}${pos2}";
 	    die "Duplicate name $name:  $longname  $longname{$node}" if exists $name{$node};
@@ -80,6 +82,6 @@ while (<>) {
 
 sub print_node {
     my ($node) = @_;
-    my $label = ($has_IO == 0 || $shape{$node} eq 'circle') ? "" : "\$$name{$node}\$";
+    my $label = ($has_IO == 0 || $has_pos4 || $shape{$node} eq 'circle') ? "" : "\$$name{$node}\$";
     print "$longname{$node} [shape=$shape{$node}, label=\"$label\"];\n";
 }

@@ -1,0 +1,16 @@
+digraph G {
+    S [label="$S$", shape=circle, color=red];
+    E [label="$E$", shape=diamond, color=red];
+
+    W0 [label="$W_0$", shape=octagon, color=red];
+    W1 [label="$W_1$", shape=octagon, color=red];
+    D1 [label="$\delta_1$", shape=invhouse, color=red];
+    W2 [label="$W_2$", shape=octagon, color=red];
+    D2 [label="$\delta_2$", shape=invhouse, color=red];
+    W3 [label="$W_3$", shape=octagon, color=red];
+    D3 [label="$\delta_3$", shape=invhouse, color=red];
+
+S->W0->D1->W1->D2->W2->D3->W3->E;
+
+
+}
