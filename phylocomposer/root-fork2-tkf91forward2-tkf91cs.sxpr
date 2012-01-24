@@ -62,10 +62,12 @@
  (state (name W1) (type wait))
  (state (name W2) (type wait))
  (state (name W3) (type wait))
+ (state (name W4) (type wait))
  (state (name D1) (type delete))
  (state (name D2) (type delete))
  (state (name D3) (type delete))
  (state (name D4) (type delete))
+ (state (name D5) (type delete))
 
  (transition (from S) (to W0))
  (transition (from W0) (to D1))
@@ -75,7 +77,9 @@
  (transition (from W2) (to D3))
  (transition (from D3) (to W3))
  (transition (from W1) (to D4))
- (transition (from D4) (to W3))
+ (transition (from D4) (to W4))
+ (transition (from W4) (to D5))
+ (transition (from D5) (to W3))
  (transition (from W3) (to E)))
 
 (transducer

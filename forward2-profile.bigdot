@@ -9,9 +9,11 @@ digraph G {
     D2 [label="$\delta_2$", shape=invhouse, color=red];
     W3 [label="$W_3$", shape=octagon, color=red];
     D3 [label="$\delta_3$", shape=invhouse, color=red];
+    W4 [label="$W_4$", shape=octagon, color=red];
     D4 [label="$\delta_4$", shape=invhouse, color=red];
+    D5 [label="$\delta_5$", shape=invhouse, color=red];
 
 S->W0->D1->W1->D2->W2->D3->W3->E;
-W1->D4->W3;
+W1->D4->W4->D5->W3;
 
 }
