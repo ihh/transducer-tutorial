@@ -728,7 +728,9 @@ For example consider the Mealy-machine-like view of \figref{fanned-emission}
 \widepngfig{fanned-emission}{All combinations of input and output characters are frequently observed...}
 
 It can be more convenient to represent this as a Moore-machine-like view of \figref{condensed-emission}
-\widepngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...}
+\widepngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...
+For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
+as they are implied by the state type of the destination state.}
 
 Note the features of this view:
 \begin{itemize}
@@ -759,10 +761,7 @@ or a column vector of conditional probabilities
 \end{itemize}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-\widepdffig{legend}{Transducer state types.
-For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
-as they are implied by the state type of the destination state.
-}
+\widepdffig{legend}{Transducer state types.}
 
 Types of state: Start, Match, Insert, Delete, End, Wait, Null
 
@@ -936,7 +935,9 @@ then the I/O weight function for the composite state QR in the two-transducer en
 
 \subsubsection{Multiplying TKF91 with itself}
 
-\widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the TKF91 model (\figref{tkf91-labeled}) with itself.}
+\widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the TKF91 model (\figref{tkf91-labeled}) with itself.
+See text for I/O weight functions and explanation of state labels...
+}
 
 Again like two consecutive branches $x \to y \to z$
 but now TKF91 is acting along each branch...
@@ -1229,7 +1230,8 @@ would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \pdffig{root-fork-subcs-submf}{Transducer $\nullmodel \cdot ((\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF)))$...}
 
-Forward sum computes final Felsenstein probability for this two-branch tree...
+Forward sum computes final Felsenstein probability for this two-branch tree
+(multiplied by geometric prior over sequence length)...
 
 Note that this transducer is a pure Markov chain (no input/output states).
 Note also that it computes the final Felsenstein probability.
