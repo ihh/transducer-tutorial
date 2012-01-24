@@ -5,6 +5,9 @@
 %.png: %.dot
 	dot -Tpng $< >$@
 
+%.bigpng: %.bigdot
+	dot -Tpng $< >$@
+
 %.html.dot: %.sxpr
 	phylocomposer $< -cd $@ >/dev/null
 
@@ -20,6 +23,10 @@ fork2-%.bigdot: fork2-%.html.dot
 # Two-sequence DP via a generator-transducer-recognizer composition
 comp2-%.bigdot: comp2-%.html.dot
 	./sort-comp2.pl $< >$@
+
+# Three-sequence DP via a doubly-forked recognizer
+fork3-%.bigdot: fork3-%.html.dot
+	./sort-fork3.pl $< >$@
 
 # Landscape orientation, A1 paper (workaround to avoid cropping big graphs)
 %.tex: %.bigdot
