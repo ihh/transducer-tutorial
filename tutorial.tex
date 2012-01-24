@@ -1100,10 +1100,9 @@ i.e. find an equivalent transducer that lacks them
 
 \subsection{Fork}
 
-The second operation for connecting transducers that we consider
+The second operation for connecting two transducers
  is one that we call ``fork''.
-It is also commonly called the ``intersection'' of two transducers
- (e.g. that is the name used by Wikipedia).
+It is a weighted generalization of the operation commonly known as transducer ``intersection''.
 
 Fork is when you feed the same input tape into two transducers in parallel...
 
@@ -1243,7 +1242,7 @@ $b_2$ is the state of the TKF91 transducer on the MF-branch (\figref{tkf91-label
 $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
 
 Note that, as with \figref{mf-tkf91-liv},
-underlying structure is somewhat like a DP matrix,
+the underlying structure of this state graph is somewhat like a DP matrix,
 with rows, columns and cells.
 In fact, modulo some quirks of the automatic graph layout (performed by graphviz's 'dot' program),
 \figref{fork-tkf91liv-tkf91mf} and \figref{mf-tkf91-liv} are structurally quite similar.
