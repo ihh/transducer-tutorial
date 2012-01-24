@@ -1297,17 +1297,18 @@ Sample traceback path yields sample from posterior distribution over ancestral s
 
 \subsubsection{Best reconstruction of ancestor to MF and LIV}
 
-\needfig{viterbi-root-fork-tkf91mf-tkf91liv}
+\widepngfig{viterbi-root-fork-tkf91mf-tkf91liv}{...}
 
 Highlighted Viterbi traceback path...
 
 e.g.
-\begin{tabular}{ccc}
-L & I & V \\
-M & F & -
+\begin{tabular}{lccc}
+Ancestral sequence & * & * & * \\
+Sequence 1         & L & I & V \\
+Sequence 2         & M & F & -
 \end{tabular}
 
-\needfig{viterbi-fork-tkf91mf-tkf91liv}
+\widepdffig{viterbi-fork-tkf91mf-tkf91liv}{...}
 
 Relabeling (removing the root generator) we now have a reconstructed linear profile
 for the sequence at the ancestral node,
@@ -1317,23 +1318,25 @@ Note that this is a recognition profile (all delete states)...
 
 \subsubsection{Sampling reconstructions of ancestor to MF and LIV}
 
-\needfig{forward2-root-fork-tkf91mf-tkf91liv}
+\widepngfig{forward2-root-fork-tkf91mf-tkf91liv}{...}
 
 Instead of just doing Viterbi, we can sample more than one traceback path...
 
 Now as well as this path
-\begin{tabular}{ccc}
-L & I & V \\
-M & F & -
+\begin{tabular}{lccc}
+Ancestral sequence & * & * & * \\
+Sequence 1         & L & I & V \\
+Sequence 2         & M & F & -
 \end{tabular}
 
 we also have this path
-\begin{tabular}{ccc}
-L & I & V \\
-M & - & F
+\begin{tabular}{lccc}
+Ancestral sequence & * & * & * \\
+Sequence 1         & L & I & V \\
+Sequence 2         & M & - & F
 \end{tabular}
 
-\needfig{forward2-fork-tkf91mf-tkf91liv}
+\widepdffig{forward2-fork-tkf91mf-tkf91liv}{...}
 
 Relabeling again, we still have a recognition profile, but it is now branched,
 reflecting the possible uncertainty in our alignment...

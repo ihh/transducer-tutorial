@@ -1,0 +1,303 @@
+digraph transmat {
+Start [shape=circle, color=red, label="$SSSS$"];
+End [shape=diamond, color=red, label="$EEEE$"];
+subgraph cluster_0 {
+subgraph cluster_00 {
+WW_W0__W_W0 [shape=octagon, color=red, label="$WW_0WW_0$"];
+MD_W0__D_W0 [shape=invhouse, color=red, label="$DW_0DW_0$"];
+}
+subgraph cluster_0f {
+SS_S0__I_Df [shape=circle, label=""];
+WW_W0__W_Wf [shape=octagon, color=red, label="$WW_0WW_F$"];
+MD_W0__M_Df [shape=invhouse, color=red, label="$DW_0M\delta_F$"];
+MD_W0__D_Wf [shape=invhouse, color=red, label="$DW_0DW_F$"];
+MD_W0__I_Df [shape=circle, label=""];
+}
+subgraph cluster_0m {
+SS_S0__I_Dm [shape=circle, label=""];
+WW_W0__W_Wm [shape=octagon, color=red, label="$WW_0WW_M$"];
+MD_W0__M_Dm [shape=invhouse, color=red, label="$DW_0M\delta_M$"];
+MD_W0__D_Wm [shape=invhouse, color=red, label="$DW_0DW_M$"];
+MD_W0__I_Dm [shape=circle, label=""];
+}
+}
+subgraph cluster_i {
+subgraph cluster_i0 {
+SI_Di__W_W0 [shape=circle, label=""];
+WW_Wi__W_W0 [shape=octagon, color=red, label="$WW_IWW_0$"];
+MM_Di__D_W0 [shape=invhouse, color=red, label="$M\delta_IDW_0$"];
+MD_Wi__D_W0 [shape=invhouse, color=red, label="$DW_IDW_0$"];
+MI_Di__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_if {
+SI_Di__W_Wf [shape=circle, label=""];
+WW_Wi__W_Wf [shape=octagon, color=red, label="$WW_IWW_F$"];
+MM_Di__M_Df [shape=invhouse, color=red, label="$M\delta_IM\delta_F$"];
+MD_Wi__M_Df [shape=invhouse, color=red, label="$DW_IM\delta_F$"];
+MM_Di__D_Wf [shape=invhouse, color=red, label="$M\delta_IDW_F$"];
+MD_Wi__D_Wf [shape=invhouse, color=red, label="$DW_IDW_F$"];
+MI_Di__W_Wf [shape=circle, label=""];
+MM_Di__I_Df [shape=circle, label=""];
+MD_Wi__I_Df [shape=circle, label=""];
+}
+subgraph cluster_im {
+SI_Di__W_Wm [shape=circle, label=""];
+WW_Wi__W_Wm [shape=octagon, color=red, label="$WW_IWW_M$"];
+MM_Di__M_Dm [shape=invhouse, color=red, label="$M\delta_IM\delta_M$"];
+MD_Wi__M_Dm [shape=invhouse, color=red, label="$DW_IM\delta_M$"];
+MM_Di__D_Wm [shape=invhouse, color=red, label="$M\delta_IDW_M$"];
+MD_Wi__D_Wm [shape=invhouse, color=red, label="$DW_IDW_M$"];
+MI_Di__W_Wm [shape=circle, label=""];
+MM_Di__I_Dm [shape=circle, label=""];
+MD_Wi__I_Dm [shape=circle, label=""];
+}
+}
+subgraph cluster_l {
+subgraph cluster_l0 {
+SI_Dl__W_W0 [shape=circle, label=""];
+WW_Wl__W_W0 [shape=octagon, color=red, label="$WW_LWW_0$"];
+MM_Dl__D_W0 [shape=invhouse, color=red, label="$M\delta_LDW_0$"];
+MD_Wl__D_W0 [shape=invhouse, color=red, label="$DW_LDW_0$"];
+MI_Dl__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_lf {
+SI_Dl__W_Wf [shape=circle, label=""];
+WW_Wl__W_Wf [shape=octagon, color=red, label="$WW_LWW_F$"];
+MM_Dl__M_Df [shape=invhouse, color=red, label="$M\delta_LM\delta_F$"];
+MD_Wl__M_Df [shape=invhouse, color=red, label="$DW_LM\delta_F$"];
+MM_Dl__D_Wf [shape=invhouse, color=red, label="$M\delta_LDW_F$"];
+MD_Wl__D_Wf [shape=invhouse, color=red, label="$DW_LDW_F$"];
+MI_Dl__W_Wf [shape=circle, label=""];
+MM_Dl__I_Df [shape=circle, label=""];
+MD_Wl__I_Df [shape=circle, label=""];
+}
+subgraph cluster_lm {
+SI_Dl__W_Wm [shape=circle, label=""];
+WW_Wl__W_Wm [shape=octagon, color=red, label="$WW_LWW_M$"];
+MM_Dl__M_Dm [shape=invhouse, color=red, label="$M\delta_LM\delta_M$"];
+MD_Wl__M_Dm [shape=invhouse, color=red, label="$DW_LM\delta_M$"];
+MM_Dl__D_Wm [shape=invhouse, color=red, label="$M\delta_LDW_M$"];
+MD_Wl__D_Wm [shape=invhouse, color=red, label="$DW_LDW_M$"];
+MI_Dl__W_Wm [shape=circle, label=""];
+MM_Dl__I_Dm [shape=circle, label=""];
+MD_Wl__I_Dm [shape=circle, label=""];
+}
+}
+subgraph cluster_v {
+subgraph cluster_v0 {
+SI_Dv__W_W0 [shape=circle, label=""];
+WW_Wv__W_W0 [shape=octagon, color=red, label="$WW_VWW_0$"];
+MM_Dv__D_W0 [shape=invhouse, color=red, label="$M\delta_VDW_0$"];
+MD_Wv__D_W0 [shape=invhouse, color=red, label="$DW_VDW_0$"];
+MI_Dv__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_vf {
+SI_Dv__W_Wf [shape=circle, label=""];
+WW_Wv__W_Wf [shape=octagon, color=red, label="$WW_VWW_F$"];
+MM_Dv__M_Df [shape=invhouse, color=red, label="$M\delta_VM\delta_F$"];
+MD_Wv__M_Df [shape=invhouse, color=red, label="$DW_VM\delta_F$"];
+MM_Dv__D_Wf [shape=invhouse, color=red, label="$M\delta_VDW_F$"];
+MD_Wv__D_Wf [shape=invhouse, color=red, label="$DW_VDW_F$"];
+MI_Dv__W_Wf [shape=circle, label=""];
+MM_Dv__I_Df [shape=circle, label=""];
+MD_Wv__I_Df [shape=circle, label=""];
+}
+subgraph cluster_vm {
+SI_Dv__W_Wm [shape=circle, label=""];
+WW_Wv__W_Wm [shape=octagon, color=red, label="$WW_VWW_M$"];
+MM_Dv__M_Dm [shape=invhouse, color=red, label="$M\delta_VM\delta_M$"];
+MD_Wv__M_Dm [shape=invhouse, color=red, label="$DW_VM\delta_M$"];
+MM_Dv__D_Wm [shape=invhouse, color=red, label="$M\delta_VDW_M$"];
+MD_Wv__D_Wm [shape=invhouse, color=red, label="$DW_VDW_M$"];
+MI_Dv__W_Wm [shape=circle, label=""];
+MM_Dv__I_Dm [shape=circle, label=""];
+MD_Wv__I_Dm [shape=circle, label=""];
+}
+}
+Start -> SI_Dl__W_W0 [style=invis];
+Start -> SS_S0__I_Dm [style=invis];
+Start -> WW_W0__W_W0 [style=bold];
+SI_Dl__W_W0 -> SI_Di__W_W0 [style=invis];
+SI_Dl__W_W0 -> WW_Wl__W_W0 [style=invis];
+SI_Di__W_W0 -> SI_Dv__W_W0 [style=invis];
+SI_Di__W_W0 -> WW_Wi__W_W0 [style=invis];
+SI_Dv__W_W0 -> WW_Wv__W_W0 [style=invis];
+SI_Dl__W_Wm -> SI_Di__W_Wm [style=invis];
+SI_Dl__W_Wm -> WW_Wl__W_Wm [style=invis];
+SI_Di__W_Wm -> SI_Dv__W_Wm [style=invis];
+SI_Di__W_Wm -> WW_Wi__W_Wm [style=invis];
+SI_Dv__W_Wm -> WW_Wv__W_Wm [style=invis];
+SI_Dl__W_Wf -> SI_Di__W_Wf [style=invis];
+SI_Dl__W_Wf -> WW_Wl__W_Wf [style=invis];
+SI_Di__W_Wf -> SI_Dv__W_Wf [style=invis];
+SI_Di__W_Wf -> WW_Wi__W_Wf [style=invis];
+SI_Dv__W_Wf -> WW_Wv__W_Wf [style=invis];
+SS_S0__I_Dm -> SI_Dl__W_Wm [style=invis];
+SS_S0__I_Dm -> SS_S0__I_Df [style=invis];
+SS_S0__I_Dm -> WW_W0__W_Wm [style=invis];
+SS_S0__I_Df -> SI_Dl__W_Wf [style=invis];
+SS_S0__I_Df -> WW_W0__W_Wf [style=invis];
+WW_W0__W_W0 -> MM_Dl__M_Dm [style=bold];
+WW_W0__W_W0 -> MD_W0__M_Dm [style=invis];
+WW_W0__W_W0 -> MM_Dl__D_W0 [style=invis];
+WW_W0__W_W0 -> MD_W0__D_W0 [style=invis];
+WW_Wl__W_W0 -> MM_Di__M_Dm [style=invis];
+WW_Wl__W_W0 -> MD_Wl__M_Dm [style=invis];
+WW_Wl__W_W0 -> MM_Di__D_W0 [style=invis];
+WW_Wl__W_W0 -> MD_Wl__D_W0 [style=invis];
+WW_Wi__W_W0 -> MM_Dv__M_Dm [style=invis];
+WW_Wi__W_W0 -> MD_Wi__M_Dm [style=invis];
+WW_Wi__W_W0 -> MM_Dv__D_W0 [style=invis];
+WW_Wi__W_W0 -> MD_Wi__D_W0 [style=invis];
+WW_Wv__W_W0 -> MD_Wv__M_Dm [style=invis];
+WW_Wv__W_W0 -> MD_Wv__D_W0 [style=invis];
+WW_W0__W_Wm -> MM_Dl__M_Df [style=invis];
+WW_W0__W_Wm -> MD_W0__M_Df [style=invis];
+WW_W0__W_Wm -> MM_Dl__D_Wm [style=invis];
+WW_W0__W_Wm -> MD_W0__D_Wm [style=invis];
+WW_Wl__W_Wm -> MM_Di__M_Df [style=bold];
+WW_Wl__W_Wm -> MD_Wl__M_Df [style=invis];
+WW_Wl__W_Wm -> MM_Di__D_Wm [style=bold];
+WW_Wl__W_Wm -> MD_Wl__D_Wm [style=invis];
+WW_Wi__W_Wm -> MM_Dv__M_Df [style=bold];
+WW_Wi__W_Wm -> MD_Wi__M_Df [style=invis];
+WW_Wi__W_Wm -> MM_Dv__D_Wm [style=invis];
+WW_Wi__W_Wm -> MD_Wi__D_Wm [style=invis];
+WW_Wv__W_Wm -> MD_Wv__M_Df [style=invis];
+WW_Wv__W_Wm -> MD_Wv__D_Wm [style=invis];
+WW_W0__W_Wf -> MM_Dl__D_Wf [style=invis];
+WW_W0__W_Wf -> MD_W0__D_Wf [style=invis];
+WW_Wl__W_Wf -> MM_Di__D_Wf [style=invis];
+WW_Wl__W_Wf -> MD_Wl__D_Wf [style=invis];
+WW_Wi__W_Wf -> MM_Dv__D_Wf [style=bold];
+WW_Wi__W_Wf -> MD_Wi__D_Wf [style=invis];
+WW_Wv__W_Wf -> End [style=bold];
+WW_Wv__W_Wf -> MD_Wv__D_Wf [style=invis];
+MM_Dl__M_Dm -> WW_Wl__W_Wm [style=bold];
+MM_Dl__M_Dm -> MI_Di__W_Wm [style=invis];
+MM_Dl__M_Dm -> MM_Dl__I_Df [style=invis];
+MM_Di__M_Dm -> WW_Wi__W_Wm [style=invis];
+MM_Di__M_Dm -> MI_Dv__W_Wm [style=invis];
+MM_Di__M_Dm -> MM_Di__I_Df [style=invis];
+MM_Dv__M_Dm -> WW_Wv__W_Wm [style=invis];
+MM_Dv__M_Dm -> MM_Dv__I_Df [style=invis];
+MM_Dl__M_Df -> WW_Wl__W_Wf [style=invis];
+MM_Dl__M_Df -> MI_Di__W_Wf [style=invis];
+MM_Di__M_Df -> WW_Wi__W_Wf [style=bold];
+MM_Di__M_Df -> MI_Dv__W_Wf [style=invis];
+MM_Dv__M_Df -> WW_Wv__W_Wf [style=bold];
+MD_W0__M_Dm -> WW_W0__W_Wm [style=invis];
+MD_W0__M_Dm -> MI_Dl__W_Wm [style=invis];
+MD_W0__M_Dm -> MD_W0__I_Df [style=invis];
+MD_Wl__M_Dm -> WW_Wl__W_Wm [style=invis];
+MD_Wl__M_Dm -> MI_Di__W_Wm [style=invis];
+MD_Wl__M_Dm -> MD_Wl__I_Df [style=invis];
+MD_Wi__M_Dm -> WW_Wi__W_Wm [style=invis];
+MD_Wi__M_Dm -> MI_Dv__W_Wm [style=invis];
+MD_Wi__M_Dm -> MD_Wi__I_Df [style=invis];
+MD_Wv__M_Dm -> WW_Wv__W_Wm [style=invis];
+MD_Wv__M_Dm -> MD_Wv__I_Df [style=invis];
+MD_W0__M_Df -> WW_W0__W_Wf [style=invis];
+MD_W0__M_Df -> MI_Dl__W_Wf [style=invis];
+MD_Wl__M_Df -> WW_Wl__W_Wf [style=invis];
+MD_Wl__M_Df -> MI_Di__W_Wf [style=invis];
+MD_Wi__M_Df -> WW_Wi__W_Wf [style=invis];
+MD_Wi__M_Df -> MI_Dv__W_Wf [style=invis];
+MD_Wv__M_Df -> WW_Wv__W_Wf [style=invis];
+MM_Dl__D_W0 -> WW_Wl__W_W0 [style=invis];
+MM_Dl__D_W0 -> MI_Di__W_W0 [style=invis];
+MM_Dl__D_W0 -> MM_Dl__I_Dm [style=invis];
+MM_Di__D_W0 -> WW_Wi__W_W0 [style=invis];
+MM_Di__D_W0 -> MI_Dv__W_W0 [style=invis];
+MM_Di__D_W0 -> MM_Di__I_Dm [style=invis];
+MM_Dv__D_W0 -> WW_Wv__W_W0 [style=invis];
+MM_Dv__D_W0 -> MM_Dv__I_Dm [style=invis];
+MM_Dl__D_Wm -> WW_Wl__W_Wm [style=invis];
+MM_Dl__D_Wm -> MI_Di__W_Wm [style=invis];
+MM_Dl__D_Wm -> MM_Dl__I_Df [style=invis];
+MM_Di__D_Wm -> WW_Wi__W_Wm [style=bold];
+MM_Di__D_Wm -> MI_Dv__W_Wm [style=invis];
+MM_Di__D_Wm -> MM_Di__I_Df [style=invis];
+MM_Dv__D_Wm -> WW_Wv__W_Wm [style=invis];
+MM_Dv__D_Wm -> MM_Dv__I_Df [style=invis];
+MM_Dl__D_Wf -> WW_Wl__W_Wf [style=invis];
+MM_Dl__D_Wf -> MI_Di__W_Wf [style=invis];
+MM_Di__D_Wf -> WW_Wi__W_Wf [style=invis];
+MM_Di__D_Wf -> MI_Dv__W_Wf [style=invis];
+MM_Dv__D_Wf -> WW_Wv__W_Wf [style=bold];
+MD_W0__D_W0 -> WW_W0__W_W0 [style=invis];
+MD_W0__D_W0 -> MI_Dl__W_W0 [style=invis];
+MD_W0__D_W0 -> MD_W0__I_Dm [style=invis];
+MD_Wl__D_W0 -> WW_Wl__W_W0 [style=invis];
+MD_Wl__D_W0 -> MI_Di__W_W0 [style=invis];
+MD_Wl__D_W0 -> MD_Wl__I_Dm [style=invis];
+MD_Wi__D_W0 -> WW_Wi__W_W0 [style=invis];
+MD_Wi__D_W0 -> MI_Dv__W_W0 [style=invis];
+MD_Wi__D_W0 -> MD_Wi__I_Dm [style=invis];
+MD_Wv__D_W0 -> WW_Wv__W_W0 [style=invis];
+MD_Wv__D_W0 -> MD_Wv__I_Dm [style=invis];
+MD_W0__D_Wm -> WW_W0__W_Wm [style=invis];
+MD_W0__D_Wm -> MI_Dl__W_Wm [style=invis];
+MD_W0__D_Wm -> MD_W0__I_Df [style=invis];
+MD_Wl__D_Wm -> WW_Wl__W_Wm [style=invis];
+MD_Wl__D_Wm -> MI_Di__W_Wm [style=invis];
+MD_Wl__D_Wm -> MD_Wl__I_Df [style=invis];
+MD_Wi__D_Wm -> WW_Wi__W_Wm [style=invis];
+MD_Wi__D_Wm -> MI_Dv__W_Wm [style=invis];
+MD_Wi__D_Wm -> MD_Wi__I_Df [style=invis];
+MD_Wv__D_Wm -> WW_Wv__W_Wm [style=invis];
+MD_Wv__D_Wm -> MD_Wv__I_Df [style=invis];
+MD_W0__D_Wf -> WW_W0__W_Wf [style=invis];
+MD_W0__D_Wf -> MI_Dl__W_Wf [style=invis];
+MD_Wl__D_Wf -> WW_Wl__W_Wf [style=invis];
+MD_Wl__D_Wf -> MI_Di__W_Wf [style=invis];
+MD_Wi__D_Wf -> WW_Wi__W_Wf [style=invis];
+MD_Wi__D_Wf -> MI_Dv__W_Wf [style=invis];
+MD_Wv__D_Wf -> WW_Wv__W_Wf [style=invis];
+MI_Dl__W_W0 -> WW_Wl__W_W0 [style=invis];
+MI_Dl__W_W0 -> MI_Di__W_W0 [style=invis];
+MI_Di__W_W0 -> WW_Wi__W_W0 [style=invis];
+MI_Di__W_W0 -> MI_Dv__W_W0 [style=invis];
+MI_Dv__W_W0 -> WW_Wv__W_W0 [style=invis];
+MI_Dl__W_Wm -> WW_Wl__W_Wm [style=invis];
+MI_Dl__W_Wm -> MI_Di__W_Wm [style=invis];
+MI_Di__W_Wm -> WW_Wi__W_Wm [style=invis];
+MI_Di__W_Wm -> MI_Dv__W_Wm [style=invis];
+MI_Dv__W_Wm -> WW_Wv__W_Wm [style=invis];
+MI_Dl__W_Wf -> WW_Wl__W_Wf [style=invis];
+MI_Dl__W_Wf -> MI_Di__W_Wf [style=invis];
+MI_Di__W_Wf -> WW_Wi__W_Wf [style=invis];
+MI_Di__W_Wf -> MI_Dv__W_Wf [style=invis];
+MI_Dv__W_Wf -> WW_Wv__W_Wf [style=invis];
+MM_Dl__I_Dm -> WW_Wl__W_Wm [style=invis];
+MM_Dl__I_Dm -> MI_Di__W_Wm [style=invis];
+MM_Dl__I_Dm -> MM_Dl__I_Df [style=invis];
+MM_Di__I_Dm -> WW_Wi__W_Wm [style=invis];
+MM_Di__I_Dm -> MI_Dv__W_Wm [style=invis];
+MM_Di__I_Dm -> MM_Di__I_Df [style=invis];
+MM_Dv__I_Dm -> WW_Wv__W_Wm [style=invis];
+MM_Dv__I_Dm -> MM_Dv__I_Df [style=invis];
+MM_Dl__I_Df -> WW_Wl__W_Wf [style=invis];
+MM_Dl__I_Df -> MI_Di__W_Wf [style=invis];
+MM_Di__I_Df -> WW_Wi__W_Wf [style=invis];
+MM_Di__I_Df -> MI_Dv__W_Wf [style=invis];
+MM_Dv__I_Df -> WW_Wv__W_Wf [style=invis];
+MD_W0__I_Dm -> WW_W0__W_Wm [style=invis];
+MD_W0__I_Dm -> MI_Dl__W_Wm [style=invis];
+MD_W0__I_Dm -> MD_W0__I_Df [style=invis];
+MD_Wl__I_Dm -> WW_Wl__W_Wm [style=invis];
+MD_Wl__I_Dm -> MI_Di__W_Wm [style=invis];
+MD_Wl__I_Dm -> MD_Wl__I_Df [style=invis];
+MD_Wi__I_Dm -> WW_Wi__W_Wm [style=invis];
+MD_Wi__I_Dm -> MI_Dv__W_Wm [style=invis];
+MD_Wi__I_Dm -> MD_Wi__I_Df [style=invis];
+MD_Wv__I_Dm -> WW_Wv__W_Wm [style=invis];
+MD_Wv__I_Dm -> MD_Wv__I_Df [style=invis];
+MD_W0__I_Df -> WW_W0__W_Wf [style=invis];
+MD_W0__I_Df -> MI_Dl__W_Wf [style=invis];
+MD_Wl__I_Df -> WW_Wl__W_Wf [style=invis];
+MD_Wl__I_Df -> MI_Di__W_Wf [style=invis];
+MD_Wi__I_Df -> WW_Wi__W_Wf [style=invis];
+MD_Wi__I_Df -> MI_Dv__W_Wf [style=invis];
+MD_Wv__I_Df -> WW_Wv__W_Wf [style=invis];
+}
