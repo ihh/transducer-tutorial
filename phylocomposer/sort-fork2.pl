@@ -10,6 +10,7 @@ my %global = ('Start' => 'SSSS',
 
 my (%order, @rest, %name, %longname, %shape);
 my $nodes_to_print = 0;
+my $has_IO = 0;
 while (<>) {
     if (/^\s*(\S+).*label=<<(.*)>>/) {
 	my ($node, $label) = ($1, $2);
@@ -41,20 +42,22 @@ while (<>) {
 	    push @rest, $node;
 	    $shape{$node} =
 		$node eq 'Start'
-		? "circle, color=red"
+		? 'circle, color=red'
 		: ($node eq 'End'
-		   ? "diamond, color=red"
-		   : "circle");
+		   ? 'diamond, color=red'
+		   : 'circle');
 	}
 	$nodes_to_print = 1;
     } elsif (/(\S+)\s*->\s*(\S+)/) {
 	my ($src, $dest) = ($1, $2);
 	if ($nodes_to_print) {
+	    $has_IO = grep (/house/, values %shape);
 	    for my $node (@rest) {
 		print_node ($node);
 	    }
-# Commented out outermost cluster as it messes up the left->right layout... sigh
-#	    print "subgraph cluster_DPmatrix {\n";
+# Only print outermost cluster border for non-IO version of the transducer
+# Anything else messes up the left->right layout... *sigh*
+	    print "subgraph cluster_DPmatrix {\n" if !$has_IO;
 	    for my $pos1 (sort keys %order) {
 		print "subgraph cluster_$pos1 {\n";
 		for my $pos2 (sort keys %{$order{$pos1}}) {
@@ -66,7 +69,7 @@ while (<>) {
 		}
 		print "}\n";
 	    }
-#	    print "}\n";
+	    print "}\n" if !$has_IO;
 	    $nodes_to_print = 0;
 	}
 	print "$longname{$src} -> $longname{$dest};\n";
@@ -77,6 +80,6 @@ while (<>) {
 
 sub print_node {
     my ($node) = @_;
-    my $label = $shape{$node} eq 'circle' ? "" : "\$$name{$node}\$";
+    my $label = ($has_IO == 0 || $shape{$node} eq 'circle') ? "" : "\$$name{$node}\$";
     print "$longname{$node} [shape=$shape{$node}, label=\"$label\"];\n";
 }

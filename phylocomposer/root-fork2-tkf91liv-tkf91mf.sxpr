@@ -1,0 +1,94 @@
+(branch
+ (from $NULL) (to $ROOT)
+ (transducer PRIOR)
+ (branch
+  (to $L)
+  (transducer TKF91_BRANCH)
+  (branch
+   (to $L1)
+   (transducer LIV_MATCH)))
+ (branch
+  (to $R)
+  (transducer TKF91_BRANCH)
+  (branch
+   (to $R1)
+   (transducer MF_MATCH))))
+
+(token (x))
+
+(transducer
+ (name PRIOR)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name I) (type insert))
+
+ (transition (from S) (to I))
+ (transition (from I) (to I))
+ (transition (from I) (to W))
+ (transition (from W) (to E)))
+
+
+(transducer
+ (name TKF91_BRANCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name M) (type match))
+ (state (name D) (type delete))
+ (state (name I) (type insert))
+
+ (transition (from S) (to I))
+ (transition (from S) (to W))
+ (transition (from W) (to M))
+ (transition (from W) (to D))
+ (transition (from W) (to E))
+ (transition (from M) (to I))
+ (transition (from M) (to W))
+ (transition (from D) (to I))
+ (transition (from D) (to W))
+ (transition (from I) (to I))
+ (transition (from I) (to W)))
+
+
+(transducer
+ (name LIV_MATCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W0) (type wait))
+ (state (name Wl) (type wait))
+ (state (name Wi) (type wait))
+ (state (name Wv) (type wait))
+ (state (name Dl) (type delete))
+ (state (name Di) (type delete))
+ (state (name Dv) (type delete))
+
+ (transition (from S) (to W0))
+ (transition (from W0) (to Dl))
+ (transition (from Dl) (to Wl))
+ (transition (from Wl) (to Di))
+ (transition (from Di) (to Wi))
+ (transition (from Wi) (to Dv))
+ (transition (from Dv) (to Wv))
+ (transition (from Wv) (to E)))
+
+(transducer
+ (name MF_MATCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W0) (type wait))
+ (state (name Wm) (type wait))
+ (state (name Wf) (type wait))
+ (state (name Dm) (type delete))
+ (state (name Df) (type delete))
+
+ (transition (from S) (to W0))
+ (transition (from W0) (to Dm))
+ (transition (from Dm) (to Wm))
+ (transition (from Wm) (to Df))
+ (transition (from Df) (to Wf))
+ (transition (from Wf) (to E)))

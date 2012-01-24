@@ -23,6 +23,9 @@
 fork2-%.bigdot: fork2-%.html.dot
 	./sort-fork2.pl $< >$@
 
+root-fork2-%.bigdot: root-fork2-%.html.dot
+	./sort-fork2.pl $< >$@
+
 # Two-sequence DP via a generator-transducer-recognizer composition
 comp2-%.bigdot: comp2-%.html.dot
 	./sort-comp2.pl $< >$@
