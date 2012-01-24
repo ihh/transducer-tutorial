@@ -2,7 +2,7 @@ digraph G {
 
     SS [label="$SS$", shape=circle, color=red];
     EE [label="$EE$", shape=diamond, color=red];
-    WW [label="$WW$", shape=octagon, color=red];
+    WW [label="$W_F W$", shape=octagon, color=red];
 
 subgraph cluster_0 {
 	SI [label="$SI$", shape=house, color=red];
