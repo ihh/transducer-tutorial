@@ -1,0 +1,1024 @@
+digraph transmat {
+Start [shape=circle, color=red, label=""];
+End [shape=diamond, color=red, label=""];
+subgraph cluster_0 {
+subgraph cluster_00 {
+subgraph cluster_000 {
+label="Cell (0,0,0) = (*,*,*)";
+SID_W0__D_W0__W_W0 [shape=circle, label=""];
+WWW_W0__W_W0__W_W0 [shape=octagon, color=red, label=""];
+MMD_W0__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MDW_W0__W_W0__D_W0 [shape=invhouse, color=red, label=""];
+MID_W0__D_W0__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_00c {
+label="Cell (0,0,1) = (*,*,C)";
+SID_W0__D_W0__W_Wc [shape=circle, label=""];
+SSS_S0__S_S0__I_Dc [shape=circle, label=""];
+WWW_W0__W_W0__W_Wc [shape=octagon, color=red, label=""];
+MMD_W0__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MDW_W0__W_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMD_W0__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MDW_W0__W_W0__D_Wc [shape=invhouse, color=red, label=""];
+MID_W0__D_W0__W_Wc [shape=circle, label=""];
+MMD_W0__D_W0__I_Dc [shape=circle, label=""];
+MDW_W0__W_W0__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_00s {
+label="Cell (0,0,2) = (*,*,S)";
+SID_W0__D_W0__W_Ws [shape=circle, label=""];
+SSS_S0__S_S0__I_Ds [shape=circle, label=""];
+WWW_W0__W_W0__W_Ws [shape=octagon, color=red, label=""];
+MMD_W0__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MDW_W0__W_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMD_W0__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MDW_W0__W_W0__D_Ws [shape=invhouse, color=red, label=""];
+MID_W0__D_W0__W_Ws [shape=circle, label=""];
+MMD_W0__D_W0__I_Ds [shape=circle, label=""];
+MDW_W0__W_W0__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_0m {
+subgraph cluster_0m0 {
+label="Cell (0,1,0) = (*,M,*)";
+SSS_S0__I_Dm__W_W0 [shape=circle, label=""];
+SID_W0__M_Dm__W_W0 [shape=circle, label=""];
+SID_W0__D_Wm__W_W0 [shape=circle, label=""];
+SID_W0__I_Dm__W_W0 [shape=circle, label=""];
+WWW_W0__W_Wm__W_W0 [shape=octagon, color=red, label=""];
+MMD_W0__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_W0__I_Dm__W_W0 [shape=circle, label=""];
+MID_W0__M_Dm__W_W0 [shape=circle, label=""];
+MID_W0__D_Wm__W_W0 [shape=circle, label=""];
+MID_W0__I_Dm__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_0mc {
+label="Cell (0,1,1) = (*,M,C)";
+SSS_S0__I_Dm__W_Wc [shape=circle, label=""];
+SID_W0__M_Dm__W_Wc [shape=circle, label=""];
+SID_W0__D_Wm__W_Wc [shape=circle, label=""];
+SID_W0__I_Dm__W_Wc [shape=circle, label=""];
+WWW_W0__W_Wm__W_Wc [shape=octagon, color=red, label=""];
+MMD_W0__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_W0__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_W0__I_Dm__W_Wc [shape=circle, label=""];
+MID_W0__M_Dm__W_Wc [shape=circle, label=""];
+MID_W0__D_Wm__W_Wc [shape=circle, label=""];
+MID_W0__I_Dm__W_Wc [shape=circle, label=""];
+MMD_W0__M_Dm__I_Dc [shape=circle, label=""];
+MMD_W0__D_Wm__I_Dc [shape=circle, label=""];
+MDW_W0__W_Wm__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_0ms {
+label="Cell (0,1,2) = (*,M,S)";
+SSS_S0__I_Dm__W_Ws [shape=circle, label=""];
+SID_W0__M_Dm__W_Ws [shape=circle, label=""];
+SID_W0__D_Wm__W_Ws [shape=circle, label=""];
+SID_W0__I_Dm__W_Ws [shape=circle, label=""];
+WWW_W0__W_Wm__W_Ws [shape=octagon, color=red, label=""];
+MMD_W0__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_W0__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_W0__I_Dm__W_Ws [shape=circle, label=""];
+MID_W0__M_Dm__W_Ws [shape=circle, label=""];
+MID_W0__D_Wm__W_Ws [shape=circle, label=""];
+MID_W0__I_Dm__W_Ws [shape=circle, label=""];
+MMD_W0__M_Dm__I_Ds [shape=circle, label=""];
+MMD_W0__D_Wm__I_Ds [shape=circle, label=""];
+MDW_W0__W_Wm__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_0f {
+subgraph cluster_0f0 {
+label="Cell (0,2,0) = (*,F,*)";
+SSS_S0__I_Df__W_W0 [shape=circle, label=""];
+SID_W0__M_Df__W_W0 [shape=circle, label=""];
+SID_W0__D_Wf__W_W0 [shape=circle, label=""];
+SID_W0__I_Df__W_W0 [shape=circle, label=""];
+WWW_W0__W_Wf__W_W0 [shape=octagon, color=red, label=""];
+MMD_W0__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMD_W0__I_Df__W_W0 [shape=circle, label=""];
+MID_W0__M_Df__W_W0 [shape=circle, label=""];
+MID_W0__D_Wf__W_W0 [shape=circle, label=""];
+MID_W0__I_Df__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_0fc {
+label="Cell (0,2,1) = (*,F,C)";
+SSS_S0__I_Df__W_Wc [shape=circle, label=""];
+SID_W0__M_Df__W_Wc [shape=circle, label=""];
+SID_W0__D_Wf__W_Wc [shape=circle, label=""];
+SID_W0__I_Df__W_Wc [shape=circle, label=""];
+WWW_W0__W_Wf__W_Wc [shape=octagon, color=red, label=""];
+MMD_W0__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMD_W0__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMD_W0__I_Df__W_Wc [shape=circle, label=""];
+MID_W0__M_Df__W_Wc [shape=circle, label=""];
+MID_W0__D_Wf__W_Wc [shape=circle, label=""];
+MID_W0__I_Df__W_Wc [shape=circle, label=""];
+MMD_W0__M_Df__I_Dc [shape=circle, label=""];
+MMD_W0__D_Wf__I_Dc [shape=circle, label=""];
+MDW_W0__W_Wf__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_0fs {
+label="Cell (0,2,2) = (*,F,S)";
+SSS_S0__I_Df__W_Ws [shape=circle, label=""];
+SID_W0__M_Df__W_Ws [shape=circle, label=""];
+SID_W0__D_Wf__W_Ws [shape=circle, label=""];
+SID_W0__I_Df__W_Ws [shape=circle, label=""];
+WWW_W0__W_Wf__W_Ws [shape=octagon, color=red, label=""];
+MMD_W0__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMD_W0__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMD_W0__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MDW_W0__W_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMD_W0__I_Df__W_Ws [shape=circle, label=""];
+MID_W0__M_Df__W_Ws [shape=circle, label=""];
+MID_W0__D_Wf__W_Ws [shape=circle, label=""];
+MID_W0__I_Df__W_Ws [shape=circle, label=""];
+MMD_W0__M_Df__I_Ds [shape=circle, label=""];
+MMD_W0__D_Wf__I_Ds [shape=circle, label=""];
+MDW_W0__W_Wf__I_Ds [shape=circle, label=""];
+}
+}
+}
+subgraph cluster_l {
+subgraph cluster_l0 {
+subgraph cluster_l00 {
+label="Cell (1,0,0) = (L,*,*)";
+SSI_Dl__W_W0__W_W0 [shape=circle, label=""];
+SII_Dl__W_W0__W_W0 [shape=circle, label=""];
+SIM_Dl__D_W0__W_W0 [shape=circle, label=""];
+SID_Wl__D_W0__W_W0 [shape=circle, label=""];
+WWW_Wl__W_W0__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dl__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wl__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wl__W_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dl__W_W0__W_W0 [shape=circle, label=""];
+MII_Dl__W_W0__W_W0 [shape=circle, label=""];
+MIM_Dl__D_W0__W_W0 [shape=circle, label=""];
+MID_Wl__D_W0__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_l0c {
+label="Cell (1,0,1) = (L,*,C)";
+SSI_Dl__W_W0__W_Wc [shape=circle, label=""];
+SII_Dl__W_W0__W_Wc [shape=circle, label=""];
+SIM_Dl__D_W0__W_Wc [shape=circle, label=""];
+SID_Wl__D_W0__W_Wc [shape=circle, label=""];
+WWW_Wl__W_W0__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dl__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dl__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dl__W_W0__W_Wc [shape=circle, label=""];
+MII_Dl__W_W0__W_Wc [shape=circle, label=""];
+MIM_Dl__D_W0__W_Wc [shape=circle, label=""];
+MID_Wl__D_W0__W_Wc [shape=circle, label=""];
+MMM_Dl__D_W0__I_Dc [shape=circle, label=""];
+MMD_Wl__D_W0__I_Dc [shape=circle, label=""];
+MDW_Wl__W_W0__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_l0s {
+label="Cell (1,0,2) = (L,*,S)";
+SSI_Dl__W_W0__W_Ws [shape=circle, label=""];
+SII_Dl__W_W0__W_Ws [shape=circle, label=""];
+SIM_Dl__D_W0__W_Ws [shape=circle, label=""];
+SID_Wl__D_W0__W_Ws [shape=circle, label=""];
+WWW_Wl__W_W0__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dl__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wl__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wl__W_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dl__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wl__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wl__W_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dl__W_W0__W_Ws [shape=circle, label=""];
+MII_Dl__W_W0__W_Ws [shape=circle, label=""];
+MIM_Dl__D_W0__W_Ws [shape=circle, label=""];
+MID_Wl__D_W0__W_Ws [shape=circle, label=""];
+MMM_Dl__D_W0__I_Ds [shape=circle, label=""];
+MMD_Wl__D_W0__I_Ds [shape=circle, label=""];
+MDW_Wl__W_W0__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_lm {
+subgraph cluster_lm0 {
+label="Cell (1,1,0) = (L,M,*)";
+SSI_Dl__W_Wm__W_W0 [shape=circle, label=""];
+SII_Dl__W_Wm__W_W0 [shape=circle, label=""];
+SIM_Dl__M_Dm__W_W0 [shape=circle, label=""];
+SID_Wl__M_Dm__W_W0 [shape=circle, label=""];
+SIM_Dl__D_Wm__W_W0 [shape=circle, label=""];
+SID_Wl__D_Wm__W_W0 [shape=circle, label=""];
+SIM_Dl__I_Dm__W_W0 [shape=circle, label=""];
+SID_Wl__I_Dm__W_W0 [shape=circle, label=""];
+WWW_Wl__W_Wm__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dl__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wm__W_W0 [shape=circle, label=""];
+MMM_Dl__I_Dm__W_W0 [shape=circle, label=""];
+MMD_Wl__I_Dm__W_W0 [shape=circle, label=""];
+MII_Dl__W_Wm__W_W0 [shape=circle, label=""];
+MIM_Dl__M_Dm__W_W0 [shape=circle, label=""];
+MID_Wl__M_Dm__W_W0 [shape=circle, label=""];
+MIM_Dl__D_Wm__W_W0 [shape=circle, label=""];
+MID_Wl__D_Wm__W_W0 [shape=circle, label=""];
+MIM_Dl__I_Dm__W_W0 [shape=circle, label=""];
+MID_Wl__I_Dm__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_lmc {
+label="Cell (1,1,1) = (L,M,C)";
+SSI_Dl__W_Wm__W_Wc [shape=circle, label=""];
+SII_Dl__W_Wm__W_Wc [shape=circle, label=""];
+SIM_Dl__M_Dm__W_Wc [shape=circle, label=""];
+SID_Wl__M_Dm__W_Wc [shape=circle, label=""];
+SIM_Dl__D_Wm__W_Wc [shape=circle, label=""];
+SID_Wl__D_Wm__W_Wc [shape=circle, label=""];
+SIM_Dl__I_Dm__W_Wc [shape=circle, label=""];
+SID_Wl__I_Dm__W_Wc [shape=circle, label=""];
+WWW_Wl__W_Wm__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dl__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dl__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wm__W_Wc [shape=circle, label=""];
+MMM_Dl__I_Dm__W_Wc [shape=circle, label=""];
+MMD_Wl__I_Dm__W_Wc [shape=circle, label=""];
+MII_Dl__W_Wm__W_Wc [shape=circle, label=""];
+MIM_Dl__M_Dm__W_Wc [shape=circle, label=""];
+MID_Wl__M_Dm__W_Wc [shape=circle, label=""];
+MIM_Dl__D_Wm__W_Wc [shape=circle, label=""];
+MID_Wl__D_Wm__W_Wc [shape=circle, label=""];
+MIM_Dl__I_Dm__W_Wc [shape=circle, label=""];
+MID_Wl__I_Dm__W_Wc [shape=circle, label=""];
+MMM_Dl__M_Dm__I_Dc [shape=circle, label=""];
+MMD_Wl__M_Dm__I_Dc [shape=circle, label=""];
+MMM_Dl__D_Wm__I_Dc [shape=circle, label=""];
+MMD_Wl__D_Wm__I_Dc [shape=circle, label=""];
+MDW_Wl__W_Wm__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_lms {
+label="Cell (1,1,2) = (L,M,S)";
+SSI_Dl__W_Wm__W_Ws [shape=circle, label=""];
+SII_Dl__W_Wm__W_Ws [shape=circle, label=""];
+SIM_Dl__M_Dm__W_Ws [shape=circle, label=""];
+SID_Wl__M_Dm__W_Ws [shape=circle, label=""];
+SIM_Dl__D_Wm__W_Ws [shape=circle, label=""];
+SID_Wl__D_Wm__W_Ws [shape=circle, label=""];
+SIM_Dl__I_Dm__W_Ws [shape=circle, label=""];
+SID_Wl__I_Dm__W_Ws [shape=circle, label=""];
+WWW_Wl__W_Wm__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dl__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dl__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wm__W_Ws [shape=circle, label=""];
+MMM_Dl__I_Dm__W_Ws [shape=circle, label=""];
+MMD_Wl__I_Dm__W_Ws [shape=circle, label=""];
+MII_Dl__W_Wm__W_Ws [shape=circle, label=""];
+MIM_Dl__M_Dm__W_Ws [shape=circle, label=""];
+MID_Wl__M_Dm__W_Ws [shape=circle, label=""];
+MIM_Dl__D_Wm__W_Ws [shape=circle, label=""];
+MID_Wl__D_Wm__W_Ws [shape=circle, label=""];
+MIM_Dl__I_Dm__W_Ws [shape=circle, label=""];
+MID_Wl__I_Dm__W_Ws [shape=circle, label=""];
+MMM_Dl__M_Dm__I_Ds [shape=circle, label=""];
+MMD_Wl__M_Dm__I_Ds [shape=circle, label=""];
+MMM_Dl__D_Wm__I_Ds [shape=circle, label=""];
+MMD_Wl__D_Wm__I_Ds [shape=circle, label=""];
+MDW_Wl__W_Wm__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_lf {
+subgraph cluster_lf0 {
+label="Cell (1,2,0) = (L,F,*)";
+SSI_Dl__W_Wf__W_W0 [shape=circle, label=""];
+SII_Dl__W_Wf__W_W0 [shape=circle, label=""];
+SIM_Dl__M_Df__W_W0 [shape=circle, label=""];
+SID_Wl__M_Df__W_W0 [shape=circle, label=""];
+SIM_Dl__D_Wf__W_W0 [shape=circle, label=""];
+SID_Wl__D_Wf__W_W0 [shape=circle, label=""];
+SIM_Dl__I_Df__W_W0 [shape=circle, label=""];
+SID_Wl__I_Df__W_W0 [shape=circle, label=""];
+WWW_Wl__W_Wf__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dl__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wf__W_W0 [shape=circle, label=""];
+MMM_Dl__I_Df__W_W0 [shape=circle, label=""];
+MMD_Wl__I_Df__W_W0 [shape=circle, label=""];
+MII_Dl__W_Wf__W_W0 [shape=circle, label=""];
+MIM_Dl__M_Df__W_W0 [shape=circle, label=""];
+MID_Wl__M_Df__W_W0 [shape=circle, label=""];
+MIM_Dl__D_Wf__W_W0 [shape=circle, label=""];
+MID_Wl__D_Wf__W_W0 [shape=circle, label=""];
+MIM_Dl__I_Df__W_W0 [shape=circle, label=""];
+MID_Wl__I_Df__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_lfc {
+label="Cell (1,2,1) = (L,F,C)";
+SSI_Dl__W_Wf__W_Wc [shape=circle, label=""];
+SII_Dl__W_Wf__W_Wc [shape=circle, label=""];
+SIM_Dl__M_Df__W_Wc [shape=circle, label=""];
+SID_Wl__M_Df__W_Wc [shape=circle, label=""];
+SIM_Dl__D_Wf__W_Wc [shape=circle, label=""];
+SID_Wl__D_Wf__W_Wc [shape=circle, label=""];
+SIM_Dl__I_Df__W_Wc [shape=circle, label=""];
+SID_Wl__I_Df__W_Wc [shape=circle, label=""];
+WWW_Wl__W_Wf__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dl__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dl__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wf__W_Wc [shape=circle, label=""];
+MMM_Dl__I_Df__W_Wc [shape=circle, label=""];
+MMD_Wl__I_Df__W_Wc [shape=circle, label=""];
+MII_Dl__W_Wf__W_Wc [shape=circle, label=""];
+MIM_Dl__M_Df__W_Wc [shape=circle, label=""];
+MID_Wl__M_Df__W_Wc [shape=circle, label=""];
+MIM_Dl__D_Wf__W_Wc [shape=circle, label=""];
+MID_Wl__D_Wf__W_Wc [shape=circle, label=""];
+MIM_Dl__I_Df__W_Wc [shape=circle, label=""];
+MID_Wl__I_Df__W_Wc [shape=circle, label=""];
+MMM_Dl__M_Df__I_Dc [shape=circle, label=""];
+MMD_Wl__M_Df__I_Dc [shape=circle, label=""];
+MMM_Dl__D_Wf__I_Dc [shape=circle, label=""];
+MMD_Wl__D_Wf__I_Dc [shape=circle, label=""];
+MDW_Wl__W_Wf__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_lfs {
+label="Cell (1,2,2) = (L,F,S)";
+SSI_Dl__W_Wf__W_Ws [shape=circle, label=""];
+SII_Dl__W_Wf__W_Ws [shape=circle, label=""];
+SIM_Dl__M_Df__W_Ws [shape=circle, label=""];
+SID_Wl__M_Df__W_Ws [shape=circle, label=""];
+SIM_Dl__D_Wf__W_Ws [shape=circle, label=""];
+SID_Wl__D_Wf__W_Ws [shape=circle, label=""];
+SIM_Dl__I_Df__W_Ws [shape=circle, label=""];
+SID_Wl__I_Df__W_Ws [shape=circle, label=""];
+WWW_Wl__W_Wf__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dl__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dl__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wl__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Dl__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wl__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wl__W_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dl__W_Wf__W_Ws [shape=circle, label=""];
+MMM_Dl__I_Df__W_Ws [shape=circle, label=""];
+MMD_Wl__I_Df__W_Ws [shape=circle, label=""];
+MII_Dl__W_Wf__W_Ws [shape=circle, label=""];
+MIM_Dl__M_Df__W_Ws [shape=circle, label=""];
+MID_Wl__M_Df__W_Ws [shape=circle, label=""];
+MIM_Dl__D_Wf__W_Ws [shape=circle, label=""];
+MID_Wl__D_Wf__W_Ws [shape=circle, label=""];
+MIM_Dl__I_Df__W_Ws [shape=circle, label=""];
+MID_Wl__I_Df__W_Ws [shape=circle, label=""];
+MMM_Dl__M_Df__I_Ds [shape=circle, label=""];
+MMD_Wl__M_Df__I_Ds [shape=circle, label=""];
+MMM_Dl__D_Wf__I_Ds [shape=circle, label=""];
+MMD_Wl__D_Wf__I_Ds [shape=circle, label=""];
+MDW_Wl__W_Wf__I_Ds [shape=circle, label=""];
+}
+}
+}
+subgraph cluster_i {
+subgraph cluster_i0 {
+subgraph cluster_i00 {
+label="Cell (2,0,0) = (I,*,*)";
+SSI_Di__W_W0__W_W0 [shape=circle, label=""];
+SII_Di__W_W0__W_W0 [shape=circle, label=""];
+SIM_Di__D_W0__W_W0 [shape=circle, label=""];
+SID_Wi__D_W0__W_W0 [shape=circle, label=""];
+WWW_Wi__W_W0__W_W0 [shape=octagon, color=red, label=""];
+MMM_Di__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wi__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wi__W_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Di__W_W0__W_W0 [shape=circle, label=""];
+MII_Di__W_W0__W_W0 [shape=circle, label=""];
+MIM_Di__D_W0__W_W0 [shape=circle, label=""];
+MID_Wi__D_W0__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_i0c {
+label="Cell (2,0,1) = (I,*,C)";
+SSI_Di__W_W0__W_Wc [shape=circle, label=""];
+SII_Di__W_W0__W_Wc [shape=circle, label=""];
+SIM_Di__D_W0__W_Wc [shape=circle, label=""];
+SID_Wi__D_W0__W_Wc [shape=circle, label=""];
+WWW_Wi__W_W0__W_Wc [shape=octagon, color=red, label=""];
+MMM_Di__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Di__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Di__W_W0__W_Wc [shape=circle, label=""];
+MII_Di__W_W0__W_Wc [shape=circle, label=""];
+MIM_Di__D_W0__W_Wc [shape=circle, label=""];
+MID_Wi__D_W0__W_Wc [shape=circle, label=""];
+MMM_Di__D_W0__I_Dc [shape=circle, label=""];
+MMD_Wi__D_W0__I_Dc [shape=circle, label=""];
+MDW_Wi__W_W0__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_i0s {
+label="Cell (2,0,2) = (I,*,S)";
+SSI_Di__W_W0__W_Ws [shape=circle, label=""];
+SII_Di__W_W0__W_Ws [shape=circle, label=""];
+SIM_Di__D_W0__W_Ws [shape=circle, label=""];
+SID_Wi__D_W0__W_Ws [shape=circle, label=""];
+WWW_Wi__W_W0__W_Ws [shape=octagon, color=red, label=""];
+MMM_Di__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wi__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wi__W_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Di__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wi__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wi__W_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Di__W_W0__W_Ws [shape=circle, label=""];
+MII_Di__W_W0__W_Ws [shape=circle, label=""];
+MIM_Di__D_W0__W_Ws [shape=circle, label=""];
+MID_Wi__D_W0__W_Ws [shape=circle, label=""];
+MMM_Di__D_W0__I_Ds [shape=circle, label=""];
+MMD_Wi__D_W0__I_Ds [shape=circle, label=""];
+MDW_Wi__W_W0__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_im {
+subgraph cluster_im0 {
+label="Cell (2,1,0) = (I,M,*)";
+SSI_Di__W_Wm__W_W0 [shape=circle, label=""];
+SII_Di__W_Wm__W_W0 [shape=circle, label=""];
+SIM_Di__M_Dm__W_W0 [shape=circle, label=""];
+SID_Wi__M_Dm__W_W0 [shape=circle, label=""];
+SIM_Di__D_Wm__W_W0 [shape=circle, label=""];
+SID_Wi__D_Wm__W_W0 [shape=circle, label=""];
+SIM_Di__I_Dm__W_W0 [shape=circle, label=""];
+SID_Wi__I_Dm__W_W0 [shape=circle, label=""];
+WWW_Wi__W_Wm__W_W0 [shape=octagon, color=red, label=""];
+MMM_Di__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wm__W_W0 [shape=circle, label=""];
+MMM_Di__I_Dm__W_W0 [shape=circle, label=""];
+MMD_Wi__I_Dm__W_W0 [shape=circle, label=""];
+MII_Di__W_Wm__W_W0 [shape=circle, label=""];
+MIM_Di__M_Dm__W_W0 [shape=circle, label=""];
+MID_Wi__M_Dm__W_W0 [shape=circle, label=""];
+MIM_Di__D_Wm__W_W0 [shape=circle, label=""];
+MID_Wi__D_Wm__W_W0 [shape=circle, label=""];
+MIM_Di__I_Dm__W_W0 [shape=circle, label=""];
+MID_Wi__I_Dm__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_imc {
+label="Cell (2,1,1) = (I,M,C)";
+SSI_Di__W_Wm__W_Wc [shape=circle, label=""];
+SII_Di__W_Wm__W_Wc [shape=circle, label=""];
+SIM_Di__M_Dm__W_Wc [shape=circle, label=""];
+SID_Wi__M_Dm__W_Wc [shape=circle, label=""];
+SIM_Di__D_Wm__W_Wc [shape=circle, label=""];
+SID_Wi__D_Wm__W_Wc [shape=circle, label=""];
+SIM_Di__I_Dm__W_Wc [shape=circle, label=""];
+SID_Wi__I_Dm__W_Wc [shape=circle, label=""];
+WWW_Wi__W_Wm__W_Wc [shape=octagon, color=red, label=""];
+MMM_Di__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Di__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wm__W_Wc [shape=circle, label=""];
+MMM_Di__I_Dm__W_Wc [shape=circle, label=""];
+MMD_Wi__I_Dm__W_Wc [shape=circle, label=""];
+MII_Di__W_Wm__W_Wc [shape=circle, label=""];
+MIM_Di__M_Dm__W_Wc [shape=circle, label=""];
+MID_Wi__M_Dm__W_Wc [shape=circle, label=""];
+MIM_Di__D_Wm__W_Wc [shape=circle, label=""];
+MID_Wi__D_Wm__W_Wc [shape=circle, label=""];
+MIM_Di__I_Dm__W_Wc [shape=circle, label=""];
+MID_Wi__I_Dm__W_Wc [shape=circle, label=""];
+MMM_Di__M_Dm__I_Dc [shape=circle, label=""];
+MMD_Wi__M_Dm__I_Dc [shape=circle, label=""];
+MMM_Di__D_Wm__I_Dc [shape=circle, label=""];
+MMD_Wi__D_Wm__I_Dc [shape=circle, label=""];
+MDW_Wi__W_Wm__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_ims {
+label="Cell (2,1,2) = (I,M,S)";
+SSI_Di__W_Wm__W_Ws [shape=circle, label=""];
+SII_Di__W_Wm__W_Ws [shape=circle, label=""];
+SIM_Di__M_Dm__W_Ws [shape=circle, label=""];
+SID_Wi__M_Dm__W_Ws [shape=circle, label=""];
+SIM_Di__D_Wm__W_Ws [shape=circle, label=""];
+SID_Wi__D_Wm__W_Ws [shape=circle, label=""];
+SIM_Di__I_Dm__W_Ws [shape=circle, label=""];
+SID_Wi__I_Dm__W_Ws [shape=circle, label=""];
+WWW_Wi__W_Wm__W_Ws [shape=octagon, color=red, label=""];
+MMM_Di__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Di__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wm__W_Ws [shape=circle, label=""];
+MMM_Di__I_Dm__W_Ws [shape=circle, label=""];
+MMD_Wi__I_Dm__W_Ws [shape=circle, label=""];
+MII_Di__W_Wm__W_Ws [shape=circle, label=""];
+MIM_Di__M_Dm__W_Ws [shape=circle, label=""];
+MID_Wi__M_Dm__W_Ws [shape=circle, label=""];
+MIM_Di__D_Wm__W_Ws [shape=circle, label=""];
+MID_Wi__D_Wm__W_Ws [shape=circle, label=""];
+MIM_Di__I_Dm__W_Ws [shape=circle, label=""];
+MID_Wi__I_Dm__W_Ws [shape=circle, label=""];
+MMM_Di__M_Dm__I_Ds [shape=circle, label=""];
+MMD_Wi__M_Dm__I_Ds [shape=circle, label=""];
+MMM_Di__D_Wm__I_Ds [shape=circle, label=""];
+MMD_Wi__D_Wm__I_Ds [shape=circle, label=""];
+MDW_Wi__W_Wm__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_if {
+subgraph cluster_if0 {
+label="Cell (2,2,0) = (I,F,*)";
+SSI_Di__W_Wf__W_W0 [shape=circle, label=""];
+SII_Di__W_Wf__W_W0 [shape=circle, label=""];
+SIM_Di__M_Df__W_W0 [shape=circle, label=""];
+SID_Wi__M_Df__W_W0 [shape=circle, label=""];
+SIM_Di__D_Wf__W_W0 [shape=circle, label=""];
+SID_Wi__D_Wf__W_W0 [shape=circle, label=""];
+SIM_Di__I_Df__W_W0 [shape=circle, label=""];
+SID_Wi__I_Df__W_W0 [shape=circle, label=""];
+WWW_Wi__W_Wf__W_W0 [shape=octagon, color=red, label=""];
+MMM_Di__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wf__W_W0 [shape=circle, label=""];
+MMM_Di__I_Df__W_W0 [shape=circle, label=""];
+MMD_Wi__I_Df__W_W0 [shape=circle, label=""];
+MII_Di__W_Wf__W_W0 [shape=circle, label=""];
+MIM_Di__M_Df__W_W0 [shape=circle, label=""];
+MID_Wi__M_Df__W_W0 [shape=circle, label=""];
+MIM_Di__D_Wf__W_W0 [shape=circle, label=""];
+MID_Wi__D_Wf__W_W0 [shape=circle, label=""];
+MIM_Di__I_Df__W_W0 [shape=circle, label=""];
+MID_Wi__I_Df__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_ifc {
+label="Cell (2,2,1) = (I,F,C)";
+SSI_Di__W_Wf__W_Wc [shape=circle, label=""];
+SII_Di__W_Wf__W_Wc [shape=circle, label=""];
+SIM_Di__M_Df__W_Wc [shape=circle, label=""];
+SID_Wi__M_Df__W_Wc [shape=circle, label=""];
+SIM_Di__D_Wf__W_Wc [shape=circle, label=""];
+SID_Wi__D_Wf__W_Wc [shape=circle, label=""];
+SIM_Di__I_Df__W_Wc [shape=circle, label=""];
+SID_Wi__I_Df__W_Wc [shape=circle, label=""];
+WWW_Wi__W_Wf__W_Wc [shape=octagon, color=red, label=""];
+MMM_Di__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Di__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wf__W_Wc [shape=circle, label=""];
+MMM_Di__I_Df__W_Wc [shape=circle, label=""];
+MMD_Wi__I_Df__W_Wc [shape=circle, label=""];
+MII_Di__W_Wf__W_Wc [shape=circle, label=""];
+MIM_Di__M_Df__W_Wc [shape=circle, label=""];
+MID_Wi__M_Df__W_Wc [shape=circle, label=""];
+MIM_Di__D_Wf__W_Wc [shape=circle, label=""];
+MID_Wi__D_Wf__W_Wc [shape=circle, label=""];
+MIM_Di__I_Df__W_Wc [shape=circle, label=""];
+MID_Wi__I_Df__W_Wc [shape=circle, label=""];
+MMM_Di__M_Df__I_Dc [shape=circle, label=""];
+MMD_Wi__M_Df__I_Dc [shape=circle, label=""];
+MMM_Di__D_Wf__I_Dc [shape=circle, label=""];
+MMD_Wi__D_Wf__I_Dc [shape=circle, label=""];
+MDW_Wi__W_Wf__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_ifs {
+label="Cell (2,2,2) = (I,F,S)";
+SSI_Di__W_Wf__W_Ws [shape=circle, label=""];
+SII_Di__W_Wf__W_Ws [shape=circle, label=""];
+SIM_Di__M_Df__W_Ws [shape=circle, label=""];
+SID_Wi__M_Df__W_Ws [shape=circle, label=""];
+SIM_Di__D_Wf__W_Ws [shape=circle, label=""];
+SID_Wi__D_Wf__W_Ws [shape=circle, label=""];
+SIM_Di__I_Df__W_Ws [shape=circle, label=""];
+SID_Wi__I_Df__W_Ws [shape=circle, label=""];
+WWW_Wi__W_Wf__W_Ws [shape=octagon, color=red, label=""];
+MMM_Di__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Di__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wi__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Di__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wi__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wi__W_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Di__W_Wf__W_Ws [shape=circle, label=""];
+MMM_Di__I_Df__W_Ws [shape=circle, label=""];
+MMD_Wi__I_Df__W_Ws [shape=circle, label=""];
+MII_Di__W_Wf__W_Ws [shape=circle, label=""];
+MIM_Di__M_Df__W_Ws [shape=circle, label=""];
+MID_Wi__M_Df__W_Ws [shape=circle, label=""];
+MIM_Di__D_Wf__W_Ws [shape=circle, label=""];
+MID_Wi__D_Wf__W_Ws [shape=circle, label=""];
+MIM_Di__I_Df__W_Ws [shape=circle, label=""];
+MID_Wi__I_Df__W_Ws [shape=circle, label=""];
+MMM_Di__M_Df__I_Ds [shape=circle, label=""];
+MMD_Wi__M_Df__I_Ds [shape=circle, label=""];
+MMM_Di__D_Wf__I_Ds [shape=circle, label=""];
+MMD_Wi__D_Wf__I_Ds [shape=circle, label=""];
+MDW_Wi__W_Wf__I_Ds [shape=circle, label=""];
+}
+}
+}
+subgraph cluster_v {
+subgraph cluster_v0 {
+subgraph cluster_v00 {
+label="Cell (3,0,0) = (V,*,*)";
+SSI_Dv__W_W0__W_W0 [shape=circle, label=""];
+SII_Dv__W_W0__W_W0 [shape=circle, label=""];
+SIM_Dv__D_W0__W_W0 [shape=circle, label=""];
+SID_Wv__D_W0__W_W0 [shape=circle, label=""];
+WWW_Wv__W_W0__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dv__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wv__D_W0__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wv__W_W0__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dv__W_W0__W_W0 [shape=circle, label=""];
+MII_Dv__W_W0__W_W0 [shape=circle, label=""];
+MIM_Dv__D_W0__W_W0 [shape=circle, label=""];
+MID_Wv__D_W0__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_v0c {
+label="Cell (3,0,1) = (V,*,C)";
+SSI_Dv__W_W0__W_Wc [shape=circle, label=""];
+SII_Dv__W_W0__W_Wc [shape=circle, label=""];
+SIM_Dv__D_W0__W_Wc [shape=circle, label=""];
+SID_Wv__D_W0__W_Wc [shape=circle, label=""];
+WWW_Wv__W_W0__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dv__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_W0__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_W0__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dv__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_W0__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_W0__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dv__W_W0__W_Wc [shape=circle, label=""];
+MII_Dv__W_W0__W_Wc [shape=circle, label=""];
+MIM_Dv__D_W0__W_Wc [shape=circle, label=""];
+MID_Wv__D_W0__W_Wc [shape=circle, label=""];
+MMM_Dv__D_W0__I_Dc [shape=circle, label=""];
+MMD_Wv__D_W0__I_Dc [shape=circle, label=""];
+MDW_Wv__W_W0__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_v0s {
+label="Cell (3,0,2) = (V,*,S)";
+SSI_Dv__W_W0__W_Ws [shape=circle, label=""];
+SII_Dv__W_W0__W_Ws [shape=circle, label=""];
+SIM_Dv__D_W0__W_Ws [shape=circle, label=""];
+SID_Wv__D_W0__W_Ws [shape=circle, label=""];
+WWW_Wv__W_W0__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dv__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wv__D_W0__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wv__W_W0__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dv__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wv__D_W0__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wv__W_W0__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dv__W_W0__W_Ws [shape=circle, label=""];
+MII_Dv__W_W0__W_Ws [shape=circle, label=""];
+MIM_Dv__D_W0__W_Ws [shape=circle, label=""];
+MID_Wv__D_W0__W_Ws [shape=circle, label=""];
+MMM_Dv__D_W0__I_Ds [shape=circle, label=""];
+MMD_Wv__D_W0__I_Ds [shape=circle, label=""];
+MDW_Wv__W_W0__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_vm {
+subgraph cluster_vm0 {
+label="Cell (3,1,0) = (V,M,*)";
+SSI_Dv__W_Wm__W_W0 [shape=circle, label=""];
+SII_Dv__W_Wm__W_W0 [shape=circle, label=""];
+SIM_Dv__M_Dm__W_W0 [shape=circle, label=""];
+SID_Wv__M_Dm__W_W0 [shape=circle, label=""];
+SIM_Dv__D_Wm__W_W0 [shape=circle, label=""];
+SID_Wv__D_Wm__W_W0 [shape=circle, label=""];
+SIM_Dv__I_Dm__W_W0 [shape=circle, label=""];
+SID_Wv__I_Dm__W_W0 [shape=circle, label=""];
+WWW_Wv__W_Wm__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dv__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Dm__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wm__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wm__W_W0 [shape=circle, label=""];
+MMM_Dv__I_Dm__W_W0 [shape=circle, label=""];
+MMD_Wv__I_Dm__W_W0 [shape=circle, label=""];
+MII_Dv__W_Wm__W_W0 [shape=circle, label=""];
+MIM_Dv__M_Dm__W_W0 [shape=circle, label=""];
+MID_Wv__M_Dm__W_W0 [shape=circle, label=""];
+MIM_Dv__D_Wm__W_W0 [shape=circle, label=""];
+MID_Wv__D_Wm__W_W0 [shape=circle, label=""];
+MIM_Dv__I_Dm__W_W0 [shape=circle, label=""];
+MID_Wv__I_Dm__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_vmc {
+label="Cell (3,1,1) = (V,M,C)";
+SSI_Dv__W_Wm__W_Wc [shape=circle, label=""];
+SII_Dv__W_Wm__W_Wc [shape=circle, label=""];
+SIM_Dv__M_Dm__W_Wc [shape=circle, label=""];
+SID_Wv__M_Dm__W_Wc [shape=circle, label=""];
+SIM_Dv__D_Wm__W_Wc [shape=circle, label=""];
+SID_Wv__D_Wm__W_Wc [shape=circle, label=""];
+SIM_Dv__I_Dm__W_Wc [shape=circle, label=""];
+SID_Wv__I_Dm__W_Wc [shape=circle, label=""];
+WWW_Wv__W_Wm__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dv__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Dm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wm__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dv__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Dm__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wm__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wm__W_Wc [shape=circle, label=""];
+MMM_Dv__I_Dm__W_Wc [shape=circle, label=""];
+MMD_Wv__I_Dm__W_Wc [shape=circle, label=""];
+MII_Dv__W_Wm__W_Wc [shape=circle, label=""];
+MIM_Dv__M_Dm__W_Wc [shape=circle, label=""];
+MID_Wv__M_Dm__W_Wc [shape=circle, label=""];
+MIM_Dv__D_Wm__W_Wc [shape=circle, label=""];
+MID_Wv__D_Wm__W_Wc [shape=circle, label=""];
+MIM_Dv__I_Dm__W_Wc [shape=circle, label=""];
+MID_Wv__I_Dm__W_Wc [shape=circle, label=""];
+MMM_Dv__M_Dm__I_Dc [shape=circle, label=""];
+MMD_Wv__M_Dm__I_Dc [shape=circle, label=""];
+MMM_Dv__D_Wm__I_Dc [shape=circle, label=""];
+MMD_Wv__D_Wm__I_Dc [shape=circle, label=""];
+MDW_Wv__W_Wm__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_vms {
+label="Cell (3,1,2) = (V,M,S)";
+SSI_Dv__W_Wm__W_Ws [shape=circle, label=""];
+SII_Dv__W_Wm__W_Ws [shape=circle, label=""];
+SIM_Dv__M_Dm__W_Ws [shape=circle, label=""];
+SID_Wv__M_Dm__W_Ws [shape=circle, label=""];
+SIM_Dv__D_Wm__W_Ws [shape=circle, label=""];
+SID_Wv__D_Wm__W_Ws [shape=circle, label=""];
+SIM_Dv__I_Dm__W_Ws [shape=circle, label=""];
+SID_Wv__I_Dm__W_Ws [shape=circle, label=""];
+WWW_Wv__W_Wm__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dv__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Dm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wm__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dv__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Dm__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wm__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wm__W_Ws [shape=circle, label=""];
+MMM_Dv__I_Dm__W_Ws [shape=circle, label=""];
+MMD_Wv__I_Dm__W_Ws [shape=circle, label=""];
+MII_Dv__W_Wm__W_Ws [shape=circle, label=""];
+MIM_Dv__M_Dm__W_Ws [shape=circle, label=""];
+MID_Wv__M_Dm__W_Ws [shape=circle, label=""];
+MIM_Dv__D_Wm__W_Ws [shape=circle, label=""];
+MID_Wv__D_Wm__W_Ws [shape=circle, label=""];
+MIM_Dv__I_Dm__W_Ws [shape=circle, label=""];
+MID_Wv__I_Dm__W_Ws [shape=circle, label=""];
+MMM_Dv__M_Dm__I_Ds [shape=circle, label=""];
+MMD_Wv__M_Dm__I_Ds [shape=circle, label=""];
+MMM_Dv__D_Wm__I_Ds [shape=circle, label=""];
+MMD_Wv__D_Wm__I_Ds [shape=circle, label=""];
+MDW_Wv__W_Wm__I_Ds [shape=circle, label=""];
+}
+}
+subgraph cluster_vf {
+subgraph cluster_vf0 {
+label="Cell (3,2,0) = (V,F,*)";
+SSI_Dv__W_Wf__W_W0 [shape=circle, label=""];
+SII_Dv__W_Wf__W_W0 [shape=circle, label=""];
+SIM_Dv__M_Df__W_W0 [shape=circle, label=""];
+SID_Wv__M_Df__W_W0 [shape=circle, label=""];
+SIM_Dv__D_Wf__W_W0 [shape=circle, label=""];
+SID_Wv__D_Wf__W_W0 [shape=circle, label=""];
+SIM_Dv__I_Df__W_W0 [shape=circle, label=""];
+SID_Wv__I_Df__W_W0 [shape=circle, label=""];
+WWW_Wv__W_Wf__W_W0 [shape=octagon, color=red, label=""];
+MMM_Dv__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Df__D_W0 [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wf__D_W0 [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wf__W_W0 [shape=circle, label=""];
+MMM_Dv__I_Df__W_W0 [shape=circle, label=""];
+MMD_Wv__I_Df__W_W0 [shape=circle, label=""];
+MII_Dv__W_Wf__W_W0 [shape=circle, label=""];
+MIM_Dv__M_Df__W_W0 [shape=circle, label=""];
+MID_Wv__M_Df__W_W0 [shape=circle, label=""];
+MIM_Dv__D_Wf__W_W0 [shape=circle, label=""];
+MID_Wv__D_Wf__W_W0 [shape=circle, label=""];
+MIM_Dv__I_Df__W_W0 [shape=circle, label=""];
+MID_Wv__I_Df__W_W0 [shape=circle, label=""];
+}
+subgraph cluster_vfc {
+label="Cell (3,2,1) = (V,F,C)";
+SSI_Dv__W_Wf__W_Wc [shape=circle, label=""];
+SII_Dv__W_Wf__W_Wc [shape=circle, label=""];
+SIM_Dv__M_Df__W_Wc [shape=circle, label=""];
+SID_Wv__M_Df__W_Wc [shape=circle, label=""];
+SIM_Dv__D_Wf__W_Wc [shape=circle, label=""];
+SID_Wv__D_Wf__W_Wc [shape=circle, label=""];
+SIM_Dv__I_Df__W_Wc [shape=circle, label=""];
+SID_Wv__I_Df__W_Wc [shape=circle, label=""];
+WWW_Wv__W_Wf__W_Wc [shape=octagon, color=red, label=""];
+MMM_Dv__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Df__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wf__M_Dc [shape=invhouse, color=red, label=""];
+MMM_Dv__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Df__D_Wc [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wf__D_Wc [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wf__W_Wc [shape=circle, label=""];
+MMM_Dv__I_Df__W_Wc [shape=circle, label=""];
+MMD_Wv__I_Df__W_Wc [shape=circle, label=""];
+MII_Dv__W_Wf__W_Wc [shape=circle, label=""];
+MIM_Dv__M_Df__W_Wc [shape=circle, label=""];
+MID_Wv__M_Df__W_Wc [shape=circle, label=""];
+MIM_Dv__D_Wf__W_Wc [shape=circle, label=""];
+MID_Wv__D_Wf__W_Wc [shape=circle, label=""];
+MIM_Dv__I_Df__W_Wc [shape=circle, label=""];
+MID_Wv__I_Df__W_Wc [shape=circle, label=""];
+MMM_Dv__M_Df__I_Dc [shape=circle, label=""];
+MMD_Wv__M_Df__I_Dc [shape=circle, label=""];
+MMM_Dv__D_Wf__I_Dc [shape=circle, label=""];
+MMD_Wv__D_Wf__I_Dc [shape=circle, label=""];
+MDW_Wv__W_Wf__I_Dc [shape=circle, label=""];
+}
+subgraph cluster_vfs {
+label="Cell (3,2,2) = (V,F,S)";
+SSI_Dv__W_Wf__W_Ws [shape=circle, label=""];
+SII_Dv__W_Wf__W_Ws [shape=circle, label=""];
+SIM_Dv__M_Df__W_Ws [shape=circle, label=""];
+SID_Wv__M_Df__W_Ws [shape=circle, label=""];
+SIM_Dv__D_Wf__W_Ws [shape=circle, label=""];
+SID_Wv__D_Wf__W_Ws [shape=circle, label=""];
+SIM_Dv__I_Df__W_Ws [shape=circle, label=""];
+SID_Wv__I_Df__W_Ws [shape=circle, label=""];
+WWW_Wv__W_Wf__W_Ws [shape=octagon, color=red, label=""];
+MMM_Dv__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Df__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wf__M_Ds [shape=invhouse, color=red, label=""];
+MMM_Dv__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wv__M_Df__D_Ws [shape=invhouse, color=red, label=""];
+MMM_Dv__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMD_Wv__D_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MDW_Wv__W_Wf__D_Ws [shape=invhouse, color=red, label=""];
+MMI_Dv__W_Wf__W_Ws [shape=circle, label=""];
+MMM_Dv__I_Df__W_Ws [shape=circle, label=""];
+MMD_Wv__I_Df__W_Ws [shape=circle, label=""];
+MII_Dv__W_Wf__W_Ws [shape=circle, label=""];
+MIM_Dv__M_Df__W_Ws [shape=circle, label=""];
+MID_Wv__M_Df__W_Ws [shape=circle, label=""];
+MIM_Dv__D_Wf__W_Ws [shape=circle, label=""];
+MID_Wv__D_Wf__W_Ws [shape=circle, label=""];
+MIM_Dv__I_Df__W_Ws [shape=circle, label=""];
+MID_Wv__I_Df__W_Ws [shape=circle, label=""];
+MMM_Dv__M_Df__I_Ds [shape=circle, label=""];
+MMD_Wv__M_Df__I_Ds [shape=circle, label=""];
+MMM_Dv__D_Wf__I_Ds [shape=circle, label=""];
+MMD_Wv__D_Wf__I_Ds [shape=circle, label=""];
+MDW_Wv__W_Wf__I_Ds [shape=circle, label=""];
+}
+}
+}
+Start -> cluster_l00;
+Start -> cluster_0m0;
+Start -> cluster_lm0;
+Start -> cluster_000;
+Start -> cluster_00c;
+cluster_l0 -> cluster_i;
+cluster_l00 -> cluster_lm;
+cluster_i0 -> cluster_v;
+cluster_i00 -> cluster_im;
+cluster_v00 -> cluster_vm;
+cluster_lm -> cluster_i;
+cluster_lm0 -> cluster_lf;
+cluster_im -> cluster_v;
+cluster_im0 -> cluster_if;
+cluster_vm0 -> cluster_vf;
+cluster_lf -> cluster_i;
+cluster_if -> cluster_v;
+cluster_l0c -> cluster_lm;
+cluster_i0c -> cluster_im;
+cluster_v0c -> cluster_vm;
+cluster_lmc -> cluster_lf;
+cluster_imc -> cluster_if;
+cluster_vmc -> cluster_vf;
+cluster_l0s -> cluster_lm;
+cluster_i0s -> cluster_im;
+cluster_v0s -> cluster_vm;
+cluster_lms -> cluster_lf;
+cluster_ims -> cluster_if;
+cluster_vms -> cluster_vf;
+cluster_0m -> cluster_l;
+cluster_0m0 -> cluster_0f;
+cluster_0f -> cluster_l;
+cluster_0mc -> cluster_0f;
+cluster_0ms -> cluster_0f;
+cluster_00 -> cluster_l;
+cluster_000 -> cluster_0m;
+cluster_00c -> cluster_0m;
+cluster_00s -> cluster_0m;
+cluster_00c -> cluster_00s;
+cluster_000 -> cluster_00c;
+cluster_l00 -> cluster_l0c;
+cluster_i00 -> cluster_i0c;
+cluster_v00 -> cluster_v0c;
+cluster_0m0 -> cluster_0mc;
+cluster_lm0 -> cluster_lmc;
+cluster_im0 -> cluster_imc;
+cluster_vm0 -> cluster_vmc;
+cluster_0f0 -> cluster_0fc;
+cluster_lf0 -> cluster_lfc;
+cluster_if0 -> cluster_ifc;
+cluster_vf0 -> cluster_vfc;
+cluster_l0c -> cluster_l0s;
+cluster_i0c -> cluster_i0s;
+cluster_v0c -> cluster_v0s;
+cluster_0mc -> cluster_0ms;
+cluster_lmc -> cluster_lms;
+cluster_imc -> cluster_ims;
+cluster_vmc -> cluster_vms;
+cluster_0fc -> cluster_0fs;
+cluster_lfc -> cluster_lfs;
+cluster_ifc -> cluster_ifs;
+cluster_vfc -> cluster_vfs;
+cluster_vfs -> End;
+}

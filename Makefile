@@ -3,7 +3,8 @@
 # Figures:
 ALLDOT := $(wildcard *.dot)
 ALLBIGDOT := $(wildcard *.bigdot)
-ALLFIG := $(subst .dot,,$(ALLDOT)) $(subst .bigdot,,$(ALLBIGDOT))
+ALLFDPDOT := $(wildcard *.fdpdot)
+ALLFIG := $(subst .dot,,$(ALLDOT)) $(subst .bigdot,,$(ALLBIGDOT)) $(subst .fdpdot,,$(ALLFDPDOT))
 
 ALLFIGPNG := $(addsuffix .png,$(ALLFIG))
 ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG)) 
@@ -11,7 +12,7 @@ ALLFIGPDF := $(addsuffix -fig.pdf,$(ALLFIG))
 ALLFIGJUNK := $(addsuffix .tex,$(ALLFIG)) $(addsuffix .aux,$(ALLFIG)) $(addsuffix .log,$(ALLFIG)) $(addsuffix -pics.pdf,$(ALLFIG))
 
 # The following source files currently only render properly as PNGs
-BAD := condensed-emission fanned-emission fanned-indel fanned-match mf-generator liv-small transitions
+BAD := condensed-emission fanned-emission fanned-indel fanned-match mf-generator liv-small transitions fork3-tkf91liv-tkf91mf-tkf91cs
 BADPNG := $(addsuffix .png,$(BAD))
 GOODPDF := $(addsuffix -fig.pdf,$(filter-out $(BAD),$(ALLFIG)))
 
@@ -73,6 +74,9 @@ clean: tidy
 
 %.png: %.bigdot
 	dot -Tpng $< >$@
+
+%.png: %.fdpdot
+	dot -Tpng -Kfdp $< >$@
 
 # hey make! don't delete all my stuff
 .SECONDARY:

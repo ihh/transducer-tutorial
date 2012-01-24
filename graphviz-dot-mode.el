@@ -917,5 +917,6 @@ buffer is saved before the command is executed."
 (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
 ;;; nonstandard file extensions for the transducer-tutorial project
 (add-to-list 'auto-mode-alist '("\\.bigdot\\'" . graphviz-dot-mode))
+(add-to-list 'auto-mode-alist '("\\.fdpdot\\'" . graphviz-dot-mode))
 
 ;;; graphviz-dot-mode.el ends here
