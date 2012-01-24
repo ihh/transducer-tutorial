@@ -11,11 +11,11 @@ digraph G {
 
     D [label="V(x)", shape=invhouse, color=red];
 
-S->I [label="-/y" taillabel="t" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+S->I [label="-/y" taillabel="f" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
 
-W->M [label="x/y" taillabel="u" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+W->M [label="x/y" taillabel="g" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
 
-X->D [label="x/-" taillabel="v" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
+X->D [label="x/-" taillabel="h" labelangle=300 labeldistance=1.4 fontcolor="blue" labelfontcolor="black" fontname="Courier" labelfontname="Times"];
 
 
 }
