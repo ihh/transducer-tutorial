@@ -1536,13 +1536,13 @@ $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))
 transducer, we must compose a prior distribution onto our forked machine in order to compute
 the full Felsenstein probability (without having to condition on an input sequence).  
 Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
-in \figref{root-fork-tkf01liv-tkf91mf}.  
+in \figref{root-fork-tkf91liv-tkf91mf}.  
 
 With this prior, the sum-over-paths sum computes final Felsenstein probability, and 
 sampling traceback paths yields samples from the  posterior distribution 
 over ancestral sequences.  This ability to sample paths will allow us to constrain
-the size of the state space when we begin to apply these concepts not just to pairs of 
-sequences, but entire phylogenetic trees.  
+the size of the state space when we move from  pairs of 
+sequences to entire phylogenetic trees.  
 
 \subsubsection{Best reconstruction of ancestor to MF and LIV}
 
@@ -1552,7 +1552,11 @@ $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$
 Equivalently, this path corresponds to an alignment of the two sequences and their 
 ancestors.}
 
-Highlighted Viterbi traceback path...
+In \figref{viterbi-root-fork-tkf91liv-tkf91mf}, the highest-weight (Viterbi) traceback path
+is highlighted.  
+This path, via the significances of each of the visited states, corresponds to 
+an ancestral alignment relating LIV and MF: an alignment of the sequences and their ancestor.
+
 
 e.g.
 \begin{tabular}{lccc}
@@ -1561,52 +1565,84 @@ Sequence 1         & L & I & V \\
 Sequence 2         & M & F & -
 \end{tabular}
 
-\widepdffig{viterbi-fork-tkf91liv-tkf91mf}{...}
+%\widepdffig{viterbi-fork-tkf91liv-tkf91mf}{Removing the root generator produces a 
+%recognition profile for the ancestral sequence relating MF and LIV. }
 
-Relabeling (removing the root generator) we now have a reconstructed linear profile
+If we remove  the root generator we  construct a linear recognizer profile
 for the sequence at the ancestral node,
-as might be computed by progressive alignment...
+as might be computed by progressive alignment.  
+This can be thought of as a profile HMM trained on the most likely alignment 
+of the two sequences MF and LIV.  
 
-\tallpdffig{viterbi-profile}{Transducer $\profile_1$...}
+\tallpdffig{viterbi-profile}{Transducer $\profile_1$ is a linear recognition profile for the 
+ancestor relating MF and LIV, created by taking the Viterbi path through the machine in \figref{root-fork-tkf91liv-tkf91mf} and removing the prior (so as to make it a recognizer).}
 
-Note that this is a recognition profile (all delete states)...
 
 \subsubsection{Sampling reconstructions of ancestor to MF and LIV}
 
-\widepngfig{forward2-root-fork-tkf91liv-tkf91mf}{...}
+\widepngfig{forward2-root-fork-tkf91liv-tkf91mf}{
+Instead of only saving the highest-weight path through
+ $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$, 
+it is possible to sample paths proportional to their posterior probability.  
+Here, two sampled paths through the state graph are shown. }
 
-Instead of just doing Viterbi, we can sample more than one traceback path...
+Instead of only saving the highest-weight path through
+ $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$, 
+it is possible to sample paths proportional to their posterior probability.  
+In \figref{forward2-root-fork-tkf91liv-tkf91mf}, two sampled paths through the 
+state graph are shown.  
+It is possible that many paths through the graph have weights similar to the 
+Viterbi path.
+By sampling suboptimal paths according to their weights, it is possible to retain and 
+propogate  this uncertainty when applying this method to progressive alignment. 
+Intuitively, this corresponds to storing multiple evolutionary histories of a subtree
+as  progressive alignment climbs the phylogenetic tree.  
 
-Now as well as this path
+\noindent For instance, in addition to sampling this path
+
 \begin{tabular}{lccc}
 Ancestral sequence & * & * & * \\
 Sequence 1         & L & I & V \\
 Sequence 2         & M & F & -
 \end{tabular}
-
+\\ \\ 
 we also have this path
+
 \begin{tabular}{lccc}
 Ancestral sequence & * & * & * \\
 Sequence 1         & L & I & V \\
 Sequence 2         & M & - & F
 \end{tabular}
 
-\widepdffig{forward2-fork-tkf91liv-tkf91mf}{...}
+\widepdffig{forward2-fork-tkf91liv-tkf91mf}{Two samples through the 
+machine in \figref{root-fork-tkf91liv-tkf91mf}, representing
+possible evolutionary histories relating MF and LIV.
+Paths are sampled according to their posterior probability, 
+allowing us to select a high-probability subset of the state graph.  }
 
-Relabeling again, we still have a recognition profile, but it is now branched,
-reflecting the possible uncertainty in our alignment...
-
-\tallpdffig{forward2-profile}{Transducer $\profile_2$...}
-
+Combining these paths into a single graph and relabeling again, 
+we still have a recognition profile, but it is now branched,
+reflecting the possible uncertainty in our alignment/ancestral prediction, shown in \figref{forward2-profile}.
 Note that these are all still approximations to the full
-recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}
+recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}.  
+While we could retain this entire profile, progressively climbing up a tree
+would add so many states to the graph that inference would quickly become an intractable
+problem.  
+Storing a subset allows a flexible way in which to retain many high-probability solutions
+while still allowing for a strict bound on the size of the state space. 
+
+\tallpdffig{forward2-profile}{Transducer $\profile_2$ is a branched recognizer for the 
+ancestor common to MF and LIV.  The branched structure results from sampling
+multiple paths through the state graph in \figref{root-fork-tkf91liv-tkf91mf}, 
+retaining only the subset of the graph visited by a sampled path.} 
 
 \subsubsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
 \widepngfig{fork3-tkf91liv-tkf91mf-tkf91cs}
 {Transducer $(\tkf \cdot (\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))\fork(\tkf \cdot \recognize(CS))$...
-This is the full recognition profile for the root-ancestral sequence in \figref{cs-mf-liv-tree}...
-For clarity, many transitions in this diagram have been removed or collapsed...
+This is the full recognition profile for the root-ancestral sequence in \figref{cs-mf-liv-tree}, 
+representing all the possible evolutionary histories relating the two sequences.  
+For clarity, many transitions in this diagram have been removed or collapsed.
 }
 
 \subsubsection{Felsenstein probability for (CS,(LIV,MF))}
