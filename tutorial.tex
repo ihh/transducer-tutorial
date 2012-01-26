@@ -1305,7 +1305,7 @@ is equal to sum of all path weights from start to end in this Markov model.
 The set of paths corresponds to the set of valid evolutionary transformations relating
 sequences MF and LIV (valid meaning those allowed under the model, namely non-overlapping single-residue indels and substitutions).  
 
-This is directly analagous to computing a pairwise alignment (e.g. using the Needlman-Wunsch algorithm), and the structure of the Markov model shown in \figref{mf-tkf-liv} suggests the familiar structure of a pairwise dynamic programming matrix.  
+This is directly analagous to computing a pairwise alignment (e.g. using the Needlman-Wunsch algorithm), and the structure of the Markov model shown in \figref{mf-tkf91-liv} suggests the familiar structure of a pairwise dynamic programming matrix.  
 
 Note that the quantity  $P(Y=\mbox{LIV}|X=\mbox{MF})$ computed 
 using the  substituter instead of TKF91 would not be meaningful.  
@@ -1319,10 +1319,11 @@ it corresponds to an insertion by the first TKF91 transducer
 that is then immediately deleted by the second TKF91 transducer,
 so there is no net insertion or deletion.
 
-It is sometimes useful to remove these states,
-i.e. find an equivalent transducer that lacks them
-(e.g. if trying to transform a transducer into strict Moore-normal form)...
-
+It is often useful to remove these states, since though they will influence
+the likelihood, inference of these events is not meaningful (in alignment terms,
+this corresponds to a column of all gaps).  
+Fortunately we can often find an equivalent transducer that lacks them
+using straightforward mathematical machinery (e.g. matrix inversion described in \cite{BradleyHolmes2009}).  
 
 \subsection{Fork}
 
@@ -1330,13 +1331,12 @@ The second operation for connecting two transducers
  is one that we call ``fork''.
 It is a weighted generalization of the operation commonly known as transducer ``intersection''.
 
-Fork is when you feed the same input tape into two transducers in parallel...
-
+Forking two transducers is to feed the same input tape into both transducers in parallel.
 As with a transducer composition,
 a fork is constructed by taking the Cartesian product of two transducers' state spaces.
 From two transducers $T$ and $U$,
 we make a new transducer $TU$
-wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states...
+wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states.
 
 \subsubsection{Compositions, forks and Felsenstein's algorithm}
 \seclabel{Felsenstein}
@@ -1405,26 +1405,27 @@ This unit vector is, in some sense, equivalent to our exact-match recognizer.
 \subsubsection{Fork of substituter-CS with substituter-MF}
 \seclabel{fork-subcs-submf}
 
-\pdffig{fork-subcs-submf}{Transducer $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$...}
+\pdffig{fork-subcs-submf}{The transducer $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  models the distribution of the ancestor common to MF and CS.}
 
-Fork of \figref{substituter-mf} and \figref{substituter-cs}
-
-Note that this transducer is a recognizer (all delete states).
-Note also that it computes $G^{(n)}$ from \secref{Felsenstein}...
-
-This is an ensemble of four transducers.
-Input sequence is duplicated;
+\figref{fork-subcs-submf} shows the fork of \figref{substituter-mf} and \figref{substituter-cs}.  
+This is an ensemble of four transducers:
+the input sequence is duplicated;
 one copy fed into substituter (\figref{substituter}),
 output fed into exact-matcher for CS (\figref{cs-labeled});
 other copy fed into a separate substituter (\figref{substituter2}),
-output fed into exact-matcher for MF (\figref{mf-labeled})...
+output fed into exact-matcher for MF (\figref{mf-labeled}).
+
+The composite transducer is a recognizer (all delete states), since it absorbs input 
+but the recognizers (exact-matchers) have null output.  
+Note also that the sum-over-paths weight is equivalent to $G^{(n)}$ from \secref{Felsenstein}.
+
 
 Since it is an ensemble of four transducers, every state corresponds to a tuple $(b_1,d_1,b_2,d_2)$
 where
 $b_1$ is the state of the substituter transducer on the CS-branch (\figref{substituter}),
 $d_1$ is the state of the exact-matcher for sequence CS (\figref{cs-labeled}),
 $b_2$ is the state of the substituter transducer on the MF-branch (\figref{substituter2}),
-$d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
+$d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled}).
 
 The I/O label for the general case where $(b_1,d_1,b_2,d_2) = (Q,\delta_A,R,\delta_B)$
 denotes the vector whose elements given by
@@ -1443,27 +1444,34 @@ would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \pdffig{root-fork-subcs-submf}{Transducer $\nullmodel \cdot ((\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF)))$...}
 
-Forward sum computes final Felsenstein probability for this two-branch tree
-(multiplied by geometric prior over sequence length)...
+The previous machine corresponds to the Felsenstein probability computed at each internal
+node of a tree.  
+At the root of the tree, the prior over sequences is invoked to compute the final Felsenstein
+probability (as opposed to a subtree probability conditional on a particular value at that node).
 
-Note that this transducer is a pure Markov chain (no input/output states).
-Note also that it computes the final Felsenstein probability.
-
-Sample traceback path yields sample from posterior distribution over ancestral sequences...
+Composing the transducer
+ $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  
+with a simple prior over characters $\pi_j$ constructs a pure Markov chain
+whose sum-over-paths weight is the final Felsenstein probability (\figref{root-fork-subcs-submf}).  
+Furthermore, sampling traceback paths yields through this machine provides an easy
+way to  sample from the  posterior distribution over ancestral sequences relating MF and CS.  
 
 \subsubsection{Fork of TKF91-LIV with TKF91-MF}
 
-\widepdffig{fork-tkf91liv-tkf91mf}{Transducer $(\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF))$ ...
-Autogenerated by phylocomposer/graphviz ...}
+\widepdffig{fork-tkf91liv-tkf91mf}{Transducer $(\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF))$ models the ancestor common to LIV and MF, which may differ from each by insertions, deletions, and substitutions.  
+This figure was autogenerated using phylocomposer (a DART program) and graphviz}. 
 
-\figref{fork-tkf91liv-tkf91mf} is the recognition profile for the common ancestor of LIV and MF...
+$\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)$, shown in \figref{fork-tkf91liv-tkf91mf}, is the recognition profile for the common ancestor of LIV and MF.
+LIV and MF may each differ from the ancestor by insertions, deletions, and substitutions;
+ a particular path through this machine represents one such explanation of differences
+ (or, equivalently, an alignment of LIV, MF, and their ancestor).  
 
 This is an ensemble of four transducers.
 Input sequence is duplicated;
 one copy fed into TKF91 (\figref{tkf91-labeled}),
 output fed into exact-matcher for LIV (\figref{liv-labeled});
 other copy fed into a separate TKF91 machine (\figref{tkf91-labeled}),
-output fed into exact-matcher for MF (\figref{mf-labeled})...
+output fed into exact-matcher for MF (\figref{mf-labeled}).
 
 Since it is an ensemble of four transducers, every state corresponds to a tuple $(b_1,d_1,b_2,d_2)$
 where
@@ -1475,18 +1483,19 @@ $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
 Note that, as with \figref{mf-tkf91-liv},
 the underlying structure of this state graph is somewhat like a DP matrix,
 with rows, columns and cells.
-In fact, modulo some quirks of the automatic graph layout (performed by graphviz's `dot' program),
+In fact, 
+(modulo some quirks of the automatic graph layout performed by graphviz's `dot' program)
 \figref{fork-tkf91liv-tkf91mf} and \figref{mf-tkf91-liv} are structurally quite similar.
 However, compared to \figref{mf-tkf91-liv},
 \figref{fork-tkf91liv-tkf91mf} has more states in each ``cell'',
 because this transducer tracks two separate branches
 (whereas \figref{mf-tkf91-liv} only tracks one branch).
 
-Note that, since this is a recognizer, it has delete states but no match/insert states...
-the delete states do not necessarily correspond to deletions by the TKF91 transducers
-(all symbols are ultimately deleted by the exact-match recognizers for LIV and MF,
+Since this machine is a recognizer, it has delete states but no match or insert states.
+The delete states present do not necessarily correspond to  deletions by the TKF91 transducers:
+all characters are ultimately deleted by the exact-match recognizers for LIV and MF,
 so even if the two TKF91 transducers allow symbols to pass through undeleted,
-they will still be deleted by the exact-matchers).
+they will still be deleted by the exact-matchers.
 
 In fact, this transducer's states distinguish between
 deletion events on one branch {\em vs} insertion events on the other:
@@ -1519,15 +1528,29 @@ and wait states (where the recognizer waits for the next input symbol).
 
 \subsubsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
 
-\widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$...}
+\widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
+The sum-over-paths weight through this machine corresponds to the final Felsenstein likelihood. }
 
-Forward sum computes final Felsenstein probability...
+Similar to the case of the  
+$(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  
+transducer, we must compose a prior distribution onto our forked machine in order to compute
+the full Felsenstein probability (without having to condition on an input sequence).  
+Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
+in \figref{root-fork-tkf01liv-tkf91mf}.  
 
-Sample traceback path yields sample from posterior distribution over ancestral sequences...
+With this prior, the sum-over-paths sum computes final Felsenstein probability, and 
+sampling traceback paths yields samples from the  posterior distribution 
+over ancestral sequences.  This ability to sample paths will allow us to constrain
+the size of the state space when we begin to apply these concepts not just to pairs of 
+sequences, but entire phylogenetic trees.  
 
 \subsubsection{Best reconstruction of ancestor to MF and LIV}
 
-\widepngfig{viterbi-root-fork-tkf91liv-tkf91mf}{...}
+\widepngfig{viterbi-root-fork-tkf91liv-tkf91mf}{The highest-weight path through
+$\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ 
+ corresponds to the most likely evolutionary history relating the two sequences.  
+Equivalently, this path corresponds to an alignment of the two sequences and their 
+ancestors.}
 
 Highlighted Viterbi traceback path...
 
