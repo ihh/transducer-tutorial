@@ -544,17 +544,18 @@ G_n(x) & = & P(Y_n|x_n = x) \\
 where $B^{(n)}_{ab} = P(x_n=b|x_m=a)$ is the probability that node $n$ has state $b$, given that its parent node $m$ has state $a$;
 and $\delta(x=y_n)$ is a Kronecker delta function terminating the recursion at the leaf nodes of the tree.
 
-The ``states'' in the above description represent individual residues (nucleotides, amino acids) or sometimes base-pairs (in RNA secondary structures) or base-triples (codons).
+The ``states'' in the above description may represent individual residues (nucleotides, amino acids), base-pairs (in RNA secondary structures) or base-triples (codons).
 Sometimes, the state space is augmented to include gap characters, or latent variables.
 In the machine learning literature, the $G_n$ functions are often described as ``messages'' propagated from the leaves to the root of the tree \cite{KschischangEtAl98},
 and corresponding to a summary of the information in the subtree rooted at $n$.
 
-The usual method for extending this approach from individual residues to full-length sequences assumes that one knows the alignment of the sequences.
+The usual method for extending this approach from individual residues to full-length sequences assumes both that one knows the alignment of the sequences, 
+and that the columns of this alignment are each realizations of single-residue evolution.  
 One uses pruning to compute the above likelihood for a single alignment column,
 then multiplies together the probabilities across every column in the alignment.
 For an alignment of length $L$, the time complexity is ${\cal O}(LN)$ and the memory complexity ${\cal O}(N)$.
 This approach works well for marginalizing substitution histories, but is essentially incompatible with summing over indel histories,
-since only a narrow subset of such indel histories are consistent with any given alignment.
+since there exists a multitude of indel histories which are consistent with any given alignment.
 
 The purpose of this technical report is to introduce another way of extending Felsenstein's recursion from single residues (or small groups of residues)
 to entire, full-length sequences, without needing to condition on a single alignment.
@@ -610,8 +611,20 @@ In particular, to maximize accessibility, we have chosen to use a formulation of
 that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/wiki/Finite\_state\_transducer}).
 
 
+\section{Document structure}  We provide first an informal overview, then a technical section in which we describe the algorithm in detail.  
+The informal overview is intended to be easily read, even by someone not familiar with transducer theory. 
+The technical description is intended primarily for those wishing to integrate the 
+internals of this method into their own algorithms.  
 
-\section{Informal overview}
+\section{Informal tutorial on transducer composition}
+We will begin with a narrative, ``tutorial'' overview that introduces the main
+ theoretical concepts using a small worked example.
+Following this we will present general, precise, technical definitions.
+
+Each example presented in this informal section
+ (e.g. single transducers, composite transducers, sampled paths) 
+correspond to rigorously-defined mathematical constructs defined in the technical section. 
+
 
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
@@ -630,9 +643,6 @@ and suggests a way to extend the literature on
 site-dependent and latent-variable substitution models \cite{Yang94,Bruno96,YangEtAl2000,HolmesRubin2002b}
 to indel models.
 
-We will begin with a narrative, ``tutorial'' overview that introduces the main theoretical concepts
-using a small worked example.
-Following this we will present general, precise, technical definitions.
 
 \subsection{Transducers as input-output machines}
 
@@ -680,16 +690,15 @@ if there is no absorption/emission labeled on a transition, then it can be assum
 Some transitions are also labeled with weights.
 If no transition label is present, the weight is usually 1
 (some more complicated diagrams omit all the weights, to avoid clutter).
-
-Weight of a path is product of transition weights...
-
-Weight of an input-output sequence pair is sum over all path weights that generate those input and output sequences...
+The weight of a path is defined to be the  product of transition weights occuring on the path. 
+The weight of an input-output sequence pair is the sum over all path weights that generate the
+specified  input and output sequences.  
 
 Note sometimes this weight is zero --- e.g. in \figref{liv-small} the weight is zero
 except in the unique case that the input tape is LIV, when the weight is one ---
 this in fact makes \figref{liv-small} a special kind of recognizer:
 one that only recognizes a single string
-(and recognizes that string with probability one).
+(and recognizes that string with weight one).
 We call this an {\em exact-match} recognizer.
 
 More generally, suppose that $G$ and $R$ are both probabilistically weighted finite-state transducers,
@@ -717,30 +726,45 @@ be thought of as recognition profiles.
 
 \subsection{Moore machines}
 
-Mealy machines: input/output associated with transitions.
-This is the way we define things mathematically...
+In our mathematical descriptions, we will treat transducers as
+{\em Mealy machines}, meaning that absorptions and emissions are associated with transitions between states.  
+In the {\em Moore machine} view, absorptions and emissions are associated with states.  
+In our case, the distinction between these two is primarily a semantic one, since the structure 
+of the machines and the emission functions of the states is intimately tied.
 
-Moore machines: input/output associated with states.
-Can be more useful in bioinformatics,
-where point substitution means that all combinations of input and output characters are frequently observed...
+The latter view (Moore) can be more useful in bioinformatics,
+where point substitution means that all combinations of input and output characters 
+are possible.  
+This can lead to an excess of transitions, complicating the presentation.  
+For example, consider the Mealy-machine-like view of  \figref{fanned-emission},
+and compare it with the more compact Moore-machine-like view of \figref{condensed-emission}.  
 
-For example consider the Mealy-machine-like view of \figref{fanned-emission}
-\widepngfig{fanned-emission}{All combinations of input and output characters are frequently observed...}
+\widepngfig{fanned-emission}
+{All combinations of input and output characters are frequently observed.  
+In a Mealy-machine-like representation, each possible pair of characters must be given its own transition, cluttering the visualization.}
 
-It can be more convenient to represent this as a Moore-machine-like view of \figref{condensed-emission}
-\widepngfig{condensed-emission}{Condensed representation of all combinations of input and output characters...
-For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
+\widepngfig{condensed-emission}
+{In a condensed Moore-machine-like representation, possible combinations of input and output characters are encoded in the distributions contained within each state,
+simplifying the display.  
+For most Figures in the remainder of this manuscript, we will omit the blue ``x/y'' labels on transitions,
 as they are implied by the state type of the destination state.}
 
-Note the features of this view:
+\figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
+There are seven state {\em types}: Start, Match, Insert, Delete, End, Wait, and Null, frequently abbreviated to $S,M,I,D,E,W,N$
+Note that in the TKF91 model, there are exactly one of each of these types, but this is not a requirement.  For instance, one could use several groups of insert/delete states to model a mixture of indel length distributions.  
+
+\widepdffig{legend}{Each transducer state must be categorized as one of the above state {\em types} (though a transducer may contain several of each type).  
+A state's type determines its I/O capabilities - for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.}
+
+Some other features of this view include the following:
 \begin{itemize}
-\item shape and color of states indicate that they are visual shorthands
-\item imposes certain constraints on states that involve I/O:
- they must be classified as Insert, Delete, or Match
- (determining what kinds of I/O happens on transitions into those states)
-\item imposes certain constraints on transitions into I/O states:
- their weights must be factorizable into transition and I/O components,
- e.g. suppose state $j$ is a match state and state $i$ is any other state,
+\item The shape and color of states indicate their type.  This shorthand will be used throughout.
+\item We impose certain constraints on states that involve I/O:
+ they must be typed  as Insert, Delete, or Match, and
+ their type determines what kinds of I/O happens on transitions into those states (e.g. a Match state always involves an absorption and an emission)
+\item We impose certain constraints on transitions into I/O states:
+ their weights must be factorizable into transition and I/O components.
+ Suppose state $j$ is a match state and state $i$ is any other state,
  then all transitions $i \to j$ must both absorb a non-gap input character $x$
  and emit a non-gap output character $y$,
  and the transition weight must take the form $t_{ij} \times e_j(x,y)$
@@ -748,44 +772,81 @@ Note the features of this view:
   (but not the I/O characters)
  and $e_j(x,y)$ is a component that can depend on the I/O characters and the destination state
   (but not the source state).
-\item we can then associate the I/O weight function $e_j$ with match state $j$
+\item We can then associate the I/O weight function $e_j$ with Match state $j$
  and the transition weight $t_{ij}$ with a single conceptual transition $i \to j$
  that summarizes all the transitions $i \stackrel{x/y}{\to} j$
  (compare \figref{fanned-emission} and \figref{condensed-emission}).
 \item The function $e_j$ can be thought of as a conditional-probability substitution matrix
- (for match states, c.f. $Q$ in \figref{condensed-emission}),
+ (for Match states, c.f. $Q$ in \figref{condensed-emission}),
 a row vector representing probability distribution
- (for insert states, c.f. $U$ in \figref{condensed-emission}),
+ (for Insert states, c.f. $U$ in \figref{condensed-emission}),
 or a column vector of conditional probabilities
- (for delete states, c.f. $V$ in \figref{condensed-emission})
+ (for Delete states, c.f. $V$ in \figref{condensed-emission})
 \end{itemize}
 
-\figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-\widepdffig{legend}{Transducer state types.}
+\pngfig{transitions}
+{Allowed transitions between types of transducer states, along with their I/O requirements.
+In particular, note the Wait state(s) which must precede all 
+absorbing (Match and Delete) states - the primary departure from the familiar pair HMM
+structure.  
+Wait states are useful in co-ordinating multiple connected trandsucers, since they require
+the transducer to ``wait'' for a parent transducer to emit a character before entering an
+absorbing state. 
+Also note that this graph is not intended to depict a {\em particular} state machine, 
+but rather the transitions which are permitted between the {\em types}
+of states of arbitrary machines under our formalism.  
+Since the TKF91 model contains exactly one state of each type,
+ its structure is identical to this graph 
+(but more complex transducers will have more than one state per type).  }
 
-Types of state: Start, Match, Insert, Delete, End, Wait, Null
-
-Frequently abbreviated to $S,M,I,D,E,W,N$
-
-Note the Wait states.
-In our ``Moore-normal form'' for transducers, we require that all input states (Match, Delete)
-are immediately preceded in the transition graph by these Wait states.
-This is useful e.g. for co-ordinating multiple transducers connected together, as we shall soon see...
 
 \figref{transitions} shows the allowed types of transition in Moore-normal form transducers.
-\pngfig{transitions}{Allowed transitions...
-Among other things, this restriction ensures that the transducer always goes through a Wait state before inputting a symbol (in a Match or Delete state)...
-This is advantageous when choreographing arrangements of several transducers, as in later parts of this tutorial...
-The downside is that we sometimes have a few redundant-looking Wait states lingering around...
+In our ``Moore-normal form'' for transducers, we require that all input states (Match, Delete)
+are immediately preceded in the transition graph by a Wait state.
+This is useful for co-ordinating multiple transducers connected together as described in later sections,
+since it requires
+the transducer to ``wait'' for a parent transducer to emit a character before entering an
+absorbing state. 
+%since it ensures that the transducer always goes through a Wait state before inputting a symbol (in a Match or Delete state).
+The downside is that we sometimes have a few  lingering Wait states which appear redundant.  
 For most Figures in the remainder of this manuscript, we will leave out the blue ``x/y'' labels on transitions,
 as they are implied by the state type of the destination state.
-}
+
+Note also that this graph depicts the transitions between {\em types} of states  allowed under our formalism,
+rather than a {\em particular} state machine.  
+Since the TKF91 model contains exactly one state of each type,
+its structure is identical to this graph 
+(but more complex transducers will have more than one state per type).
 
 
-\subsubsection{Moore-machine generators and recognizers}
 
-\figref{moore-mf-generator} uses our Moore-machine visual representation
+\subsubsection{Generators and recognizers in Moore normal form}
+
+We provide here several examples of small transducers in Moore normal form.  
+
+\begin{itemize}
+
+\item \figref{moore-mf-generator} uses our Moore-machine visual representation
 to depict the generator in \figref{mf-generator}.
+
+\item \figref{liv-labeled} is a Moore-form recognizer for sequence LIV.
+The state labeled $\delta_Z$  (for $Z \in \{L,I,V\}$) has I/O function $\delta(x=Z)$,
+defined to be 1 if $x=Z$, 0 otherwise.
+The machine recognizes sequence $LIV$ with weight 1, and all other sequences with weight 0. 
+
+\item \figref{mf-labeled} is the Moore-machine recognizer for MF,
+the same sequence whose generator is shown in \figref{moore-mf-generator}.
+
+\item \figref{cs-labeled} is the Moore-machine recognizer for sequence CS.
+
+\item \figref{null-model} is a ``null model'' generator that emits a single IID sequence
+with a geometric ( with parameter $p$) length distribution and residue frequencies
+ (with distribution $\pi$).  
+
+\end{itemize}
+
+
+
 
 \pdffig{moore-mf-generator}{Transducer $\generate(MF)$, the Moore-normal form generator for protein sequence MF.
 The states are labeled $S$ (Start), $E$ (End),
@@ -794,17 +855,6 @@ and $W_F$ (a Wait state that pauses after emitting the final amino acid;
 this is a requirement imposed by our Moore normal form).
 The state labeled $\imath_Z$ (for $Z \in \{M,F\}$) has I/O function $\delta(y=Z)$.}
 
-A few further examples of exact generators and recognizers, useful for the examples:
-\begin{itemize}
-\item \figref{liv-labeled} is a Moore-form recognizer for sequence LIV.
-The state labeled $\delta_Z$  (for $Z \in \{L,I,V\}$) has I/O function $\delta(x=Z)$,
-defined to be 1 if $x=Z$, 0 otherwise.
-\item \figref{mf-labeled} is the Moore-machine recognizer for MF,
-the same sequence whose generator is shown in \figref{moore-mf-generator}.
-\item \figref{cs-labeled} is the Moore-machine recognizer for sequence CS.
-\item \figref{null-model} is a ``null model'' generator that emits a single IID sequence
-with given geometric length distribution and residue frequencies
-\end{itemize}
 
 \tallpdffig{liv-labeled}{Transducer $\recognize(LIV)$, the Moore-normal form recognizer for protein sequence LIV.
 The states are labeled $S$ (Start), $E$ (End),
@@ -844,30 +894,68 @@ The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 
 \subsubsection{Substitution and identity}
 
-\figref{substituter} shows how the Moore-normal notation is used to represent a substitution matrix...
-\pdffig{substituter}{Transducer $\substitute(Q)$ introduces substitutions (matrix $Q$) but no indels.}
+\figref{substituter} shows how the Moore-normal notation can be  used to represent a substitution matrix.  
+The machine pauses in the Wait state before absorbing each residue $x$ and emitting a residue $y$
+according to the distribution $Q_{xy}$.  
+Since there are no states of type Insert or Delete, the emitted sequences will necessarily
+be the same length.  
 
-Note that the input and output sequences are always the same length...
+\pdffig{substituter}{Transducer $\substitute(Q)$ introduces substitutions (matrix $Q$) but no indels.  
+Characters are absorbed one by one and emitted according to the conditional distribution $Q_{xy}$.}
 
-\figref{identity} shows the special case of the identity transducer (input = output) ...
-\pdffig{identity}{Transducer $\identity$, the identity transducer...}
+\figref{identity} shows the special case of $\substitute(Q)$, the identity transducer,
+derived by setting
+
+\[
+Q_{xy} = \left\{
+\begin{array}{ll}
+1 & x=y \\
+0 & x \neq y
+\end{array}
+\right.
+\]
+
+\pdffig{identity}{Transducer $\identity$, the identity transducer, 
+simply copies the input tape to the output tape.  This can be thought of as a special case of the substituter transducer in \figref{substituter} with a trivial substitution distribution. }
 
 
 \subsubsection{TKF91}
+\label{tkf91}
 
 We use the TKF91 model as an example, not because it is the best model of indels
  (it has deficiencies, most notably the linear gap penalty);
-rather, because it is canonical, widely-known, and illustrative of the general properties of transducers...
+rather, because it is canonical, widely-known, and illustrative of the general properties of transducers.  
+The TKF91 transducer with I/O functions is shown in \figref{tkf91}.  
+The three parameters  relevant for the model are defined as follows:
+$a$ is the ``match probability'' (equivalently, $1-a$ is the deletion probability),
+$b$ is the probability of an insertion at the start of the sequence or following a match,
+and $c$ is the probability of an insertion following a deletion. 
 
-\pdffig{tkf91}{...}
+The three I/O functions are defined as follows:
+conditional on absorbing character $x$, the Match state emits  $y$ with probability
+$exp(Rt)_{xy}$, where $R$ is the rate matrix governing character substitutions and 
+$t$ is the time separating the input and output sequences. 
+Characters are all deleted with the same weight: once a Delete state is entered the 
+absorbed character is deleted with weight 1 regardless of its value.  
+Inserted characters $y$ are emitted according to the equilibrium distribution $\pi_y$.
 
-Definitions of probabilities $a,b,c$ and parameters $\lambda,\mu,R,t$...
+
+\pdffig{tkf91}{The TKF91 transducer, labeled with transition weights and I/O functions.  
+For the meanings of these parameters see Section \ref{tkf91}.  
+\figref{tkf91-labeled} shows the same transducer with state type labels rather than I/O functions. }
+
+%% \figref{tkf91-labeled}
+%% shows the same model, but omitting I/O functions in favor of state type labels.  
+%% This allows us to refer to the states by name (since in TKF91 there is exactly one state of
+%% each type).  The I/O functions are assumed to be as depicted in \figref{tkf91} even if 
+%% they are not shown. 
+
 
 \pdffig{tkf91-labeled}{
 Transducer $\tkf$, the TKF91 model on a branch of length $t$.
 So that we can later refer to the states by name,
 rather than writing the I/O weight functions directly on each state
-we have instead written a state label
+we have instead written a state type label
  $S,M,I,D,E,W$ (Start, Match, Insert, Delete, End, Wait).
 It so happens that the TKF91 transducer has one of each of these kinds of state.
 For each of the I/O states ($I$, $D$ and $M$) we must, of course, still specify an I/O weight function.
@@ -892,40 +980,67 @@ The state labels are $S,M,I,D,E,W$ (interpretation: Start, Match, Insert, Delete
 The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null-model} with $p=\lambda/\mu$.
 The I/O function for the $I$ (Insert) state is $\pi_y$.}
 
-Equilibrium (root) generator for TKF91...
+\subsubsection{Equilibrium (root) generator} TKF91 is an input/output transducer that
+operates on individual branches.  In order to arrange this model on a phylogenetic tree,
+we need a generating transducer at the root.  
+Shown in \figref{tkf91-root} is the equilibrium TKF91 generator, conceptually the same as
+\figref{null-model}, with insertion weight $\lambda/\mu$.  
+The insertion probability is parametrized as the ratio of the birth (insertion) rate $\lambda$ and death (deletion)
+rate  $\mu$ so that the distribution of sequences at the root corresponds to the equilibrium
+distribution after repeated applications of the TKF91 transducer.  
 
+We have now defined all the component transducers we need to model evolution along a phylogeny. 
+Conceptually, we can imagine the equilibrium machine generating a sequence at the root of the
+tree which is then repeatedly passed down along the branches, each of which mutates the sequence
+via a TKF91 machine (potentially introducing substitutions and indels). 
+The result is a set of sequences (one  for each node),
+  whose evolutionary history is recorded via  
+the actions of each TKF91  branch machine.  
+What remains is to detail the various ways of connecting transducers by
+ constraining some of their tapes to be the same - namely {\em composition} and {\em forking}.
 
 \subsection{Composition}
 
-There are various ways of connecting transducers by constraining some of their tapes to be the same.
-The first of these that we will consider is transducer ``composition''.
+The first way of connecting transducers that we will consider is  ``composition'':
+feeding the output of one transducer, $T$, into the input of another, $U$. 
+The two transducers are now connected in a sense, since the output of $T$ must be
+ synchronized with inputs from $U$: when $T$ emits a character, $U$ must be ready to absorb a character.  
 
-Composition is when you feed the output of one transducer, $T$, into the input of another, $U$...
-the two transducers are now connected in a sense (outputs of $T$ can be synchronized with inputs from $U$)
-and we can construct a single, monster transducer that simulates the connected ensemble of $T$ followed by $U$...
-
+We can equivalently  consider the two connected transducers as
+a single, {\em composite} machine that represents
+ the connected ensemble of $T$ followed by $U$.  
 From two transducers $T$ and $U$,
 we make a new transducer, written $TU$ (or $T \cdot U$),
-wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states...
+wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states.  
 
-The notation ($TU$ or $T \cdot U$) reflects the fact that composition is just like matrix multiplication...
-when we sum over paths through $TU$,
-we are summing over the intermediate sequence
+
+In computing the weight of an input/output sequence pair, where the input is fed to $T$ and
+output is read from $U$, we must sum over all the states of the composite $TU$.  
+In doing so, we are effectively summing over the intermediate sequence
 (the output of $T$, which is the input of $U$),
-just as we sum over the intermediate index when doing matrix multiplication...
+just as we sum over the intermediate index when doing matrix multiplication.
+The notation ($TU$ or $T \cdot U$) reflects the fact that transducer composition is  directly 
+analogous to  matrix multiplication.  
 
 \subsubsection{Multiplying two substitution models}
+
+
 
 \pdffig{substituter2}{Transducer $\substitute(R)$ introduces substitutions (rate matrix $R$) but no indels. Compare to \figref{substituter}, which is the same model but with substitution matrix $Q$ instead of $R$.}
 
 \pdffig{substituter-substituter2}{Transducer $\substitute(Q) \cdot \substitute(R)$, the composition of \figref{substituter} and \figref{substituter2}.}
 
-Like two consecutive branches $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$...
-each branch is modeled by a different substitution matrix, $Q$ and $R$
+As a simple example of transducer composition, we turn to the simple subsituting transducers
+in \figref{substituter} and \figref{substituter2}.  
+Composing these two in series models two consecutive branches 
+ $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$, with 
+the action of each branch modeled by a different substitution matrix, $Q$ and $R$.  
 
-The I/O function for the composite Match state is the matrix multiplication, $QR$...
-that is,
-if $x$ denotes the input symbol to the two-transducer ensemble (input into the Q-substituter),
+Constructing the corresponding to $TU$ composite machine 
+ (shown in \figref{substituter-substituter2})
+simply involves constructing a machine whose Match state I/O function
+ is the matrix product of the component substitution matrices, $QR$.  
+If $x$ denotes the input symbol to the two-transducer ensemble (input into the Q-substituter),
 $y$ denotes the output symbol from the two-transducer ensemble (output from the R-substituter),
 and $z$ denotes the unobserved intermediate symbol (output from Q and input to R),
 then the I/O weight function for the composite state QR in the two-transducer ensemble is
@@ -933,72 +1048,104 @@ then the I/O weight function for the composite state QR in the two-transducer en
 (QR)_{xy} = \sum_z Q_{xz} R_{zy}
 \]
 
+
+
 \subsubsection{Multiplying TKF91 with itself}
 
-\widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the TKF91 model (\figref{tkf91-labeled}) with itself.
-See text for I/O weight functions and explanation of state labels...
+\widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the 
+TKF91 model (\figref{tkf91-labeled}) with itself, representing the action of
+ two consecucive branches of evolution.
+Each composite state is labeled with the states of the two component transducers.  
+I/O weight functions, state labels, and meanings of transition parameters are explained in the text. 
 }
 
-Again like two consecutive branches $x \to y \to z$
-but now TKF91 is acting along each branch...
+For a more complex example, consider the composition of a TKF91 transducer with itself.  
+This is again like two consecutive branches $x \to y \to z$, 
+but now TKF91 is acting along each branch, rather than a simple substitution process. 
+An input sequence is fed into first TKF91; 
+the output of this first TKF91 transducer is an intermediate sequence
+ that is fed into the input of the second TKF91;
+output of this second TKF91 is the output of the entire ensemble.
 
-This is an ensemble of two transducers.
-Input sequence is fed into first TKF91;
-output of this first TKF91 transducer is an intermediate sequence that is fed into the input of the second TKF91;
-output of this second TKF91 is the output of the entire ensemble...
-When summing over paths, we are effectively summing over the intermediate sequence...
+The composite machine inputs a sequence and outputs a sequence, just like the machine
+in  \figref{substituter-substituter2}, but these sequences may differ by insertions and deletions
+as well as substitutions. 
+The intermediate sequence (emitted by the first TKF91 and absorbed by the second) is unobserved,
+and by summing over the states of the composite machine we are essentially summing over
+values for this sequence. 
 
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(b_1,b_2)$
+\figref{tkf91-tkf91} shows the state space of this transducer.  
+Every state corresponds to a tuple $(b_1,b_2)$
 where
 $b_1$ is the state of the first TKF91 transducer and
 $b_2$ is the state of the second TKF91 transducer.
+
 The meaning of the various states in this model are
 \begin{itemize}
-\item $SS$ ...
-\item $EE$ ...
-\item $WW$ ...
-\item $SI$ ...
-\item $II$ ...
-\item $MI$ ...
-\item $IM$ ...
-\item $MM$ ...
-\item $ID$ ...
-\item $MD$ ...
-\item $DW$ ...
+\item $SS$ Both transducers are in the Start state.  No characters are absorbed or emitted.
+\item $EE$ Both transducers are in the End state.  No characters are  absorbed or emitted.
+\item $WW$ Both transducers are in the Wait state.  No characters are absorbed or emitted, but both are poised to absorb sequences from their input tapes.
+\item $SI$ The second transducer inserts a character while the first remains in the Start state. 
+\item $IM$ The first transducer  emits a character (via the Insert state) and the second transducer absorbs and emits it (via a Match state). 
+\item $MM$ The first transducer  absorbs (from the input tape) and emits a character (via the Match state) and the second transducer absorbs and emits it (via a Match state). 
+\item $ID$ The first transducer  emits a character (via the Insert state) which the second transducer absorbs and deletes it (via its Delete state). 
+\item $MD$ The first transducer  absorbs and emits a character (via the Match state) which the second transducer deletes (via its Delete state). 
+\item $DW$ The first transducer absorbs and deletes a character, whereas the second transducer idles in a Wait state (since it has recieved no input from the first tranducer).  
 \end{itemize}
+
+The last two states, $II$ and $MI$, appear to contradict the co-ordination of the machines, 
+since the second transducer is not absorbing while the first is emitting. 
+The reason for this is that the first transducer is not ``actively'' emitting; 
+its current state is a holdover from a previous emission (via an insertion or match). 
+After the second transducer processes this emitted character, it may enter an Insertion 
+state, wherein the first transducer remains idle in the Insert or Match state. 
+\begin{itemize}
+\item $II$ The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here - the first is resting in an insertion state from a previous transition.  
+\item $MI$ Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character.
+\end{itemize}
+
+
 
 In a specific sense (summing over paths)
 this composite transducer is equivalent to the single transducer in \figref{tkf91}
 with the time parameter double ($t \to 2t$)...
 this statement is equivalent to a form of the Chapman-Kolmogorov equation,
 $B(t)B(t) \equiv B(2t)$
-
 In fact TKF91 is currently the only nontrivial indel model known to have this property
 (by ``nontrivial'' we mean excluding substitution-only models such as \figref{substituter},
 which are essentially special cases of TKF91).
-An open question is whether there are any such transducers for affine-gap versions of TKF91...
-we exclude TKF92 from this since it does not technically operate on strings, but rather
-sequences of strings (fragments) with immovable boundaries...
+An open question is whether there are any transducers for affine-gap versions of TKF91 which
+have this property
+( excluding TKF92 from this since it does not technically operate on strings, but rather
+sequences of strings (fragments) with immovable boundaries).  
 
 \subsubsection{Composition of MF-generator with substituter}
-\pdffig{mf-substituter}{Transducer $\generate(MF) \cdot \substitute(Q)$...}
+\pdffig{mf-substituter}{Transducer $\generate(MF) \cdot \substitute(Q)$.  State types are indicated by the shape, and the I/O functions of the two Insert states are indicated.  }
 
-\figref{mf-substituter} is the composition of MF-generator with TKF91...
-Note that this is quite similar to a probabilistic weight matrix trained on a single sequence...
+\figref{mf-substituter} is the composition of MF-generator with $\substitute(Q)$.  
+This is quite similar to a probabilistic weight matrix trained on the single sequence $MF$.  
 
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
 where
 $i$ is the state of the generator transducer and
 $b$ is the state of the substituter transducer.
-The meaning of the various states in this model are
+The meaning of the various states in this model are (from top to bottom)
 \begin{itemize}
-\item List of states...
+\item $SS$ Both transducers are in the Start state.  No characters are  absorbed or emitted.
+\item $i_MM$ The generator emits character $M$ via an insert state, and the substituter absorbs and emits via a Match state.
+\item $i_FM$ The generator emits character $F$ via an insert state, and the substituter absorbs and emits via a Match state.
+\item $WW$ Both transducers are in the Wait state.  No characters are  absorbed or emitted, and both are poised to enter their respective End states.
+\item $EE$ Both transducers are in their respective End states. No characters are  absorbed or emitted.
 \end{itemize}
 
 \subsubsection{Composition of MF-generator with TKF91}
-\tallpdffig{mf-tkf91}{Transducer $\generate(MF) \cdot \tkf$, the composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled})}
+\label{mf-tkf91}
+\tallpdffig{mf-tkf91}{Transducer $\generate(MF) \cdot \tkf$, the composition of MF-generator (\figref{moore-mf-generator}) with TKF91 transducer (\figref{tkf91-labeled}).  See Section \ref{mf-tkf91} for the meaning of each state. }
 
-\figref{mf-tkf91} is the composition of MF-generator with TKF91...
+\figref{mf-tkf91} is the composition of MF-generator with TKF91.  
+In contrast to $\generate(MF) \cdot \substitute(Q)$, this machine models the generation of 
+sequence related to $MF$ by indels and substitutions.  It is similar to a profile HMM
+trained on the single sequence $MF$.  
 
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
 where
@@ -1006,72 +1153,122 @@ $i$ is the state of the generator transducer and
 $b$ is the state of the TKF91 transducer.
 The meaning of the various states in this model are
 \begin{itemize}
-\item List of states...
+\item $SS$ Both transducers are in the Start state.  No characters are  absorbed or emitted.
+\item $EE$ Both transducers are in the End state.  No characters are  absorbed or emitted.
+\item $W_FW$ Both transducers are in their respective Wait states.  No characters are absorbed or emitted, and both are poised to enter the End state. 
+\item $SI$ The TKF91 transducer inserts a character while the generator remains in the start state. 
+\item $i_MM$ The  generator inserts the $M$ character and TKF91 absorbs and emits via its Match state.
+\item $i_MD$ The  generator inserts the $M$ character and TKF91 absorbs it via its Delete state.
+\item $i_MI$ After absorbing the $M$ character from above, TKF91 inserts a character while the generator remains in its Insert state. 
+\item $i_FM$ The  generator inserts the $F$ character and TKF91 absorbs and emits via its Match state.
+\item $i_FD$ The  generator inserts the $F$ character and TKF91 absorbs it via its Delete state.
+\item $i_FI$ After absorbing the $F$ character from above, TKF91 inserts a character while the generator remains in its Insert state. 
 \end{itemize}
 
-Note that the only state types are Start, End, Insert, and Null;
-there are no Match or Delete states, even though these states occur in the TKF91 transducer.
-The reason is that, even when the TKF91 is in a state that accepts input symbols (Match or Delete),
+
+A crucial point here is that the {\em composite} machine contains no states of
+ type Match or Delete, since it accepts null input (since its ``most upstream'' 
+transducer, the MF-generator, accepts null input).  
+Even when the TKF91 is in a state that accepts input symbols (Match or Delete),
 the input symbol was inserted by the MF-generator;
 the MF-generator does not itself accept any input,
-so the entire ensemble accepts no input
-(and is therefore a generator).
+so the entire ensemble accepts no input.  
+Therefore the {\em entire composite machine is a generator}, since it accepts null input
+and produces non-null output.  
 
-Note that this is quite similar to a profile HMM trained on a single sequence...
 
 \subsubsection{Composition of substituter with MF- and CS-recognizers}
+\figref{substituter-mf}  and \figref{substituter-cs}  are the composition of $\substitute(Q)$ with the MF-recognizer and CS-recognizer, respectively.  
+These are related to \figref{mf-substituter} and \figref{cs-substituter}, but the composition
+is reversed.  
+The composite machines accept sequence on input, and emit null output.  
 
-\pdffig{substituter-mf}{Transducer $\substitute(Q) \cdot \recognize(MF)$...}
 
-\pdffig{substituter-cs}{Transducer $\substitute(Q) \cdot \recognize(CS)$...}
+\pdffig{substituter-mf}{Transducer $\substitute(Q) \cdot \recognize(MF)$ `recognizes' sequences related to $MF$.  In contrast to the machine in \figref{mf-substituter}, this machine accepts input and emits null output.  Note than a sequence of any length besides 2 will have recognition weight zero. }
 
-\subsubsection{Composition of TKF91 with LIV-recognizer}
+\pdffig{substituter-cs}{Transducer $\substitute(Q) \cdot \recognize(CS)$ 'recognizes' sequences related to $CS$.  In contrast to the machine in \figref{cs-substituter}, this machine accepts input and emits null output.  Note than a sequence of any length besides 2 will have recognition weight zero. }
 
-\tallpdffig{tkf91-liv}{Transducer $\tkf \cdot \recognize(LIV)$...}
+%% \subsubsection{Composition of TKF91 with LIV-recognizer}
 
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(b,d)$
-where
-$b$ is the state of the TKF91 transducer and
-$d$ is the state of the recognizer transducer.
-The meaning of the various states in this model are
-\begin{itemize}
-\item List of states...
-\end{itemize}
+%% \tallpdffig{tkf91-liv}{Transducer $\tkf \cdot \recognize(LIV)$...}
 
-Note that there are only delete states in this (as in LIV-recognizer)...
-explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
-and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
+%% \figref{tkf91-liv} shows the composition of a TKF91 transducer with the LIV-recognizer.  
+
+%% Since it is an ensemble of two transducers, every state corresponds to a tuple $(b,d)$
+%% where
+%% $b$ is the state of the TKF91 transducer and
+%% $d$ is the state of the recognizer transducer.
+%% The meaning of the various states in this model are
+%% \begin{itemize}
+%% \item List of states...
+%% \end{itemize}
+
+%% Note that there are only delete states in this (as in LIV-recognizer)...
+%% explain why this arises (because LIV-recognizer deletes anything TKF91 emits)
+%% and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
 
 \subsubsection{Composition of TKF91 with MF-recognizer}
 
-\tallpdffig{tkf91-mf}{Transducer $\tkf \cdot \recognize(MF)$...}
+\tallpdffig{tkf91-mf}{Transducer $\tkf \cdot \recognize(MF)$ models the evolution
+ (according to the TKF91 model) of a sequence resulting in $MF$.  
+This machine absorbs sequence on its input and has null output due to 
+the recognizer's null output.}
 
+\figref{tkf91-mf} shows the composition of a TKF91 transducer with the MF-recognizer.  
+This machine is related to the MF-generator/TKF91 composition described  earlier.  
 Compare the recognizer in \figref{tkf91-mf}
-with the analogous generator in \figref{mf-tkf91}...
-
-Note that the generator and the recognizer are not the same;
+with the analogous generator in \figref{mf-tkf91}. 
+While related, the generator and the recognizer are not the same;
 for a sequence $S$,
 \figref{tkf91-mf} with $S$ as input computes $P(MF|S)$
 (probability that descendant of $S$ is $MF$), 
 whereas \figref{mf-tkf91} with $S$ as output computes $P(S|MF)$
 (probability that descendant of $MF$ is $S$)...
 
+Since it is an ensemble of two transducers, every state of $\tkf \cdot \recognize(MF)$ corresponds to a tuple $(b,d)$
+where
+$b$ is the state of the TKF91 transducer and
+$d$ is the state of the recognizer transducer.
+The meaning of the various states in this model are
+\begin{itemize}
+\item $SS$ Both transducers are in the Start state.  No characters are  absorbed or emitted.
+\item $EE$ Both transducers are in the End state.  No characters are  absorbed or emitted.
+\item $WW_0$ Both transducers are in Wait states.  No characters are absorbed or emitted; both are poised to accept input from above. 
+\item $DW_0$ TKF91 absorbs a character from above and deletes it; recognizer remains in the initial Wait state ($W_0$).  
+\item $i\delta_M$ TKF91 emits a character via an Insert state and it is recognized by the $\delta_M$ state of the recognizer.  
+\item $M\delta_M$ TKF91 absorbs and emits a character via a Match state and it is recognized by the $\delta_M$ state of the recognizer.  
+\item $WW_M$ Both transducers are in Wait states: TKF91 in its only Wait state and the recognizer in the Wait state following the $M$ character. 
+\item $DW_M$ TKF91 absorbs a character from above and deletes it; recognizer remains in the Wait state ($W_M$).  
+\item $i\delta_F$ TKF91 emits a character via an Insert state and it is recognized by the $\delta_F$ state of the recognizer.  
+\item $M\delta_F$ TKF91 absorbs and emits a character via a Match state and it is recognized by the $\delta_F$ state of the recognizer.  
+\item $WW_F$ Both transducers are in Wait states: TKF91 in its only Wait state and the recognizer in the Wait state following the $F$ character. 
+\item $DW_F$ TKF91 absorbs a character from above and deletes it; recognizer remains in the Wait state ($W_F$).  
+\end{itemize}
+
+
+
 \subsubsection{Composition of MF-generator, substituter and CS-recognizer}
 
-An alternative way of computing the weight, that expands the model to include the data...
-\pdffig{mf-substituter-cs}{Transducer $\generate(MF) \cdot \substitute(Q) \cdot \recognize(CS)$...}
 
-Note that we could not e.g. compose MF-generator$\to$substituter$\to$LIV-recognizer
-(or rather we could, but since substituter does not change sequence length,
-there would be no valid path, and probability would come out as zero,
-which is the correctly computed probability of transforming MF to LIV by point substitutions alone)
+\pdffig{mf-substituter-cs}{Transducer $\generate(MF) \cdot \substitute(Q) \cdot \recognize(CS)$ is a pure Markov chain modeling the transformation of MF to CS via substitutions only. }
+
+\figref{mf-substituter-cs} shows the composition of the MF-generator, substituter, and CS-recognizer.  
+This machine is a pure Markov chain (with no inputs or outputs) which can be used to compute 
+the weight of transforming $MF$ to $CS$.  
+
+Note that composing $\generate(MF) \to \substitute(Q) \to \recognize(LIV) $
+would result in zero weight since $\substitute(Q)$ cannot change sequence length.  
+Intuitively, this is the correctly computed probability of transforming MF to LIV by point substitutions alone.  
 
 
 \subsubsection{Composition of MF-generator, TKF91 and LIV-recognizer}
 
 \widepdffig{mf-tkf91-liv}{Transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$...}
 
-In this diagram, transitions are unlabeled to avoid clutter...
+\figref{mf-tkf91-liv} shows the composition of three transducers, the MF-generator, TKF91 and LIV-recognizer
+(transitions are unlabeled for clarity).
+This is one step beyond the machine in \figref{mf-substituter-cs}, as it allows 
+insertions and deletions to separate the generated (MF) and recognized (CS) sequences.  
 
 Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
 where
@@ -1080,24 +1277,40 @@ $b$ is the state of the TKF91 transducer and
 $d$ is the state of the recognizer transducer.
 The meaning of the various states in this model are
 \begin{itemize}
-\item List of states...
+\item $SSS$ All transducers are in the Start state.  No characters are emitted or absorbed. 
+
+\item $SI\delta_y$ The component TKF91 emits a character via the Insert state which is recognized by the $\delta_y$ state of $\recognize(LIV)$; $\generate(MF)$ remains in the Start state. 
+
+\item $i_x I\delta_y$ The component  TKF91 emits a character via the Insert state which is recognized by the $\delta_y$ state of $\recognize(LIV)$; $\generate(MF)$ remains in an Insert state corresponding to the last character $x$ which it generated. 
+
+\item $i_x M\delta_y$ The component  $\generate(MF)$ emits character $x$ via an Insert state, and TKF91 absorbs and emits it via a Match state.  
+$\recognize(LIV)$ absorbs and recognizes the character via the state $\delta_y$.  
+
+\item $i_x D W_y$ The component  $\generate(MF)$ emits character $x$ via an Insert state, and TKF91 absorbs and deletes it via a Delete state.  
+$\recognize(LIV)$  remains in $W_y$, the Wait  state following character $y$ (or $W_0$ if $\recognize(LIV)$  has not yet recognized any characters). 
+
+\item $W_FWW_V$ All transducers are in their Wait states which precede the End states for each transducer.  No characters are emitted or absorbed. 
+
+\item $EEE$ All transducers are in their End states.  No characters are emitted or absorbed. 
 \end{itemize}
 
-Note that there are no match/insert/delete states --- only null states...
-thus this is more like a straightforward Markov model...
-in fact Markov models are a special case of an input/output machine where the input and output are both null
-(just as an HMM can be considered as a special case where the input is null, i.e. a generator,
-and a parser or recognizer is a special case where the output is null)...
+
+Like the machine in \figref{mf-substituter-cs} $\generate(MF) \cdot \tkf \recognize(LIV)$ contains only null states (no match, insert, or delete states), making it a pure Markov chain.  
+Markov models are a special case of an input/output machine where the input and output are both null:
+a hidden Markov model corresponds to  the case of null input (i.e. a generator)
+and a parser is a special case where the output is null.  
 
 Probability $P(Y=\mbox{LIV}|X=\mbox{MF})$ for TKF91 model
-is equal to sum of all path weights from start to end in this Markov model...
+is equal to sum of all path weights from start to end in this Markov model. 
+The set of paths corresponds to the set of valid evolutionary transformations relating
+sequences MF and LIV (valid meaning those allowed under the model, namely non-overlapping single-residue indels and substitutions).  
 
-Note how the structure of the Markov model is directly analogous to a dynamic programming matrix...
-rows, columns, cells...
+This is directly analagous to computing a pairwise alignment (e.g. using the Needlman-Wunsch algorithm), and the structure of the Markov model shown in \figref{mf-tkf-liv} suggests the familiar structure of a pairwise dynamic programming matrix.  
 
-We could not do this with substituter instead of TKF91
-(or rather we could, but substituter does not change sequence length,
-so there would be no valid path, and probability would correctly come out as zero)
+Note that the quantity  $P(Y=\mbox{LIV}|X=\mbox{MF})$ computed 
+using the  substituter instead of TKF91 would not be meaningful.  
+Since the substituter cannot change sequence length, there would be no
+valid path relating the two sequences, and the probability would come out as zero.  
 
 \subsection{Removal of null states}
 
