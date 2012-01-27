@@ -474,7 +474,7 @@ Ian Holmes$^{1,\ast}$
 $\ast$ E-mail: ihh@berkeley.edu
 }
 
-\newcommand\titlestring{An alignment-free generalization to indels of Felsenstein's phylogenetic pruning algorithm}
+\newcommand\titlestring{An automata-theoretic generalization to indels of Felsenstein's phylogenetic pruning algorithm}
 \newcommand\shorttitlestring{Felsenstein pruning of indels}
 \markboth{\shorttitlestring}{\shorttitlestring}
 
@@ -647,7 +647,9 @@ to indel models.
 
 \subsection{Transducers as input-output machines}
 
-We begin with a brief definition of transducers from Wikipedia...
+We begin with a brief definition of transducers from Wikipedia.  
+% crossref
+These ideas are described in greater detail in \secref{Transducer}.
 
 % Begin quote from Wikipedia
 {\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to } recognize {\em a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. $(\dagger\dagger\dagger)$ Alternatively, we can say that an automaton } generates {\em strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
@@ -672,6 +674,10 @@ concepts of {\em generators} (state machines that emit output sequences, such as
 and parsers or {\em recognizers} (state machines that match/parse input sequences, such as the UNIX `lex' program).
 Both generators and recognizers are separate special cases of transducers.
 Of particular use in our treatment are generators/recognizers that generate/recognize a single unique sequence.
+% crossref
+Generators and recognizers are described in more detail in \secref{GenSinglet,ExactMatch}.
+
+
 \figref{mf-generator} is an example of a generator that uniquely generates the protein sequence MF;
 we write this as $\generate(MF)$.
 \figref{liv-small} is an example of a recognizer that uniquely recognizes the protein sequence LIV;
@@ -756,6 +762,8 @@ as they are implied by the state type of the destination state.}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
 There are seven state {\em types}: Start, Match, Insert, Delete, End, Wait, and Null, frequently abbreviated to $S,M,I,D,E,W,N$.
+% crossref
+State types are described in greater detail in \secref{StateTypes}.
 Note that in the TKF91 model, there are exactly one of each of these types, but this is not a requirement.  For instance, one could use several groups of insert/delete states to model a mixture of indel length distributions.  
 
 \widepdffig{legend}{Each transducer state is categorized as one of the above state {\em types} (though a transducer may contain several of each type).  
@@ -919,6 +927,8 @@ Q_{xy} = \left\{
 \end{array}
 \right.
 \]
+% crossref
+These ideas are described in more detail in \secref{Identity}. 
 
 \pdffig{identity}{Transducer $\identity$, the identity transducer, 
 simply copies the input tape to the output tape.  This can be thought of as a special case of the substituter transducer in \figref{substituter} with a trivial substitution distribution. }
@@ -1007,7 +1017,10 @@ What remains is to detail the various ways of connecting transducers by
 \subsection{Composition}
 %getrefs
 The first way of connecting transducers that we will consider is  ``composition'':
-feeding the output of one transducer, $T$, into the input of another, $U$. 
+feeding the output of one transducer, $T$, into the input of another, $U$.
+% crossref
+Composition is described in greater detail in \secref{Composition}. 
+ 
 The two transducers are now connected in a sense, since the output of $T$ must be
  synchronized with inputs from $U$: when $T$ emits a character, $U$ must be ready to absorb a character.  
 
@@ -1123,6 +1136,9 @@ An open question is whether there are any transducers for affine-gap versions of
 have this property
 ( excluding TKF92 from this since it does not technically operate on strings, but rather
 sequences of strings (fragments) with immovable boundaries).  
+% crossref
+The Chapman-Kolmogorov equation (the formal description of this property)
+is described in \secref{ChapmanKolmogorov}.
 
 \subsubsection{Composition of MF-generator with substituter}
 %getrefs ?
@@ -1337,6 +1353,8 @@ using straightforward mathematical machinery (e.g. matrix inversion described in
 The second operation for connecting two transducers
  is one that we call ``fork''.
 It is a weighted generalization of the operation commonly known as transducer ``intersection''.
+% crossref
+Forking is described in greater detail in \secref{Fork}. 
 
 Forking two transducers is to feed the same input tape into both transducers in parallel.
 As with a transducer composition,
@@ -1449,7 +1467,10 @@ would mutate to C on the $Q$-branch and M on the $R$-branch.
 
 \subsubsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
 
-\pdffig{root-fork-subcs-submf}{Transducer $\nullmodel \cdot ((\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF)))$...}
+\pdffig{root-fork-subcs-submf}{Transducer $\nullmodel \cdot ((\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF)))$ 
+allows computing  the final Felsenstein probability for the two sequence MF and CS related 
+by character substitutions.  Since characters emitted by the $\nullmodel$ transducer are
+all absorbed by the two recognizers, the composite machine has null input and output.  }
 
 The previous machine corresponds to the Felsenstein probability computed at each internal
 node of a tree.  
@@ -1466,7 +1487,7 @@ way to  sample from the  posterior distribution over ancestral sequences relatin
 \subsubsection{Fork of TKF91-LIV with TKF91-MF}
 
 \widepdffig{fork-tkf91liv-tkf91mf}{Transducer $(\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF))$ models the ancestor common to LIV and MF, which may differ from each by insertions, deletions, and substitutions.  
-This figure was autogenerated using phylocomposer (a DART program) and graphviz}. 
+This figure was autogenerated using phylocomposer (a DART program) and graphviz.} 
 
 $\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)$, shown in \figref{fork-tkf91liv-tkf91mf}, is the recognition profile for the common ancestor of LIV and MF.
 LIV and MF may each differ from the ancestor by insertions, deletions, and substitutions;
@@ -1485,7 +1506,7 @@ where
 $b_1$ is the state of the TKF91 transducer on the LIV-branch (\figref{tkf91-labeled}),
 $d_1$ is the state of the exact-matcher for sequence LIV (\figref{liv-labeled}),
 $b_2$ is the state of the TKF91 transducer on the MF-branch (\figref{tkf91-labeled}),
-$d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled})...
+and $d_1$ is the state of the exact-matcher for sequence MF (\figref{mf-labeled}).
 
 Note that, as with \figref{mf-tkf91-liv},
 the underlying structure of this state graph is somewhat like a DP matrix,
@@ -1510,22 +1531,23 @@ this is significant because a ``deleted'' residue is homologous to a residue in 
 while an ``inserted'' residue is not.
 There are, in fact, four delete states in each ``cell'' of the matrix,
 corresponding to four fates of the input symbol after it is duplicated:
-(a) both copies of input symbol pass successfully through respective TKF91 transducers
+\begin{enumerate}
+\item Both copies of input symbol pass successfully through respective TKF91 transducers
 and are then deleted by respective downstream exact-matchers for sequences LIV and MF
  (e.g. $M D_L M D_F$);
-(b) one copy of input symbol deleted by TKF91 transducer on LIV-branch,
+\item One copy of input symbol deleted by TKF91 transducer on LIV-branch,
 leaving downstream LIV-matcher idling in a wait state;
 other copy passes through TKF91 transducer on MF-branch and is then deleted by downstream MF-matcher
  (e.g. $D W_0 M D_F$);
-(c) one copy of input symbol passes through TKF91 transducer on LIV-branch
+\item One copy of input symbol passes through TKF91 transducer on LIV-branch
 and is then deleted by downstream LIV-matcher;
 other copy is deleted by TKF91 transducer on MF-branch,
 leaving downstream MF-matcher idling in a wait state;
  (e.g. $M D_L D W_0$);
-(d) both input symbols deleted by respective TKF91 transducers,
+\item Both input symbols deleted by respective TKF91 transducers,
 while downstream exact-matchers idle in wait states without seeing any input
  (e.g. $D W_0 D W_0$).
-
+\end{enumerate}
 The other states in each cell of the matrix are insertion states
 (where the symbols in sequences LIV or MF are accounted for by insertions from the TKF91 transducers,
 rather than by input symbols)
@@ -1544,12 +1566,25 @@ transducer, we must compose a prior distribution onto our forked machine in orde
 the full Felsenstein probability (without having to condition on an input sequence).  
 Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
 in \figref{root-fork-tkf91liv-tkf91mf}.  
+This machine is analagous to the ``full evidence expanded model'' described in
+\figref{EvidenceExpandedModel}.  
 
-With this prior, the sum-over-paths sum computes final Felsenstein probability, and 
+With this prior, the sum-over-paths weight computes final Felsenstein probability, and 
 sampling traceback paths yields samples from the  posterior distribution 
-over ancestral sequences.  This ability to sample paths will allow us to constrain
+over ancestral sequences.  
+% crossref 
+The sum-over-paths is computed via a form of the standard Forward dynamic programming
+algorithm, described in \secref{DynamicProgramming}.  
+
+This ability to sample paths will allow us to constrain
 the size of the state space when we move from  pairs of 
 sequences to entire phylogenetic trees.  
+% crossref
+Tracing paths back through the state graph according to their posterior probability
+is straightforward once the Forward matrix is filled; 
+the algorithmic internals are detailed in \secref{Traceback}. 
+
+
 
 \subsubsection{Best reconstruction of ancestor to MF and LIV}
 
@@ -1564,7 +1599,6 @@ is highlighted.
 This path, via the significances of each of the visited states, corresponds to 
 an ancestral alignment relating LIV and MF: an alignment of the sequences and their ancestor.
 
-
 e.g.
 \begin{tabular}{lccc}
 Ancestral sequence & * & * & * \\
@@ -1574,6 +1608,12 @@ Sequence 2         & M & F & -
 
 \widepdffig{viterbi-fork-tkf91liv-tkf91mf}{Removing the root generator produces a 
 recognition profile for the ancestral sequence relating MF and LIV. }
+
+% crossref
+Computing this alignment/path is straightforward, and essentially amounts to choosing
+the highest-probability possibility (as opposed to sampling) 
+in each step of the traceback detailed in
+section {Traceback}.  
 
 If we remove  the root generator we  construct a linear recognizer profile
 for the sequence at the ancestral node,
@@ -1598,6 +1638,12 @@ Instead of only saving the highest-weight path through
 it is possible to sample paths proportional to their posterior probability.  
 In \figref{forward2-root-fork-tkf91liv-tkf91mf}, two sampled paths through the 
 state graph are shown.  
+% crossref
+Tracing paths back through the state graph according to their posterior probability
+is straightforward once the Forward matrix is filled; 
+the algorithmic internals are detailed in \secref{Traceback}. 
+
+
 It is possible that many paths through the graph have weights similar to the 
 Viterbi path.
 By sampling suboptimal paths according to their weights, it is possible to retain and 
@@ -1630,6 +1676,10 @@ allowing us to select a high-probability subset of the state graph.  }
 Combining these paths into a single graph and relabeling again, 
 we still have a recognition profile, but it is now branched,
 reflecting the possible uncertainty in our alignment/ancestral prediction, shown in \figref{forward2-profile}.
+% crossref
+The exact transformations required (removing the prior, null states, and adding wait states)
+is detailed in \secref{Mn2En}.  
+
 Note that these are all still approximations to the full
 recognition profile for the ancestor, which is \figref{fork-tkf91liv-tkf91mf}.  
 While we could retain this entire profile, progressively climbing up a tree
@@ -1750,6 +1800,8 @@ relating the sequences, hence it is a lower bound.
 In practice, the hope is that by sampling sufficiently many paths we are able to 
 recover the maximum likelihood reconstruction at the root level, and the
 final Felsenstein probability is a good approximation. 
+
+
 
 \pagebreak
 \section{Formal definitions}
@@ -2000,7 +2052,7 @@ For later convenience it is useful to define the function
 \end{eqnarray*}
 
 \subsection{Generative and singlet transducers}
-
+\seclabel{GenSinglet}
 {\em Generative transducers:}
 A transducer $T$ is generative (or ``a {\em generator}'') if it has a null input alphabet, and so rejects any input except the empty string.
 Then $T$ may be regarded as a state machine that generates an output, equivalent to a Hidden Markov Model.
@@ -2049,7 +2101,7 @@ For studies of this problem the reader is referred to previous work \cite{Thorne
 \seclabel{Hierarchy}
 
 \subsection{Model structure}
-
+\seclabel{ModelStructure}
 \subsubsection{Phylogenetic tree ($n$, $\leaves$)}
 Suppose we have an evolutionary model defined on a rooted binary phylogenetic tree,
 and a set of $\numberofleaves$ observed sequences associated with the leaf nodes of the tree.
@@ -2784,7 +2836,7 @@ It is necessary to eliminate these states from $M_n$ by marginalization, and to 
 \section{Inference algorithms}
 
 \subsection{Dynamic programming}
-
+\seclabel{DynamicProgramming}
 The recursion for $\wtrans{\weight}{\epsilon}{M_n}{\epsilon}$ is
 \begin{eqnarray*}
 \wtrans{\weight}{\epsilon}{M_n}{\epsilon} & = & Z(\laststate) \\
@@ -2997,6 +3049,7 @@ state.  This quantity is later used to guide stochastic sampling (Algorithms \re
 
 
 \subsubsection{Traceback}
+\seclabel{Traceback}
 Sampling a path from $P(\pi|M_n)$ is analogous to stochastic traceback through the Forward matrix.  The basic traceback algorithm is presented in Algorithm~\ref{traceback.short}, and a more precise version is presented in Algorithm~\ref{traceback.full}.  
 
 Let the function $\sample(set, weights)$ input two equal-length vectors and return a randomly-chosen element of $set$, such that  $set_i$ is sampled
@@ -3128,10 +3181,7 @@ $Z(m)$ always evaluates to zero if $m=\mstate$ is not in the envelope.
 
 Let $\recognize(S)$ be defined such that it has only one nonzero-weighted path
 \[
-X_0 \to W_0 \stackrel{\charat{S}{1}}{\to} M_1
- \to W_1 \stackrel{\charat{S}{2}}{\to} M_2 \to \ldots \to W_{L-1} 
-\stackrel{\charat{S}{\seqlen{S}}}{\to} 
-M_{\seqlen{S}} \to W_{\seqlen{S}} \to X_{\seqlen{S}}
+X_0 \to W_0 \stackrel{\charat{S}{1}}{\to} M_1 \to W_1 \stackrel{\charat{S}{2}}{\to} M_2 \to \ldots \to W_{L-1} \stackrel{\charat{S}{\seqlen{S}}}{\to} M_{\seqlen{S}} \to W_{\seqlen{S}} \to X_{\seqlen{S}}
 \]
 so a $\recognize(S)$-state is either the start state ($X_0$), the end state ($X_{\seqlen{S}}$), a wait state ($W_i$) or a match state ($M_i$).
 All these states have the form $\phi_i$ where $i$ represents the number of symbols of $S$ that have to be read in order to reach that state,
@@ -3336,6 +3386,7 @@ Note the following correspondences between the previously-defined  $\transweight
 \end{eqnarray*}
 
 \section{Message-passing interpretation}
+\seclabel{MessagePassing}
 
 In the interpretation of Felsenstein's pruning algorithm \cite{Felsenstein81} and Elston and Stewart's more general peeling algorithm \cite{ElstonStewart71} as message-passing on factor graphs \cite{KschischangEtAl98},
 the tip-to-root messages are functions of the form
