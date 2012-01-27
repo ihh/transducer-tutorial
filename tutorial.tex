@@ -611,20 +611,21 @@ In particular, to maximize accessibility, we have chosen to use a formulation of
 that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/wiki/Finite\_state\_transducer}).
 
 
-\section{Document structure}  We provide first an informal overview, then a technical section in which we describe the algorithm in detail.  
-The informal overview is intended to be easily read, even by someone not familiar with transducer theory. 
-The technical description is intended primarily for those wishing to integrate the 
-internals of this method into their own algorithms.  
-
-\section{Informal tutorial on transducer composition}
+\section{Document structure}  
 We will begin with a narrative, ``tutorial'' overview that introduces the main
  theoretical concepts using a small worked example.
 Following this we will present general, precise, technical definitions.
+The informal overview makes extensive use of illustrative figures,
+and is intended to be easily read, even by someone not familiar with transducer theory. 
+The technical description is intended primarily for those wishing to integrate the 
+internals of this method into their own algorithms.  
 
 Each example presented in this informal section
  (e.g. single transducers, composite transducers, sampled paths) 
 correspond to rigorously-defined mathematical constructs defined in the technical section. 
+Whenever possible, we provide references between the examples and their technical definitions.
 
+\section{Informal tutorial on transducer composition}
 
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
@@ -662,7 +663,9 @@ for three tiny protein sequences (MF, CS, LIV).
 Specifically, we will compute the likelihood of the symmetric binary tree shown in \figref{cs-mf-liv-tree},
 explaining the common descent of these three sequences
 under the TKF91 model.
-\pdffig{cs-mf-liv-tree}{Example tree used in this tutorial.}
+\pdffig{cs-mf-liv-tree}{Example tree used in this tutorial.  
+The TKF91 model is used as the branch transducer model, but our approach 
+is applicable to a wider range of string transducer models.  }
 
 As noted in the Wikipedia quote, transducers can be thought of as generalizations of the related
 concepts of {\em generators} (state machines that emit output sequences, such as HMMs)
@@ -674,9 +677,11 @@ we write this as $\generate(MF)$.
 \figref{liv-small} is an example of a recognizer that uniquely recognizes the protein sequence LIV;
 we write this as $\recognize(LIV)$.
 
-\pngfig{mf-generator}{Generator for protein sequence MF.}
+\pngfig{mf-generator}{Generator for protein sequence MF.  
+This is a trivial state machine which emits/generates the sequence MF with probability/weight 1. }
 
-\pngfig{liv-small}{Recognizer for protein sequence LIV.}
+\pngfig{liv-small}{Recognizer for protein sequence LIV.
+This is a trivial state machine which absorbs/recognizes the sequence LIV with probability/weight 1, and all other sequences with weight 0.  }
 
 These figures illustrate the notation we use in this tutorial.
 States and transitions are shown as a graph.
@@ -735,13 +740,13 @@ of the machines and the emission functions of the states is intimately tied.
 The latter view (Moore) can be more useful in bioinformatics,
 where point substitution means that all combinations of input and output characters 
 are possible.  
-This can lead to an excess of transitions, complicating the presentation.  
+The former view (Mealy) can lead to an excess of transitions, complicating the presentation.  
 For example, consider the Mealy-machine-like view of  \figref{fanned-emission},
 and compare it with the more compact Moore-machine-like view of \figref{condensed-emission}.  
 
 \widepngfig{fanned-emission}
 {All combinations of input and output characters are frequently observed.  
-In a Mealy-machine-like representation, each possible pair of characters must be given its own transition, cluttering the visualization.}
+In a Mealy-machine-like representation, each possible pair of characters must be given its own transition, complicating the visualization.}
 
 \widepngfig{condensed-emission}
 {In a condensed Moore-machine-like representation, possible combinations of input and output characters are encoded in the distributions contained within each state,
@@ -750,10 +755,10 @@ For most Figures in the remainder of this manuscript, we will omit the blue ``x/
 as they are implied by the state type of the destination state.}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
-There are seven state {\em types}: Start, Match, Insert, Delete, End, Wait, and Null, frequently abbreviated to $S,M,I,D,E,W,N$
+There are seven state {\em types}: Start, Match, Insert, Delete, End, Wait, and Null, frequently abbreviated to $S,M,I,D,E,W,N$.
 Note that in the TKF91 model, there are exactly one of each of these types, but this is not a requirement.  For instance, one could use several groups of insert/delete states to model a mixture of indel length distributions.  
 
-\widepdffig{legend}{Each transducer state must be categorized as one of the above state {\em types} (though a transducer may contain several of each type).  
+\widepdffig{legend}{Each transducer state is categorized as one of the above state {\em types} (though a transducer may contain several of each type).  
 A state's type determines its I/O capabilities - for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.}
 
 Some other features of this view include the following:
@@ -793,7 +798,7 @@ Wait states are useful in co-ordinating multiple connected trandsucers, since th
 the transducer to ``wait'' for a parent transducer to emit a character before entering an
 absorbing state. 
 Also note that this graph is not intended to depict a {\em particular} state machine, 
-but rather the transitions which are permitted between the {\em types}
+but rather it shows the transitions which are permitted between the {\em types}
 of states of arbitrary machines under our formalism.  
 Since the TKF91 model contains exactly one state of each type,
  its structure is identical to this graph 
@@ -821,7 +826,7 @@ its structure is identical to this graph
 
 
 \subsubsection{Generators and recognizers in Moore normal form}
-
+%getrefs
 We provide here several examples of small transducers in Moore normal form.  
 
 \begin{itemize}
@@ -893,7 +898,7 @@ The I/O function associated with each Delete state $\delta_Z$ is $\delta(x=Z)$.}
 \pdffig{null-model}{Transducer $\nullmodel$, a simple null-model generator with geometric length parameter $p$ and residue frequency distribution $\pi$.}
 
 \subsubsection{Substitution and identity}
-
+%getrefs
 \figref{substituter} shows how the Moore-normal notation can be  used to represent a substitution matrix.  
 The machine pauses in the Wait state before absorbing each residue $x$ and emitting a residue $y$
 according to the distribution $Q_{xy}$.  
@@ -1000,7 +1005,7 @@ What remains is to detail the various ways of connecting transducers by
  constraining some of their tapes to be the same - namely {\em composition} and {\em forking}.
 
 \subsection{Composition}
-
+%getrefs
 The first way of connecting transducers that we will consider is  ``composition'':
 feeding the output of one transducer, $T$, into the input of another, $U$. 
 The two transducers are now connected in a sense, since the output of $T$ must be
@@ -1023,8 +1028,7 @@ The notation ($TU$ or $T \cdot U$) reflects the fact that transducer composition
 analogous to  matrix multiplication.  
 
 \subsubsection{Multiplying two substitution models}
-
-
+%getrefs
 
 \pdffig{substituter2}{Transducer $\substitute(R)$ introduces substitutions (rate matrix $R$) but no indels. Compare to \figref{substituter}, which is the same model but with substitution matrix $Q$ instead of $R$.}
 
@@ -1051,6 +1055,7 @@ then the I/O weight function for the composite state QR in the two-transducer en
 
 
 \subsubsection{Multiplying TKF91 with itself}
+%getrefs
 
 \widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the 
 TKF91 model (\figref{tkf91-labeled}) with itself, representing the action of
@@ -1120,6 +1125,7 @@ have this property
 sequences of strings (fragments) with immovable boundaries).  
 
 \subsubsection{Composition of MF-generator with substituter}
+%getrefs ?
 \pdffig{mf-substituter}{Transducer $\generate(MF) \cdot \substitute(Q)$.  State types are indicated by the shape, and the I/O functions of the two Insert states are indicated.  }
 
 \figref{mf-substituter} is the composition of MF-generator with $\substitute(Q)$.  
@@ -1179,7 +1185,8 @@ and produces non-null output.
 
 \subsubsection{Composition of substituter with MF- and CS-recognizers}
 \figref{substituter-mf}  and \figref{substituter-cs}  are the composition of $\substitute(Q)$ with the MF-recognizer and CS-recognizer, respectively.  
-These are related to \figref{mf-substituter} and \figref{cs-substituter}, but the composition
+These are related to 
+\figref{mf-substituter}, but the composition
 is reversed.  
 The composite machines accept sequence on input, and emit null output.  
 
@@ -1565,8 +1572,8 @@ Sequence 1         & L & I & V \\
 Sequence 2         & M & F & -
 \end{tabular}
 
-%\widepdffig{viterbi-fork-tkf91liv-tkf91mf}{Removing the root generator produces a 
-%recognition profile for the ancestral sequence relating MF and LIV. }
+\widepdffig{viterbi-fork-tkf91liv-tkf91mf}{Removing the root generator produces a 
+recognition profile for the ancestral sequence relating MF and LIV. }
 
 If we remove  the root generator we  construct a linear recognizer profile
 for the sequence at the ancestral node,
