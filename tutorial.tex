@@ -3128,7 +3128,10 @@ $Z(m)$ always evaluates to zero if $m=\mstate$ is not in the envelope.
 
 Let $\recognize(S)$ be defined such that it has only one nonzero-weighted path
 \[
-X_0 \to W_0 \stackrel{\charat{S}{1}}{\to} M_1 \to W_1 \stackrel{\charat{S}{2}}{\to} M_2 \to \ldots \to W_{L-1} \stackrel{\charat{S}{\seqlen{S}}{\to} M_{\seqlen{S}} \to W_{\seqlen{S}} \to X_{\seqlen{S}}
+X_0 \to W_0 \stackrel{\charat{S}{1}}{\to} M_1
+ \to W_1 \stackrel{\charat{S}{2}}{\to} M_2 \to \ldots \to W_{L-1} 
+\stackrel{\charat{S}{\seqlen{S}}}{\to} 
+M_{\seqlen{S}} \to W_{\seqlen{S}} \to X_{\seqlen{S}}
 \]
 so a $\recognize(S)$-state is either the start state ($X_0$), the end state ($X_{\seqlen{S}}$), a wait state ($W_i$) or a match state ($M_i$).
 All these states have the form $\phi_i$ where $i$ represents the number of symbols of $S$ that have to be read in order to reach that state,
