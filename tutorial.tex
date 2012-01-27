@@ -1638,47 +1638,64 @@ retaining only the subset of the graph visited by a sampled path.}
 
 \subsubsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
+\figref{fork3-tkf91liv-tkf91mf-tkf91cs} 
+shows  the full recognition profile for the 
+root-ancestral sequence in \figref{cs-mf-liv-tree}, 
+representing all the possible evolutionary histories relating the three sequences.  
+For clarity, many transitions in this diagram have been removed or collapsed.
+
 \widepngfig{fork3-tkf91liv-tkf91mf-tkf91cs}
-{Transducer $(\tkf \cdot (\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))\fork(\tkf \cdot \recognize(CS))$...
-This is the full recognition profile for the root-ancestral sequence in \figref{cs-mf-liv-tree}, 
-representing all the possible evolutionary histories relating the two sequences.  
+{Transducer $(\tkf \cdot (\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))\fork(\tkf \cdot \recognize(CS))$ 
+is the full recognition profile for the root-ancestral sequence in \figref{cs-mf-liv-tree}, 
+representing all the possible evolutionary histories relating the three sequences.  
 For clarity, many transitions in this diagram have been removed or collapsed.
 }
 
 \subsubsection{Felsenstein probability for (CS,(LIV,MF))}
-
 % This commented out because it just doesn't look good...
 %\needfig{root-fork3-tkf91liv-tkf91mf-tkf91cs
 % Composition of prior with (fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF))}
 
-We have now seen the individual steps of the transducer version of the Felsenstein recursion...
+We have now seen the individual steps of the 
+transducer version of the Felsenstein recursion.
+Essentially composition replaces matrix multiplication and forking replaces the 
+pointwise product.  
 
 The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm
 for simultaneously aligning $N$ sequences of length $L$, ignoring secondary structure)
 involves starting with exact-match recognition profiles at the leaves (\figref{mf-labeled}, \figref{liv-labeled}),
 using those to construct recognition profiles for the parents (\figref{fork-tkf91liv-tkf91mf}),
 and progressively climbing the tree toward the root,
-constructing ancestral recognition profiles as you go.
-At the root, you compose the root generator with the root recognition profile,
-and compute the Forward probability.
+constructing ancestral recognition profiles for each internal node. 
+At the root, compose the root generator with the root recognition profile,
+and the Forward probability can be computed. 
 
 \subsubsection{Progressive alignment version of Felsenstein recursion}
 
 The ``progressive alignment'' version,
 equivalent to doing Felsenstein's pruning recursion on a single alignment
 found using the progressive alignment algorithm,
-involves sampling the single best linear recognition profile of the parent,
-as in \figref{viterbi-fork-tkf91liv-tkf91mf}...
+involves sampling the single best linear recognition profile of the parent
+ at each internal node, 
+as in \figref{viterbi-fork-tkf91liv-tkf91mf}.  
 
-\widepdffig{fork-tkf91viterbi-tkf91cs}{Transducer $(\tkf \cdot \profile_1)\fork(\tkf \cdot \recognize(CS))$...}
+\widepdffig{fork-tkf91viterbi-tkf91cs}{Transducer $(\tkf \cdot \profile_1)\fork(\tkf \cdot \recognize(CS))$ models the alignment of CS with the most likely recognition profile for MF and LIV, 
+all separated by TKF91 transducers.  
+This represents the most resource-conservative form of progressive alignment - only the 
+most likely subtree state path is stored at each internal node.  }
 
-This can be recognized as a form of ``sequence-profile'' alignment as familiar from progressive alignment,
+This method can be recognized as a form of ``sequence-profile''
+ alignment as familiar from progressive alignment,
 except that we don't really make a distinction between a sequence and a profile
-(in that we convert sequences into recognition profiles anyway).
+(in that observed sequences are converted into exact match recognition
+ profiles from the start).
 
-We can keep going in this way...
-introduce the prior at the root...
-get the Viterbi recognition profile for the root...
+The algorithm proceeds in the exact same way as the ``full'' version, 
+except that at each internal node a linear profile is created from the Viterbi
+path through the state graph.  This ``best guess'' of the alignment of each subtree
+is likely to work well in cases where the alignment is unambiguous, but under
+certain evolutionary parameters the alignment of a subtree may not be clear
+until more sequences are observed. 
 
 \subsection{Stochastic lower bound version of Felsenstein recursion}
 
@@ -1687,34 +1704,47 @@ Rather than just sampling the best linear profile for each parent
 (as in \figref{viterbi-fork-tkf91liv-tkf91mf}),
 we sample some fixed number of such paths
 (as in \figref{forward2-fork-tkf91liv-tkf91mf}).
-This allows us to sum over some amount of alignment uncertainty,
+This allows us to account for some amount of alignment uncertainty,
 while avoiding the full complexity of the complete ancestral profile
-(\figref{fork3-tkf91liv-tkf91mf-tkf91cs})...
+(\figref{fork3-tkf91liv-tkf91mf-tkf91cs}).
 
 By sampling a fixed number of traceback paths,
 we can construct a recognition profile for the ancestral sequence
 that is linearly bounded in size and offers a stochastic ``lower bound''
 on the probability computed by the full Felsenstein transducer in \figref{root-fork-tkf91liv-tkf91mf}.
 
-\widepngfig{fork-tkf91forward2-tkf91cs}{Transducer $(\tkf \cdot \profile_2)\fork(\tkf \cdot \recognize(CS))$...}
+\widepngfig{fork-tkf91forward2-tkf91cs}{Transducer $(\tkf \cdot \profile_2)\fork(\tkf \cdot \recognize(CS))$ shows the alignment of the sequence CS with the sampled profile $\profile_2$ 
+which summarizes the ancestor of MF and LIV.  
+$\profile_2$ is a branched profile whose different paths represent alternate evolutionary
+histories relating MF and LIV. }
 
-Again this is a ``sequence-profile'' alignment.
-Unlike in progressive alignment
+\figref{fork-tkf91forward2-tkf91cs} shows the fork of the sampled profile $\profile_2$ (summarizing MF and LIV) with the sequence CS.  
+ Again this is a ``sequence-profile'' alignment, though CS can be considered to be a 
+trivial linear profile.  
+Unlike in traditional progressive alignment
  (but quite like e.g. partial order alignment \cite{LeeGrassoSharlow2002}),
 one of the profiles is now branched
- (because we sampled more than one path to construct it in \figref{forward2-fork-tkf91liv-tkf91mf})...
+ (because we sampled more than one path to construct it in \figref{forward2-fork-tkf91liv-tkf91mf}), allowing a tunable (by modulating how many paths are sampled in the traceback step)
+way to account for alignment uncertainty low in the tree.  
 
 % This commented out because it just doesn't look good...
 %\needfig{root-fork-tkf91forward2-tkf91cs}
 
 Finally we compose the root generator \figref{tkf91-root}
-with \figref{fork-tkf91forward2-tkf91cs}.
-The sum of all path weights through the resulting state graph represents the stochastic lower-bound
+with \figref{fork-tkf91forward2-tkf91cs} (if there were more than 2 internal nodes,
+we would simply continue building ancestral profiles until the root was reached).
+The sum of all path weights through the resulting state graph
+ represents the stochastic lower-bound
 on the final Felsenstein probability for this tree.
+Since we have omitted some paths at each progressive step
+ (each time we create a branched profile from a subset of the complete state graph),
+the computed Felsenstein probability does not sum over all possible histories
+relating the sequences, hence it is a lower bound.  
+In practice, the hope is that by sampling sufficiently many paths we are able to 
+recover the maximum likelihood reconstruction at the root level, and the
+final Felsenstein probability is a good approximation. 
 
-If there were more levels of the tree above this, we would keep on sampling...
-
-
+\pagebreak
 \section{Formal definitions}
 This report makes our transducer-related definitions precise,
  including notation for state types, weights (i.e. probabilities),
