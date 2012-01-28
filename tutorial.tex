@@ -705,9 +705,9 @@ The weight of a path is defined to be the  product of transition weights occurin
 The weight of an input-output sequence pair is the sum over all path weights that generate the
 specified  input and output sequences.  
 
-Note sometimes this weight is zero --- e.g. in \figref{liv-small} the weight is zero
-except in the unique case that the input tape is LIV, when the weight is one ---
-this in fact makes \figref{liv-small} a special kind of recognizer:
+Note sometimes this weight is zero---e.g. in \figref{liv-small} the weight is zero
+except in the unique case that the input tape is LIV, when the weight is one---this
+in fact makes \figref{liv-small} a special kind of recognizer:
 one that only recognizes a single string
 (and recognizes that string with weight one).
 We call this an {\em exact-match} recognizer.
@@ -767,7 +767,7 @@ State types are defined precisely in \secref{StateTypes}.
 Note that in the TKF91 model, there are exactly one of each of these types, but this is not a requirement.  For instance, one could use several groups of insert/delete states to model a mixture of indel length distributions.  
 
 \widepdffig{legend}{In a Moore machine, each state falls into one of several {\em types} (a transducer may contain more than one state of each type).  
-A state's type determines its I/O capabilities - for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.}
+A state's type determines its I/O capabilities---for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.}
 
 Some other features of this view include the following:
 \begin{itemize}
@@ -800,7 +800,7 @@ or a column vector of conditional probabilities
 \pngfig{transitions}
 {Allowed transitions between types of transducer states, along with their I/O requirements.
 In particular, note the Wait state(s) which must precede all 
-absorbing (Match and Delete) states - the primary departure from the familiar pair HMM
+absorbing (Match and Delete) states---the primary departure from the familiar pair HMM
 structure.  
 Wait states are useful in co-ordinating multiple connected trandsucers, since they indicate that
 the transducer is ``waiting'' for an upstream transducer to emit a character before entering an
@@ -1042,7 +1042,7 @@ The result is a set of sequences (one  for each node),
   whose evolutionary history is recorded via  
 the actions of each TKF91  branch machine.  
 What remains is to detail the various ways of connecting transducers by
- constraining some of their tapes to be the same - namely {\em composition} and {\em intersection}.
+ constraining some of their tapes to be the same---namely {\em composition} and {\em intersection}.
 
 \subsection{Composition of transducers}
 \seclabel{Tutorial.Composition}
@@ -1151,7 +1151,7 @@ its current state is a holdover from a previous emission (via an insertion or ma
 After the second transducer processes this emitted character, it may enter an Insertion 
 state, wherein the first transducer remains idle in the Insert or Match state. 
 \begin{itemize}
-\item $II$ The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here - the first is resting in an insertion state from a previous transition.  
+\item $II$ The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here---the first is resting in an insertion state from a previous transition.  
 \item $MI$ Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character.
 \end{itemize}
 
@@ -1799,7 +1799,7 @@ as in \figref{viterbi-fork-tkf91liv-tkf91mf}.
 \widepdffig{fork-tkf91viterbi-tkf91cs}{Transducer $(\tkf \cdot \profile_1)\fork(\tkf \cdot \recognize(CS))$ recognizes the common ancestor of CS and $\profile_1$
 (the transducer of \figref{viterbi-profile} which models the common ancestor of MF and LIV),
 assuming common descent via the TKF91 model.  
-Using profile $\profile_1$, which is essentially a best-guess reconstructed ancestral profile, represents the most resource-conservative form of progressive alignment - only the 
+Using profile $\profile_1$, which is essentially a best-guess reconstructed ancestral profile, represents the most resource-conservative form of progressive alignment---only the 
 most likely subtree state path is stored at each internal node.  }
 
 This method can be recognized as a form of ``sequence-profile''
@@ -3437,7 +3437,7 @@ $weights[e'] = weight[e] \cdot \transweightfun{E''_n}(e,e')$\\
 \caption{Pseudocode for transforming the transition weight function of $E''_n$ into that of $E'_n$ via summing over null state paths (insertions).  
 This is done after stochastic sampling as the first of two steps transforming a sampled $M_n$ transducer into a recognizer $E_n$, described in \secref{Mn2En}.
   Summing over null states ensures that these states cannot align to sibling states in the parent round
-of profile - profile alignment.  
+of profile-profile alignment.  
 An insertion at branch $n$ is, by definition, not homologous to any characters outside the $n$-rooted subtree, and null state elimination is how this is explicitly enforced in our algorithm.} 
 \end{algorithm}
 
