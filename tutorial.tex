@@ -288,7 +288,7 @@
 \newcommand\compose{}
 \newcommand\identity{{\cal I}}
 
-\newcommand\fork{\otimes}
+\newcommand\fork{\wedge}
 \newcommand\idfork{\Upsilon}
 \newcommand\forkn[1]{\idfork(#1)}
 \newcommand\forkfun[2]{\forkn{#1, #2}}
@@ -1012,7 +1012,7 @@ The result is a set of sequences (one  for each node),
   whose evolutionary history is recorded via  
 the actions of each TKF91  branch machine.  
 What remains is to detail the various ways of connecting transducers by
- constraining some of their tapes to be the same - namely {\em composition} and {\em forking}.
+ constraining some of their tapes to be the same - namely {\em composition} and {\em intersection}.
 
 \subsection{Composition}
 \seclabel{Tutorial.Composition}
@@ -1319,13 +1319,13 @@ $\recognize(LIV)$  remains in $W_y$, the Wait  state following character $y$ (or
 \end{itemize}
 
 
-Like the machine in \figref{mf-substituter-cs} $\generate(MF) \cdot \tkf \recognize(LIV)$ contains only null states (no match, insert, or delete states), making it a pure Markov chain.  
+\figref{mf-tkf91-liv}, like \figref{mf-substituter-cs}, contains only null states (no match, insert, or delete states), making it a pure Markov chain.  
 Markov models are a special case of an input/output machine where the input and output are both null:
 a hidden Markov model corresponds to  the case of null input (i.e. a generator)
 and a parser is a special case where the output is null.  
 
-Probability $P(Y=\mbox{LIV}|X=\mbox{MF})$ for TKF91 model
-is equal to sum of all path weights from start to end in this Markov model. 
+Probability $P(Y=\mbox{LIV}|X=\mbox{MF})$ for the TKF91 model
+is equal to sum of all path weights from start to end in the Markov model of \figref{mf-tkf91-liv}. 
 The set of paths corresponds to the set of valid evolutionary transformations relating
 sequences MF and LIV (valid meaning those allowed under the model, namely non-overlapping single-residue indels and substitutions).  
 
@@ -1353,27 +1353,26 @@ Null state removal as applied to our method is described in
  \secref{Qn} and \secref{NullStateElim}.  
 
 
-\subsection{Fork}
+\subsection{Intersection}
 
 The second operation for connecting two transducers
- is one that we call ``fork''.
-It is a weighted generalization of the operation commonly known as transducer ``intersection''.
+ is one that we call ``intersection''.
 % crossref
-Forking is described in greater detail in \secref{Fork}. 
+Intersection is described in greater detail in \secref{Fork}. 
 
-Forking two transducers is to feed the same input tape into both transducers in parallel.
+Intersection Of two transducers is to feed the same input tape into both transducers in parallel.
 As with a transducer composition,
-a fork is constructed by taking the Cartesian product of two transducers' state spaces.
+an intersection is constructed by taking the Cartesian product of two transducers' state spaces.
 From two transducers $T$ and $U$,
 we make a new transducer $TU$
 wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states.
 
-\subsubsection{Compositions, forks and Felsenstein's algorithm}
+\subsubsection{Composition, intersection and Felsenstein's algorithm}
 \seclabel{Felsenstein}
 
 If a composition is like matrix multiplication,
 i.e. the operation of evolution along a contiguous branch of the phylogenetic tree,
-then a fork is like a bifurcation at a node in the phylogenetic tree,
+then an intersection is like a bifurcation at a node in the phylogenetic tree,
 where a branch splits into two child branches.
 
 It corresponds to the pointwise multiplication step in the Felsenstein pruning algorithm ---
@@ -1432,12 +1431,12 @@ G^{(n)}(x) = \delta(x=y)
 i.e. we initialize $G^{(n)}$ with a unit vector, when $n$ is a leaf.
 This unit vector is, in some sense, equivalent to our exact-match recognizer.
 
-\subsubsection{Fork of substituter-CS with substituter-MF}
+\subsubsection{Intersection of substituter-CS with substituter-MF}
 \seclabel{fork-subcs-submf}
 
 \pdffig{fork-subcs-submf}{The transducer $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  models the distribution of the ancestor common to MF and CS.}
 
-\figref{fork-subcs-submf} shows the fork of \figref{substituter-mf} and \figref{substituter-cs}.  
+\figref{fork-subcs-submf} shows the intersection of \figref{substituter-mf} and \figref{substituter-cs}.  
 This is an ensemble of four transducers:
 the input sequence is duplicated;
 one copy fed into substituter (\figref{substituter}),
@@ -1470,31 +1469,31 @@ the I/O label for state $(Q,\delta_C,R,\delta_M)$
 is the vector whose $x$'th entry is the probability that an input symbol $x$
 would mutate to C on the $Q$-branch and M on the $R$-branch.
 
-\subsubsection{Composition of simple prior with fork of substituter-MF and substituter-CS}
+\subsubsection{Composition of simple prior with intersection of substituter-MF and substituter-CS}
 
 \pdffig{root-fork-subcs-submf}{Transducer $\nullmodel \cdot ((\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF)))$ 
 allows computing  the final Felsenstein probability for the two sequence MF and CS related 
 by character substitutions.  Since characters emitted by the $\nullmodel$ transducer are
 all absorbed by the two recognizers, the composite machine has null input and output.  }
 
-The previous machine corresponds to the Felsenstein probability computed at each internal
+The previous machine (\figref{fork-subcs-submf}) computes the Felsenstein probability computed at each internal
 node of a tree.  
 At the root of the tree, the prior over sequences is invoked to compute the final Felsenstein
 probability (as opposed to a subtree probability conditional on a particular value at that node).
 
-Composing the transducer
- $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  
-with a simple prior over characters $\pi_j$ constructs a pure Markov chain
-whose sum-over-paths weight is the final Felsenstein probability (\figref{root-fork-subcs-submf}).  
-Furthermore, sampling traceback paths yields through this machine provides an easy
+Composing \figref{null-model} (a simple prior over root sequences: geometric length distribution and IID with frequencies $\pi$)
+with the transducer of \figref{fork-subcs-submf}
+yields a pure Markov chain
+whose sum-over-paths weight from Start to End is the final Felsenstein probability (\figref{root-fork-subcs-submf}).  
+Furthermore, sampling traceback paths through this machine provides an easy
 way to  sample from the  posterior distribution over ancestral sequences relating MF and CS.  
 
-\subsubsection{Fork of TKF91-LIV with TKF91-MF}
+\subsubsection{Intersection of TKF91-LIV with TKF91-MF}
 
 \widepdffig{fork-tkf91liv-tkf91mf}{Transducer $(\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF))$ models the ancestor common to LIV and MF, which may differ from each by insertions, deletions, and substitutions.  
 This figure was autogenerated using phylocomposer (a DART program) and graphviz.} 
 
-$\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)$, shown in \figref{fork-tkf91liv-tkf91mf}, is the recognition profile for the common ancestor of LIV and MF.
+The transducer shown in \figref{fork-tkf91liv-tkf91mf}, is the recognition profile for the common ancestor of LIV and MF.
 LIV and MF may each differ from the ancestor by insertions, deletions, and substitutions;
  a particular path through this machine represents one such explanation of differences
  (or, equivalently, an alignment of LIV, MF, and their ancestor).  
@@ -1560,7 +1559,7 @@ and wait states (where the recognizer waits for the next input symbol).
 
 
 
-\subsubsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
+\subsubsection{Composition of simple prior with intersection of TKF91-MF and TKF91-LIV}
 
 \widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
 The sum-over-paths weight through this machine corresponds to the final Felsenstein likelihood. 
@@ -1569,10 +1568,9 @@ This machine is analagous to the ``full evidence expanded model'' described in
 \figref{EvidenceExpandedModel}.  
 }
 
-Similar to the case of the  
-$(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  
-transducer, we must compose a prior distribution onto our forked machine in order to compute
-the full Felsenstein probability (without having to condition on an input sequence).  
+As with the recognizer in \figref{fork-subcs-submf},
+we must compose a generator modeling the prior distribution in front of the recognizer in \figref{fork-tkf91liv-tkf91mf}, in order to compute
+the full Felsenstein probability.  
 Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
 in \figref{root-fork-tkf91liv-tkf91mf}.  
 % crossref
@@ -1640,7 +1638,7 @@ ancestor relating MF and LIV, created by taking the Viterbi path through the mac
 \subsubsection{Sampling reconstructions of ancestor to MF and LIV}
 
 \widepngfig{forward2-root-fork-tkf91liv-tkf91mf}{
-Instead of only saving the highest-weight path through
+Additionally to storing just the highest-weight path through
  $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$, 
 it is possible to sample paths proportional to their posterior probability.  
 Here, two sampled paths through the state graph are shown. 
@@ -1709,7 +1707,7 @@ retaining only the subset of the graph visited by a sampled path.
 %crossref
 This sort of transducer is described in greater detail in \secref{ConstrainedExpanded}.} 
 
-\subsubsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
+\subsubsection{Intersection of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
 \figref{fork3-tkf91liv-tkf91mf-tkf91cs} 
 shows  the full recognition profile for the 
@@ -1731,7 +1729,7 @@ For clarity, many transitions in this diagram have been removed or collapsed.
 
 We have now seen the individual steps of the 
 transducer version of the Felsenstein recursion.
-Essentially composition replaces matrix multiplication and forking replaces the 
+Essentially composition replaces matrix multiplication and intersection replaces the 
 pointwise product.  
 
 The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm
@@ -1791,7 +1789,7 @@ which summarizes the ancestor of MF and LIV.
 $\profile_2$ is a branched profile whose different paths represent alternate evolutionary
 histories relating MF and LIV. }
 
-\figref{fork-tkf91forward2-tkf91cs} shows the fork of the sampled profile $\profile_2$ (summarizing MF and LIV) with the sequence CS.  
+\figref{fork-tkf91forward2-tkf91cs} shows the intersection of the sampled profile $\profile_2$ (summarizing MF and LIV) with the sequence CS.  
  Again this is a ``sequence-profile'' alignment, though CS can be considered to be a 
 trivial linear profile.  
 Unlike in traditional progressive alignment
@@ -1835,7 +1833,7 @@ We first review the letter transducer $T$,
 We then define two operations for combining transducers:
  composition ($T \compose U$) which unifies $T$'s output with $U$'s input,
 and
- fork ($T \fork U$) which unifies $T$'s and $U$'s input.
+ intersection ($T \fork U$) which unifies $T$'s and $U$'s input.
 
 We define our ``normal'' form for letter transducers,
  partitioning the states and transitions into types $\{S,M,D,I,N,W,E\}$ based on their input/output labeling.
@@ -1973,10 +1971,10 @@ The resulting transducer is in weak-normal form (it can be converted to a strict
 % crossref
 In the tutorial section, many examples of simple and complex compositions are shown in \secref{Tutorial.Composition}, for instance \figref{tkf91-tkf91}, \figref{mf-tkf91} and \figref{mf-tkf91-liv}.  
 
-\subsection{Fork ($T\fork U$) unifies input of $T$ with input of $U$}
+\subsection{Intersection ($T\fork U$) unifies input of $T$ with input of $U$}
 \seclabel{Fork}
 
-{\em Transducer fork:}
+{\em Transducer intersection:}
 Given letter transducers
  $T = (\Omega_X, \Omega_T, \States, \startstate, \laststate, \Transitions, \weight)$ and
  $U = (\Omega_X, \Omega_U, \States', \startstate', \laststate', \Transitions', \weight')$,
@@ -2010,7 +2008,7 @@ and
 \end{eqnarray*}
 The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
 % crossref
-In the tutorial section, many examples of simple and complex forks are shown in \secref{Tutorial.Fork}, for instance \figref{fork-subcs-submf} and  \figref{root-fork-tkf91liv-tkf91mf}. 
+In the tutorial section, many examples of simple and complex intersections are shown in \secref{Tutorial.Fork}, for instance \figref{fork-subcs-submf} and  \figref{root-fork-tkf91liv-tkf91mf}. 
 
 
 
@@ -2025,7 +2023,7 @@ An example construction (not in normal form) is
 \transitionsof{\identity} & = & \left\{(\phi,\omega,\omega,\phi):\omega\in\Omega\right\}
 \end{eqnarray*}
 
-{\em Identity-fork:}
+{\em Bifurcation:}
 There exists a transducer $\idfork=(\Omega,\Omega^2\ldots)$ that duplicates its input in parallel.
 That is, for input $x_1 x_2 x_3 \ldots$ it gives output $\dup{x_1}\dup{x_2}\dup{x_3}\ldots$.
 An example construction (not in normal form) is
@@ -2035,7 +2033,7 @@ An example construction (not in normal form) is
 \end{eqnarray*}
 It can be seen that $\idfork \transequiv \identity \fork \identity$.
 
-A fork $T \fork U$ may be considered a parallel composition of $\idfork$ with $T$ and $U$.
+An intersection $T \fork U$ may be considered a parallel composition of $\idfork$ with $T$ and $U$.
 We write this as  $\forkfun{T}{U}$ or, diagrammatically,
 \begin{parsetree}
  ( .. ( .$\idfork$. ( .$T$. ~ ) ( .$U$. ~ ) ) )
@@ -2291,8 +2289,8 @@ Our construction of composite transducers allows us to represent any state in $A
 Similarly, any state in $A \compose B$ can be represented as $(a,b)$.
 Each state in $M_n$ can thus be written as a tuple $\mstate$ of component states, where
 \begin{itemize}
-\item $\rho$ is the state of the singlet transducer $R$
-\item $\upsilon$ is the state of the identity-fork transducer $\idfork$
+\item $\rho$ is the state of the generator transducer $R$
+\item $\upsilon$ is the state of the bifurcation transducer $\idfork$
 \item $b_l$ is the state of the left-branch transducer $B_l$
 \item $e_l$ is the state of the left child profile transducer $E_l$
 \item $b_r$ is the state of the right-branch transducer $B_l$
@@ -2313,7 +2311,7 @@ Here $K$ plays the role of a bounding parameter.
 For the constrained-expanded transducer, $\numberofstates{E_n} \simeq KL$, where $L = \max_n \outseqlen{n}$.
 Models $H_n$ and $M_n$, however, contain $\order{b^2 K^2 L^2}$ states,
 where $b = \max_n \numberofstates{B_n}$,
-as they are constructed by forking two $\order{bKL}$-state transducers ($B_l \compose E_l$ and $B_r \compose E_r$).
+as they are constructed by intersection of two $\order{bKL}$-state transducers ($B_l \compose E_l$ and $B_r \compose E_r$).
 
 \subsection{Explicit construction of $Q_n$}
 \seclabel{Qn}
