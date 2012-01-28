@@ -20,8 +20,8 @@ D->I [label="$(1-g)b$"];
 D->W [label="$1-g$"];
 D->X [label="$g$"];
 
-I->I [label="$g$"];
-I->W [label="$1-g$"];
+I->I [label="$g \lambda / \mu$"];
+I->W [label="$1 - g \lambda / \mu$"];
 
 W->E;
 W->M [label="$a$"];

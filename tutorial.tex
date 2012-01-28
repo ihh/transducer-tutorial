@@ -1015,9 +1015,9 @@ The equilibrium distribution for the TKF91 model is essentially the same generat
 The I/O function for the $I$ (Insert) state is $\pi_y$.}
 
 It has been shown that affine-gap versions of the TKF91 model can also be represented using state machines \cite{MiklosLunterHolmes2004}.
-For comparison, the transducer actually used in our ProtPal software is shown in \figref{protpal}.
+An approximate affine-gap transducer, based on the work of \cite{KnudsenMiyamoto2003} and \cite{Rivas05}, is shown in \figref{protpal}.
 
-\pdffig{protpal}{Transducer used in the ProtPal software.
+\pdffig{protpal}{An approximate affine-gap transducer.
 The parameters of this model are insertion rate $\lambda$, deletion rate $\mu$, gap extension probability $g$,
 substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically $\pi R = 0$), and branch length $t$.
 The transition weights use the quantities
