@@ -945,12 +945,11 @@ simply copies the input tape to the output tape.  This can be thought of as a sp
 
 
 \subsubsection{The TKF91 model as a transducer}
-\label{tkf91}
+\seclabel{tkf91}
 
 We use the TKF91 model as an example, not because it is the best model of indels
  (it has deficiencies, most notably the linear gap penalty);
 rather, because it is canonical, widely-known, and illustrative of the general properties of transducers.  
-It has been shown that affine-gap versions of the TKF91 model can also be represented using state machines \cite{MiklosLunterHolmes2004}.
 
 The TKF91 transducer with I/O functions is shown in \figref{tkf91}.  
 The underlying continuous-time indel model has insertion rate $\lambda$ and deletion rate $\mu$.
@@ -974,7 +973,8 @@ In the language of \cite{ThorneEtal91}, every state path contains a Start$\to$Wa
 and every Wait$\to$Wait tour corresponds to an ``immortal link''.
 
 \pdffig{tkf91}{The TKF91 transducer, labeled with transition weights and I/O functions.  
-For the meanings of these parameters see Section \ref{tkf91}.  
+For the meanings of these parameters see Section \ref{tkf91}. 
+The transition weights $a,b,c$ are defined in \secref{tkf91}.
 \figref{tkf91-labeled} shows the same transducer with state type labels rather than I/O functions. }
 
 %% \figref{tkf91-labeled}
@@ -991,8 +991,9 @@ rather than writing the I/O weight functions directly on each state
 we have instead written a state type label
  $S,M,I,D,E,W$ (Start, Match, Insert, Delete, End, Wait).
 It so happens that the TKF91 transducer has one of each of these kinds of state.
+Identically to \figref{tkf91}, the transition weights $a,b,c$ are defined in \secref{tkf91}.
 For each of the I/O states ($I$, $D$ and $M$) we must, of course, still specify an I/O weight function.
-So,
+These are also identical to \figref{tkf91}, and are reproduced here for reference:
  $\exp(Rt)$ is the substitution matrix for the $M$ (Match) state,
  $\pi$ is the vector of weights
   corresponding to the probability distribution of inserted characters for the $I$ (Insert) state,
@@ -1012,6 +1013,19 @@ The state labels are $S,M,I,D,E,W$ (interpretation: Start, Match, Insert, Delete
 \pdffig{tkf91-root}{Transducer $\tkfroot$, the equilibrium TKF91 generator.
 The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null-model} with $p=\lambda/\mu$.
 The I/O function for the $I$ (Insert) state is $\pi_y$.}
+
+It has been shown that affine-gap versions of the TKF91 model can also be represented using state machines \cite{MiklosLunterHolmes2004}.
+For comparison, the transducer actually used in our ProtPal software is shown in \figref{protpal}.
+
+\pdffig{protpal}{Transducer used in the ProtPal software.
+The parameters of this model are insertion rate $\lambda$, deletion rate $\mu$, gap extension probability $g$,
+substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically $\pi R = 0$), and branch length $t$.
+The transition weights use the quantities
+$a = \exp(-\mu t)$ and $b = 1 - \exp(-\lambda t)$.
+The I/O weights are $\exp(Rt)$ for the $M$ (Match) state,
+$\pi$ for the $I$ (Insert) state,
+and $(1,1,\ldots,1)$ for the $D$ (Delete) state.
+}
 
 \subsubsection{A generator for the equilibrium distribution of the TKF91 model} TKF91 is an input/output transducer that
 operates on individual branches.  In order to arrange this model on a phylogenetic tree,
@@ -1053,9 +1067,9 @@ just as we sum over the intermediate index when doing matrix multiplication.
 The notation ($TU$ or $T \cdot U$) reflects the fact that transducer composition is  directly 
 analogous to  matrix multiplication.  
 
-We can note a few obvious results:
-if $T$ is a generator then $TU$ is a generator;
-if $U$ is a recognizer then $TU$ is a recognizer.
+Obvious properties of composition include that
+if $T$ is a generator then $TU$ is also a generator, while
+if $U$ is a recognizer then $TU$ is also a recognizer.
 % crossref
 Composition is defined with mathematical precision in \secref{Composition}. 
 
@@ -1066,7 +1080,7 @@ Composition is defined with mathematical precision in \secref{Composition}.
 
 \pdffig{substituter-substituter2}{Transducer $\substitute(Q) \cdot \substitute(R)$, the composition of \figref{substituter} and \figref{substituter2}.}
 
-As a simple example of transducer composition, we turn to the simple subsituting transducers
+As a simple example of transducer composition, we turn to the simple substituting transducers
 in \figref{substituter} and \figref{substituter2}.  
 Composing these two in series models two consecutive branches 
  $x \stackrel{Q}{\to} y \stackrel{R}{\to} z$, with 
@@ -1086,7 +1100,7 @@ then the I/O weight function for the composite state QR in the two-transducer en
 
 
 
-\subsubsection{Multiplying TKF91 with itself}
+\subsubsection{Multiplying two TKF91 models}
 %getrefs
 
 \widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the 
@@ -1391,9 +1405,10 @@ As with a transducer composition,
 an intersection is constructed by taking the Cartesian product of two transducers' state spaces.
 From two transducers $T$ and $U$,
 we make a new transducer $T \fork U$
-wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states.
+wherein every state corresponds to a pair $(t,u)$ of $T$- and $U$-states,
+and whose output tape constitutes a {\em pairwise alignment} of the outputs of $T$ and $U$.
 
-An obvious result is that
+An obvious property of intersection is that
 if $T$ and $U$ are both recognizers then $T \fork U$ is a recognizer also.
 % crossref
 Intersection is defined with mathematical precision in \secref{Fork}. 
@@ -1738,7 +1753,7 @@ retaining only the subset of the graph visited by a sampled path.
 %crossref
 This sort of transducer is described in greater detail in \secref{ConstrainedExpanded}.} 
 
-\subsubsection{An ancestral sequence recognizer on a larger TKF91 tree}
+\subsubsection{Ancestral sequence recognizer on a larger TKF91 tree}
 
 \figref{fork3-tkf91liv-tkf91mf-tkf91cs} 
 shows  the full recognition profile for the 
@@ -1763,7 +1778,7 @@ transducer version of the Felsenstein recursion.
 Essentially composition replaces matrix multiplication and intersection replaces the 
 pointwise product.  
 
-The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm
+The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm \cite{SankoffCedergren83}
 for simultaneously aligning $N$ sequences of length $L$, ignoring secondary structure)
 involves starting with exact-match recognition profiles at the leaves (\figref{mf-labeled}, \figref{liv-labeled}),
 using those to construct recognition profiles for the parents (\figref{fork-tkf91liv-tkf91mf}),
@@ -2111,12 +2126,13 @@ For later convenience it is useful to define the function
 \end{eqnarray*}
 
 % crossref
-\figref{liv-small} shows a small example of an exact-match transducer for sequence LIV.
+\figref{liv-small} shows a small example of an exact-match transducer for sequence LIV,
+while \figref{liv-labeled} shows an equivalent exact-match transducer in normal form.
 
 
 
 
-\subsection{Generative and singlet transducers}
+\subsection{Generators}
 \seclabel{GenSinglet}
 {\em Generative transducers:}
 A transducer $T$ is generative (or ``a {\em generator}'') if it has a null input alphabet, and so rejects any input except the empty string.
@@ -2127,13 +2143,16 @@ P(x|T) \equiv \wtrans{\weight}{\epsilon}{T}{x}
 \]
 
 % crossref
-\figref{mf-generator} shows a small example of a generating transducer for sequence MF.
+\figref{moore-mf-generator} and \figref{tkf91-labeled} are both examples of generative transducers.
+\figref{moore-mf-generator} is a specific generator that only emits one sequence (with probability 1),
+while \figref{tkf91-labeled} can potentially emit (and defines a probability for) any output sequence.
 
-{\em Singlet generators:}
-If the output alphabet of a generative transducer $T$ is a simple alphabet $\Omega$, rather than (say) a compound alphabet $\gapsquared$,
-we refer to $T$ as a {\em singlet} transducer.
-% crossref
-The single transducer used as a prior for TKF91 is shown in \figref{tkf91-root}.  
+
+%{\em Singlet generators:}
+%If the output alphabet of a generative transducer $T$ is a simple alphabet $\Omega$, rather than (say) a compound alphabet $\gapsquared$,
+%we refer to $T$ as a {\em singlet} transducer.
+%% crossref
+%The single transducer used as a prior for TKF91 is shown in \figref{tkf91-root}.  
 
 \subsection{Algorithmic complexities}
 \begin{eqnarray*}
@@ -2188,7 +2207,7 @@ let $\outputs = \{ \outputn{n}, n \in \leaves \}$ denote the observed leaf-node 
 \subsubsection{Model components ($B_n$, $R$)}
 
 Let $B_n=(\Omega,\Omega,\ldots)$ be a transducer modeling the evolution on the branch to node $n>1$, from $n$'s parent.
-Let $R=(\emptyset,\Omega,\ldots)$ be a singlet generator modeling the distribution of ancestral sequences at the root node.
+Let $R=(\emptyset,\Omega,\ldots)$ be a generator modeling the distribution of ancestral sequences at the root node.
 
 
 \subsubsection{The forward model ($F_n$)}
@@ -2294,7 +2313,7 @@ To do this, we need to introduce a prior distribution over the sequence at node 
 This prior is an approximation to replace the true (but as yet unknown) posterior distribution due to nodes outside the $n$-rooted subtree
 (including $n$'s parent, and ancestors all the way back to the root, as well as siblings, cousins etc.)
 
-A plausible choice for this prior, equivalent to assuming {\em stationarity} of the underlying evolutionary process, is the same prior that we use for the root node; that is, the singlet generator model $R$.
+A plausible choice for this prior, equivalent to assuming {\em stationarity} of the underlying evolutionary process, is the same prior that we use for the root node; that is, the generator model $R$.
 We define
 \begin{eqnarray*}
 M_n & = & R \compose H_n \\
@@ -3499,7 +3518,7 @@ J_n = J_p \compose (B_n \fork (B_s \compose G_s))
 \end{parsetree}
 \]
 
-Note that $J_n$ is a singlet generator that outputs only the sequence at node $n$
+Note that $J_n$ is a generator that outputs only the sequence at node $n$
 (because $G_s$ has null output).
 Note also that $J_n G_n \transequiv G_0$.
 
@@ -3552,7 +3571,7 @@ This section defines commonplace notation used earlier in the document.
 \subsection{Sequences and alignments}
 {\em Sequence notation:}
 Let $\Omega^\ast$ be the set of sequences over $\Omega$, including the empty sequence $\epsilon$.
-Let $x \cdot y$ denote the concatenation of sequences $x$ and $y$, and $\bigodot_n x_n$ the concatenation of sequences $\{ x_n \}$.
+Let $x+y$ denote the concatenation of sequences $x$ and $y$, and $\Sigma_n x_n$ the concatenation of sequences $\{ x_n \}$.
 
 {\em Gapped-pair alignment:}
 A gapped pairwise alignment is a sequence of individual columns of the form $(\omega_1,\omega_2)$ where $\omega_1 \in \gappedalphabet{1}$ and $\omega_2 \in \gappedalphabet{2}$.
@@ -3560,8 +3579,8 @@ A gapped pairwise alignment is a sequence of individual columns of the form $(\o
 {\em Map from alignment to sequences:}
 The function $S_k:\left(\gappedpair{1}{2}\right)^\ast \to \Omega_k^\ast$ returns the $k$'th row of a pairwise alignment, with gaps removed
 \begin{eqnarray*}
-S_1(x) & = & \bigodot_{(\omega_1,\omega_2) \in x} \omega_1 \\
-S_2(x) & = & \bigodot_{(\omega_1,\omega_2) \in x} \omega_2
+S_1(x) & = & \Sigma_{(\omega_1,\omega_2) \in x} \omega_1 \\
+S_2(x) & = & \Sigma_{(\omega_1,\omega_2) \in x} \omega_2
 \end{eqnarray*}
 
 {\em Transition paths:}
