@@ -1015,6 +1015,7 @@ What remains is to detail the various ways of connecting transducers by
  constraining some of their tapes to be the same - namely {\em composition} and {\em forking}.
 
 \subsection{Composition}
+\seclabel{Tutorial.Composition}
 %getrefs
 The first way of connecting transducers that we will consider is  ``composition'':
 feeding the output of one transducer, $T$, into the input of another, $U$.
@@ -1347,6 +1348,10 @@ the likelihood, inference of these events is not meaningful (in alignment terms,
 this corresponds to a column of all gaps).  
 Fortunately we can often find an equivalent transducer that lacks them
 using straightforward mathematical machinery (e.g. matrix inversion described in \cite{BradleyHolmes2009}).  
+% crossref
+Null state removal as applied to our method is described in
+ \secref{Qn} and \secref{NullStateElim}.  
+
 
 \subsection{Fork}
 
@@ -1558,7 +1563,11 @@ and wait states (where the recognizer waits for the next input symbol).
 \subsubsection{Composition of simple prior with fork of TKF91-MF and TKF91-LIV}
 
 \widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
-The sum-over-paths weight through this machine corresponds to the final Felsenstein likelihood. }
+The sum-over-paths weight through this machine corresponds to the final Felsenstein likelihood. 
+% crossref
+This machine is analagous to the ``full evidence expanded model'' described in
+\figref{EvidenceExpandedModel}.  
+}
 
 Similar to the case of the  
 $(\substitute(Q) \cdot \recognize(CS))\fork(\substitute(Q) \cdot \recognize(MF))$  
@@ -1566,6 +1575,7 @@ transducer, we must compose a prior distribution onto our forked machine in orde
 the full Felsenstein probability (without having to condition on an input sequence).  
 Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
 in \figref{root-fork-tkf91liv-tkf91mf}.  
+% crossref
 This machine is analagous to the ``full evidence expanded model'' described in
 \figref{EvidenceExpandedModel}.  
 
@@ -1607,13 +1617,15 @@ Sequence 2         & M & F & -
 \end{tabular}
 
 \widepdffig{viterbi-fork-tkf91liv-tkf91mf}{Removing the root generator produces a 
-recognition profile for the ancestral sequence relating MF and LIV. }
+recognition profile for the ancestral sequence relating MF and LIV. 
+%crossref
+This and related transformations to sampled state paths are described in \secref{Mn2En}.}
 
 % crossref
 Computing this alignment/path is straightforward, and essentially amounts to choosing
 the highest-probability possibility (as opposed to sampling) 
 in each step of the traceback detailed in
-section {Traceback}.  
+section \secref{Traceback}.  
 
 If we remove  the root generator we  construct a linear recognizer profile
 for the sequence at the ancestral node,
@@ -1631,7 +1643,8 @@ ancestor relating MF and LIV, created by taking the Viterbi path through the mac
 Instead of only saving the highest-weight path through
  $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$, 
 it is possible to sample paths proportional to their posterior probability.  
-Here, two sampled paths through the state graph are shown. }
+Here, two sampled paths through the state graph are shown. 
+The mathematical details of sampling paths is described in \secref{Traceback}.}
 
 Instead of only saving the highest-weight path through
  $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$, 
@@ -1671,7 +1684,8 @@ Sequence 2         & M & - & F
 machine in \figref{root-fork-tkf91liv-tkf91mf}, representing
 possible evolutionary histories relating MF and LIV.
 Paths are sampled according to their posterior probability, 
-allowing us to select a high-probability subset of the state graph.  }
+allowing us to select a high-probability subset of the state graph.  
+The mathematical details of sampling paths is described in \secref{Traceback}.}
 
 Combining these paths into a single graph and relabeling again, 
 we still have a recognition profile, but it is now branched,
@@ -1691,7 +1705,9 @@ while still allowing for a strict bound on the size of the state space.
 \tallpdffig{forward2-profile}{Transducer $\profile_2$ is a branched recognizer for the 
 ancestor common to MF and LIV.  The branched structure results from sampling
 multiple paths through the state graph in \figref{root-fork-tkf91liv-tkf91mf}, 
-retaining only the subset of the graph visited by a sampled path.} 
+retaining only the subset of the graph visited by a sampled path.
+%crossref
+This sort of transducer is described in greater detail in \secref{ConstrainedExpanded}.} 
 
 \subsubsection{Fork of TKF91-CS with (fork of TKF91-LIV and TKF91-MF)}
 
@@ -1891,6 +1907,9 @@ such that
 \end{eqnarray*}
 then the transducer is in {\em (weak) normal form}.
 If, additionally, $\statesoftype{N} = \emptyset$, then the transducer is in {\em strict normal form}.
+% crossref
+The above transition and emission constraints are summarized graphically in \figref{transitions}. 
+
 
 {\em Interpretation:}
 A normal-form transducer can be thought of as associating inputs and outputs with states, rather than transitions.
@@ -1917,6 +1936,9 @@ The following terms in common usage relate approximately to our definitions:
 {\em Mealy machines} are transducers with I/O occurring on transitions, as with our general definition of the letter transducer.
 
 {\em Moore machines} are transducers whose I/O is associated with states, as with our normal form.
+% crossref
+The difference between these two views is illustrated via a small example in
+\figref{condensed-emission} and \figref{fanned-emission}.  
 
 \subsection{Composition ($T\compose U$) unifies output of $T$ with input of $U$}
 \seclabel{Composition}
@@ -1947,6 +1969,9 @@ and
 \end{array} \right.
 \end{eqnarray*}
 The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
+
+% crossref
+In the tutorial section, many examples of simple and complex compositions are shown in \secref{Tutorial.Composition}, for instance \figref{tkf91-tkf91}, \figref{mf-tkf91} and \figref{mf-tkf91-liv}.  
 
 \subsection{Fork ($T\fork U$) unifies input of $T$ with input of $U$}
 \seclabel{Fork}
@@ -1984,6 +2009,10 @@ and
 \end{array} \right.
 \end{eqnarray*}
 The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
+% crossref
+In the tutorial section, many examples of simple and complex forks are shown in \secref{Tutorial.Fork}, for instance \figref{fork-subcs-submf} and  \figref{root-fork-tkf91liv-tkf91mf}. 
+
+
 
 \subsection{Identity transducers ($\identity$, $\idfork$)}
 \seclabel{Identity}
@@ -2051,6 +2080,12 @@ For later convenience it is useful to define the function
 & = & \delta(i+1 = j)
 \end{eqnarray*}
 
+% crossref
+\figref{lif-small} shows a small example of an exact-match transducer for sequence LIV.
+
+
+
+
 \subsection{Generative and singlet transducers}
 \seclabel{GenSinglet}
 {\em Generative transducers:}
@@ -2061,9 +2096,14 @@ Define the probability (weight) distribution over the output sequence
 P(x|T) \equiv \wtrans{\weight}{\epsilon}{T}{x}
 \]
 
+% crossref
+\figref{mf-generator} shows a small example of a generating transducer for sequence MF.
+
 {\em Singlet generators:}
 If the output alphabet of a generative transducer $T$ is a simple alphabet $\Omega$, rather than (say) a compound alphabet $\gapsquared$,
 we refer to $T$ as a {\em singlet} transducer.
+% crossref
+The single transducer used as a prior for TKF91 is shown in \figref{tkf91-root}.  
 
 \subsection{Algorithmic complexities}
 \begin{eqnarray*}
@@ -2092,6 +2132,8 @@ T_t \compose T_u \transequiv T_{t+u}
 The TKF91 transducers, for example, have this property.
 Furthermore, for TKF91, $T_{t+u}$ has the same number of states and transitions as $T_t$,
 so this is a kind of self-similarity.
+% crossref
+TKF91 composed with itself is shown in \figref{tkf91-tkf91}. 
 
 In this paper, we have deferred the difficult problem of finding time-parameterized transducers that solve this equation
 (and so may be appropriate for Felsenstein recursions).
@@ -3054,7 +3096,8 @@ Sampling a path from $P(\pi|M_n)$ is analogous to stochastic traceback through t
 
 Let the function $\sample(set, weights)$ input two equal-length vectors and return a randomly-chosen element of $set$, such that  $set_i$ is sampled
 with probability $\frac{weights_i}{sum(weights)}$.
-
+% crossref
+A state path with two sampled paths is shown in \figref{forward2-fork-tkf91liv-tkf91mf}. 
 
 \begin{algorithm}
 \KwIn{Z}
@@ -3292,6 +3335,7 @@ The emission and transition weight functions for $E''_n$ are the same as those o
 
 
 \subsubsection{Transformation $E''_n \to E'_n$: eliminating null states}
+\seclabel{NullStateElim}
 Let $E'_n$ be the transducer derived from $E''_n$ by marginalizing its null states.  
 
 The state space of $E'_n$ is the set of non-null states in $E''_n$:
