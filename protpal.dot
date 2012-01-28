@@ -17,7 +17,7 @@ M->I [label="$b$"];
 M->W [label="$1-b$"];
 
 D->I [label="$(1-g)b$"];
-D->W [label="$1-g$"];
+D->W [label="$(1-g)(1-b)$"];
 D->X [label="$g$"];
 
 I->I [label="$g \lambda / \mu$"];
