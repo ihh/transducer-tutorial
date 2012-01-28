@@ -1,14 +1,14 @@
 digraph G {
 
-    S [label="$S$", shape=circle, color=red];
-    E [label="$E$", shape=diamond, color=red];
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
 
-    W [label="$W$", shape=octagon, color=red];
-    X [label="$X$", shape=octagon, color=red];
+    W [label="", shape=octagon, color=red];
+    X [label="", shape=octagon, color=red];
 
-    I [label="$I$", shape=house, color=red];
-    M [label="$M$", shape=rect, color=red];
-    D [label="$D$", shape=invhouse, color=red];
+    I [label="$\pi_y$", shape=house, color=red];
+    M [label="$\exp(Rt)_{xy}$", shape=rect, color=red];
+    D [label="$1$", shape=invhouse, color=red];
 
 S->I [label="$b$"];
 S->W [label="$1-b$"];
@@ -28,7 +28,6 @@ W->M [label="$a$"];
 W->D [label="$1-a$"];
 
 X->D;
-X->E;
 
 
 }

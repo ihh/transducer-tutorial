@@ -1018,15 +1018,12 @@ It has been shown that affine-gap versions of the TKF91 model can also be repres
 An approximate affine-gap transducer, based on the work of \cite{KnudsenMiyamoto2003} and \cite{Rivas05}, is shown in \figref{protpal}.
 
 \pdffig{protpal}{An approximate affine-gap transducer.
-Note that in contrast to \figref{tkf91-labeled}, this machine requires two Wait states ($W$ and $X$),
-in order to preserve the ``memory'' of being inside a deletion.
+Note that in contrast to \figref{tkf91}, this machine requires {\em two} Wait states,
+with the extra Wait state serving to preserve the ``memory'' of being inside a deletion.
 The parameters of this model are insertion rate $\lambda$, deletion rate $\mu$, gap extension probability $g$,
 substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically $\pi R = 0$), and branch length $t$.
 The transition weights use the quantities
 $a = \exp(-\mu t)$ and $b = 1 - \exp(-\lambda t)$.
-The I/O weights are $\exp(Rt)$ for the $M$ (Match) state,
-$\pi$ for the $I$ (Insert) state,
-and $(1,1,\ldots,1)$ for the $D$ (Delete) state.
 The transducer in \figref{tkf91-root} serves as a suitable root generator.
 }
 
