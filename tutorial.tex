@@ -2212,6 +2212,8 @@ let $\outputs = \{ \outputn{n}, n \in \leaves \}$ denote the observed leaf-node 
 Let $B_n=(\Omega,\Omega,\ldots)$ be a transducer modeling the evolution on the branch to node $n>1$, from $n$'s parent.
 Let $R=(\emptyset,\Omega,\ldots)$ be a generator modeling the distribution of ancestral sequences at the root node.
 
+\figref{tkf91-labeled} and \figref{protpal} are examples of $B_n$ transducers.
+\figref{tkf91-root} is an example of an $R$ transducer.
 
 \subsubsection{The forward model ($F_n$)}
 
@@ -2225,6 +2227,7 @@ which we can represent as
 \begin{parsetree}
  ( .. ( .$\idfork$. ( .$B_l$. ( .$F_l$. ~ ) ) ( .$B_r$. ( .$F_r$. ~ ) )  ) )
 \end{parsetree}
+(recall that $\idfork$ is the bifurcation transducer).
 \\
 
 The complete, generative transducer is
@@ -2270,6 +2273,9 @@ which we can represent as
 \end{parsetree}
 \\
 
+\figref{fork-tkf91liv-tkf91mf} and \figref{fork3-tkf91liv-tkf91mf-tkf91cs} are examples of $G_n$-transducers
+for the tree of \figref{cs-mf-liv-tree}.
+
 The complete evidence-expanded model is
 $G_0 = R \compose G_1$.
 
@@ -2308,6 +2314,10 @@ We can represent $H_n$ diagramatically as
 \\
 
 Transducer $E_n$, which is what we mean by the ``constrained-expanded model'', is effectively a profile of sequences that might plausibly appear at node $n$, given the observed descendants of that node.
+\figref{viterbi-profile} and \figref{forward-profile} are examples of such transducers for
+the ``intermediate sequence'' in the tree of \figref{cs-mf-liv-tree}
+(\figref{viterbi-fork-tkf91liv-tkf91mf} and \figref{forward2-fork-tkf91liv-tkf91mf} show the relationship to the corresponding $H_n$ transducers).
+
 The profile is constructed as follows.
 
 The general idea is to generate a set of candidate sequences at node $n$, by sampling from the posterior distribution of such sequences {\bf given only the descendants of node $n$,}
