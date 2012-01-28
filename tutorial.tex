@@ -1021,7 +1021,7 @@ An approximate affine-gap transducer, based on the work of \cite{KnudsenMiyamoto
 Note that in contrast to \figref{tkf91}, this machine requires {\em two} Wait states,
 with the extra Wait state serving to preserve the ``memory'' of being inside a deletion.
 The parameters of this model are insertion rate $\lambda$, deletion rate $\mu$, gap extension probability $g$,
-substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically $\pi R = 0$), and branch length $t$.
+substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically the equilibrium distribution, so $\pi R = 0$), and branch length $t$.
 The transition weights use the quantities
 $a = \exp(-\mu t)$ and $b = 1 - \exp(-\lambda t)$.
 The transducer in \figref{tkf91-root} serves as a suitable root generator.
