@@ -1,0 +1,33 @@
+digraph G {
+
+    S [label="$S$", shape=circle, color=red];
+    E [label="$E$", shape=diamond, color=red];
+
+    W [label="$W$", shape=octagon, color=red];
+
+    I1 [label="$I_1$", shape=house, color=red];
+    I2 [label="$I_2$", shape=house, color=red];
+    I3 [label="$I_3$", shape=house, color=red];
+    M [label="$M$", shape=rect, color=red];
+    D1 [label="$D_1$", shape=invhouse, color=red];
+    D2 [label="$D_2$", shape=invhouse, color=red];
+    D3 [label="$D_3$", shape=invhouse, color=red];
+
+S->W;
+M->W;
+W->E;
+W->M;
+
+S->I1;
+M->I1;
+
+W->D1;
+
+D1->D2->D3->D1;
+I1->I2->I3->I1;
+
+D3->W;
+I3->W;
+D3->I1;
+
+}
