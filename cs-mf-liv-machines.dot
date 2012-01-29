@@ -1,0 +1,19 @@
+digraph G {
+	LIV [label="LIV-recognizer, $\nabla(LIV)$", shape=box3d];
+	MF [label="MF-recognizer, $\nabla(MF)$", shape=box3d];
+	CS [label="CS-recognizer, $\nabla(CS)$", shape=box3d];
+	root [label="TKF91 root generator, ${\cal R}$", shape=box3d];
+	bif1 [label="", shape=point];
+	bif2 [label="", shape=point];
+	tkf_inter [label="TKF91 model, ${\cal B}$", shape=box3d];
+	tkf_liv [label="TKF91 model, ${\cal B}$", shape=box3d];
+	tkf_mf [label="TKF91 model, ${\cal B}$", shape=box3d];
+	tkf_cs [label="TKF91 model, ${\cal B}$", shape=box3d];
+	
+	root->bif1->tkf_cs->CS;
+	bif1->tkf_inter->bif2;
+	bif2->tkf_liv->LIV;
+	bif2->tkf_mf->MF;
+	
+
+}
