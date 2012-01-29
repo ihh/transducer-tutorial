@@ -1,0 +1,50 @@
+digraph G {
+
+    S [label="", shape=circle, color=red];
+    E [label="", shape=diamond, color=red];
+
+    W [label="", shape=octagon, color=red];
+    X1 [label="", shape=octagon, color=red];
+    X2 [label="", shape=octagon, color=red];
+
+    I1 [label="$\pi_y$", shape=house, color=red];
+    I2 [label="$\pi_y$", shape=house, color=red];
+    M [label="$\exp(Rt)_{xy}$", shape=rect, color=red];
+    D1 [label="$1$", shape=invhouse, color=red];
+    D2 [label="$1$", shape=invhouse, color=red];
+
+S->W [label="$1-b$"];
+M->W [label="$1-b$"];
+W->E;
+W->M [label="$a$"];
+
+S->I1 [label="$bf$"];
+M->I1 [label="$bf$"];
+
+W->D1 [label="$(1-a)f$"];
+
+D1->I1 [label="$(1-g_1)b$"];
+D1->W [label="$(1-g_1)(1-b)$"];
+D1->X1 [label="$g_1$"];
+
+I1->I1 [label="$g_1 \lambda / \mu$"];
+I1->W [label="$1 - g_1 \lambda / \mu$"];
+
+X1->D1;
+
+S->I2 [label="$b(1-f)$"];
+M->I2 [label="$b(1-f)$"];
+
+W->D2 [label="$(1-a)(1-f)$"];
+
+D2->I2 [label="$(1-g_2)b$"];
+D2->W [label="$(1-g_2)(1-b)$"];
+D2->X2 [label="$g_2$"];
+
+I2->I2 [label="$g_2 \lambda / \mu$"];
+I2->W [label="$1 - g_2 \lambda / \mu$"];
+
+X2->D2;
+
+
+}

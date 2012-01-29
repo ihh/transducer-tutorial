@@ -33,8 +33,9 @@
 \newcommand{\pdffig}[2]{\easyfig{#1-fig.pdf}{}{#1}{#2}}
 
 \newcommand{\widepngfig}[2]{\easyfig{#1.png}{width=\textwidth}{#1}{#2}}
+\newcommand{\tallpngfig}[2]{\easyfig{#1.png}{height=.8\textheight}{#1}{#2}}
 \newcommand{\widepdffig}[2]{\easyfig{#1-fig.pdf}{width=\textwidth}{#1}{#2}}
-\newcommand{\tallpdffig}[2]{\easyfig{#1-fig.pdf}{height=\textheight}{#1}{#2}}
+\newcommand{\tallpdffig}[2]{\easyfig{#1-fig.pdf}{height=.8\textheight}{#1}{#2}}
 
 % ToDo
 \newcommand{\needfig}[1]{{\bf Need figure: } #1 }
@@ -767,7 +768,9 @@ State types are defined precisely in \secref{StateTypes}.
 Note that in the TKF91 model, there are exactly one of each of these types, but this is not a requirement.  For instance, one could use several groups of insert/delete states to model a mixture of indel length distributions.  
 
 \widepdffig{legend}{In a Moore machine, each state falls into one of several {\em types} (a transducer may contain more than one state of each type).  
-A state's type determines its I/O capabilities---for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.}
+A state's type determines its I/O capabilities---for instance, a Match state must absorb and emit characters, whereas an Insert state must only emit.
+Mnemonics: Insert states point upwards, Delete states point Downwards, Wait states are octagonal like Stop signs.
+}
 
 Some other features of this view include the following:
 \begin{itemize}
@@ -1012,10 +1015,15 @@ The state labels are $S,M,I,D,E,W$ (interpretation: Start, Match, Insert, Delete
 
 \pdffig{tkf91-root}{Transducer $\tkfroot$, the equilibrium TKF91 generator.
 The equilibrium distribution for the TKF91 model is essentially the same generator as \figref{null-model} with $p=\lambda/\mu$.
-The I/O function for the $I$ (Insert) state is $\pi_y$.}
+The I/O function for the $I$ (Insert) state is $\pi_y$.
+Note that this is the limit of \figref{tkf91} on a long branch with empty ancestor:
+$\tkfroot = \lim_{t\to\infty} \generate(\epsilon) \cdot \tkf(t)$.
+}
 
 It has been shown that affine-gap versions of the TKF91 model can also be represented using state machines \cite{MiklosLunterHolmes2004}.
-An approximate affine-gap transducer, based on the work of \cite{KnudsenMiyamoto2003} and \cite{Rivas05}, is shown in \figref{protpal}.
+An approximate affine-gap transducer, based on the work of Knudsen \cite{KnudsenMiyamoto2003}, Rivas \cite{Rivas05} {\em et al}, is shown in \figref{protpal};
+a version that approximates a two-component mixture-of-geometric indel length distributions is shown in \figref{protpal-mix2},
+while a transducer that only inserts/deletes in multiples of 3 is in \figref{triplet}.
 
 \pdffig{protpal}{An approximate affine-gap transducer.
 Note that in contrast to \figref{tkf91}, this machine requires {\em two} Wait states,
@@ -1026,6 +1034,19 @@ The transition weights use the quantities
 $a = \exp(-\mu t)$ and $b = 1 - \exp(-\lambda t)$.
 The transducer in \figref{tkf91-root} serves as a suitable root generator.
 }
+
+\widepdffig{protpal-mix2}{A transducer that models indel length distributions as a 2-component mixture of geometric distributions.
+Note that this machine requires
+two separate copies of the Insert and Delete states, along with {\em three} Wait states,
+with two of the Wait states serving to preserve the ``memory'' of being inside a deletion from the respective Delete states.
+The parameters of this model are insertion rate $\lambda$, deletion rate $\mu$, gap extension probabilities $g_1$ and $g_2$ for the two mixture components,
+first component mixture strength $f$, substitution rate matrix $R$, inserted residue frequencies $\pi$ (typically the equilibrium distribution, so $\pi R = 0$), and branch length $t$.
+The transition weights use the quantities
+$a = \exp(-\mu t)$ and $b = 1 - \exp(-\lambda t)$.
+The transducer in \figref{tkf91-root} serves as a suitable root generator.
+}
+
+\tallpngfig{triplet}{A transducer whose indels are a multiple of 3 in length.}
 
 \subsubsection{A generator for the equilibrium distribution of the TKF91 model} TKF91 is an input/output transducer that
 operates on individual branches.  In order to arrange this model on a phylogenetic tree,
@@ -1159,19 +1180,21 @@ state, wherein the first transducer remains idle in the Insert or Match state.
 
 In a specific sense (summing over paths)
 this composite transducer is equivalent to the single transducer in \figref{tkf91}
-with the time parameter double ($t \to 2t$)...
-this statement is equivalent to a form of the Chapman-Kolmogorov equation,
-$B(t)B(t) \equiv B(2t)$
-In fact TKF91 is currently the only nontrivial indel model known to have this property
-(by ``nontrivial'' we mean excluding substitution-only models such as \figref{substituter},
-which are essentially special cases of TKF91).
+with the time parameter double ($t \to 2t$).
+We can write this statement as $\tkf(t) \cdot \tkf(t) = \tkf(2t)$.
+This statement is, in fact, equivalent to a form of the Chapman-Kolmogorov equation,
+$B(t)B(t') \equiv B(t+t')$,
+for transition probability matrices $B(t)$ of a stationary continuous-time Markov chain.
+In fact TKF91 is currently the only nontrivial transducer known to have this property
+(by ``nontrivial'' we mean including all types of state, and so excluding substitution-only models such as \figref{substituter},
+which are essentially special limits of TKF91 where the indel rates are zero).
 An open question is whether there are any transducers for affine-gap versions of TKF91 which
 have this property
-( excluding TKF92 from this since it does not technically operate on strings, but rather
+(excluding TKF92 from this since it does not technically operate on strings, but rather
 sequences of strings (fragments) with immovable boundaries).  
 % crossref
-The Chapman-Kolmogorov equation (the formal description of this property)
-is described in \secref{ChapmanKolmogorov}.
+The Chapman-Kolmogorov equation for transducers
+is stated in \secref{ChapmanKolmogorov}.
 
 \subsubsection{Constraining the input to the substitution model}
 %getrefs ?
@@ -3606,8 +3629,8 @@ Define the input and output sequences
 $S_I:\Pi \to \Omega_I^\ast$ and
 $S_O:\Pi \to \Omega_O^\ast$
 \begin{eqnarray*}
-S_I(\pi) & = & \bigodot_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_I \\
-S_O(\pi) & = & \bigodot_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
+S_I(\pi) & = & \Sigma_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_I \\
+S_O(\pi) & = & \Sigma_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
 \end{eqnarray*}
 
 
