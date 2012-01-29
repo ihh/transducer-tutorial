@@ -802,6 +802,10 @@ a row vector representing probability distribution
  (for Insert states, c.f. $U$ in \figref{condensed-emission}),
 or a column vector of conditional probabilities
  (for Delete states, c.f. $V$ in \figref{condensed-emission})
+\item Note that we call $e_j$ an ``I/O function'' rather than an ``emit function''.
+The latter term is more common in bioinformatics HMM theory;
+however, $e_j$ also describes probabilistic weights of {\em absorptions} as well as {\em emissions},
+and we seek to avoid ambiguity
 \end{itemize}
 
 \pngfig{transitions}
