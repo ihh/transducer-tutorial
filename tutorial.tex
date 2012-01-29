@@ -1343,9 +1343,9 @@ The meaning of the various states in this model are
 This machine is a pure Markov chain (with no inputs or outputs) which can be used to compute 
 the weight of transforming MF to CS.  
 
-Note that composing $\generate(MF) \to \substitute(Q) \to \recognize(LIV) $
+Note that composing $\generate(MF) \cdot \substitute(Q) \cdot \recognize(LIV) $
 would result in zero weight since $\substitute(Q)$ cannot change sequence length.  
-Intuitively, this is the correctly computed probability of transforming MF to LIV by point substitutions alone.  
+This is correct: the path weight of zero is the probability of transforming MF to LIV by point substitutions alone.  
 
 
 \subsubsection{Specifying input and output to the TKF91 model}
@@ -1354,7 +1354,7 @@ Intuitively, this is the correctly computed probability of transforming MF to LI
 via which sequence MF mutates to sequence LIV. Note that the structure of this Markov chain is very similar to a dynamic programming matrix for pairwise sequence alignment. The ``rows'' and ``cells'' of this matrix are shown as boxes.}
 
 \figref{mf-tkf91-liv} shows the composition of three transducers, the MF-generator, TKF91 and LIV-recognizer
-(transitions are unlabeled for clarity).
+(transitions are omitted for clarity).
 This is one step beyond the machine in \figref{mf-substituter-cs}, as it allows 
 insertions and deletions to separate the generated (MF) and recognized (CS) sequences.  
 
