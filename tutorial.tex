@@ -1393,7 +1393,7 @@ is equal to sum of all path weights from start to end in the Markov model of \fi
 The set of paths corresponds to the set of valid evolutionary transformations relating
 sequences MF and LIV (valid meaning those allowed under the model, namely non-overlapping single-residue indels and substitutions).  
 
-This is directly analagous to computing a pairwise alignment (e.g. using the Needlman-Wunsch algorithm), and the structure of the Markov model shown in \figref{mf-tkf91-liv} suggests the familiar structure of a pairwise dynamic programming matrix.  
+This is directly analogous to computing a pairwise alignment (e.g. using the Needlman-Wunsch algorithm), and the structure of the Markov model shown in \figref{mf-tkf91-liv} suggests the familiar structure of a pairwise dynamic programming matrix.  
 
 Note that the quantity  $P(Y=\mbox{LIV}|X=\mbox{MF})$ computed 
 using the  substituter instead of TKF91 would not be meaningful.  
@@ -1629,7 +1629,7 @@ and wait states (where the recognizer waits for the next input symbol).
 \widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
 The sum-over-paths weight through this Markov model corresponds to the final Felsenstein likelihood. 
 % crossref
-This machine is analagous to the ``full evidence expanded model'' described in
+This machine is the ``complete evidence-expanded model'' ($G_0$) described in
 \secref{EvidenceExpandedModel}.  
 }
 
@@ -1639,7 +1639,7 @@ the full Felsenstein probability.
 Using the basic prior shown in \figref{tkf91-root}, we construct the machine shown
 in \figref{root-fork-tkf91liv-tkf91mf}.  
 % crossref
-This machine is analagous to the ``full evidence expanded model'' described in
+This machine is the ``complete evidence-expanded model'' ($G_0$) described in
 \secref{EvidenceExpandedModel}.  
 
 With this prior, the sum-over-paths weight computes final Felsenstein probability, and 
@@ -3604,7 +3604,7 @@ This section defines commonplace notation used earlier in the document.
 \subsection{Sequences and alignments}
 {\em Sequence notation:}
 Let $\Omega^\ast$ be the set of sequences over $\Omega$, including the empty sequence $\epsilon$.
-Let $x+y$ denote the concatenation of sequences $x$ and $y$, and $\Sigma_n x_n$ the concatenation of sequences $\{ x_n \}$.
+Let $x+y$ denote the concatenation of sequences $x$ and $y$, and $\sum_n x_n$ the concatenation of sequences $\{ x_n \}$.
 
 {\em Gapped-pair alignment:}
 A gapped pairwise alignment is a sequence of individual columns of the form $(\omega_1,\omega_2)$ where $\omega_1 \in \gappedalphabet{1}$ and $\omega_2 \in \gappedalphabet{2}$.
@@ -3612,8 +3612,8 @@ A gapped pairwise alignment is a sequence of individual columns of the form $(\o
 {\em Map from alignment to sequences:}
 The function $S_k:\left(\gappedpair{1}{2}\right)^\ast \to \Omega_k^\ast$ returns the $k$'th row of a pairwise alignment, with gaps removed
 \begin{eqnarray*}
-S_1(x) & = & \Sigma_{(\omega_1,\omega_2) \in x} \omega_1 \\
-S_2(x) & = & \Sigma_{(\omega_1,\omega_2) \in x} \omega_2
+S_1(x) & = & \sum_{(\omega_1,\omega_2) \in x} \omega_1 \\
+S_2(x) & = & \sum_{(\omega_1,\omega_2) \in x} \omega_2
 \end{eqnarray*}
 
 {\em Transition paths:}
@@ -3629,8 +3629,8 @@ Define the input and output sequences
 $S_I:\Pi \to \Omega_I^\ast$ and
 $S_O:\Pi \to \Omega_O^\ast$
 \begin{eqnarray*}
-S_I(\pi) & = & \Sigma_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_I \\
-S_O(\pi) & = & \Sigma_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
+S_I(\pi) & = & \sum_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_I \\
+S_O(\pi) & = & \sum_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
 \end{eqnarray*}
 
 
