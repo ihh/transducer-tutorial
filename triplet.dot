@@ -4,9 +4,6 @@ digraph G {
     E [label="", shape=diamond, color=red];
 
     W [label="", shape=octagon, color=red];
-    X1 [label="", shape=octagon, color=red];
-    X2 [label="", shape=octagon, color=red];
-    X3 [label="", shape=octagon, color=red];
 
     I1 [label="", shape=house, color=red];
     I2 [label="", shape=house, color=red];
@@ -26,24 +23,11 @@ M->I1;
 
 W->D1;
 
-D1->X1;
+D1->D2->D3->D1;
+I1->I2->I3->I1;
 
-I1->I2;
-
-X1->D2;
-
-D2->X2;
-
-I2->I3;
-
-X2->D3;
-
-D3->I1;
-D3->X3;
 D3->W;
-I3->I1;
 I3->W;
-
-X3->D1;
+D3->I1;
 
 }
