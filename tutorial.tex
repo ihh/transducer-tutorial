@@ -1176,7 +1176,8 @@ $DW$ & The first transducer absorbs and deletes a character, whereas the second 
 $II$ & The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here---the first is resting in an insertion state from a previous transition.   \\
 $MI$ & Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character. \\
 \end{tabular}
-\caption{ \tablabel{tkf91-tkf91} Meaning of states in \figref{tkf91-tkf91}.
+\caption{ \tablabel{tkf91-tkf91} Meaning of states in
+transducer $\tkf \cdot \tkf$ (\figref{tkf91-tkf91}).
 Every state corresponds to a tuple $(b_1,b_2)$
 where
 $b_1$ is the state of the first TKF91 transducer and
@@ -1239,7 +1240,8 @@ $\imath_FM$ & The generator emits character $F$ via an insert state, and the sub
 $WW$ & Both transducers are in the Wait state.  No characters are  absorbed or emitted. Both machines are poised to enter their respective End states. \\
 $EE$ & Both transducers are in their respective End states. No characters are  absorbed or emitted. \\
 \end{tabular}
-\caption{ \tablabel{mf-substituter} Meaning of states in \figref{mf-substituter}.
+\caption{ \tablabel{mf-substituter} Meaning of states in
+transducer $\generate(MF) \cdot \substitute(Q)$ (\figref{mf-substituter}).
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
 where
 $i$ is the state of the generator transducer and
@@ -1273,7 +1275,8 @@ $\imath_FM$ & The  generator inserts the $F$ character and TKF91 absorbs and emi
 $\imath_FD$ & The  generator inserts the $F$ character and TKF91 absorbs it via its Delete state. \\
 $\imath_FI$ & After absorbing the $F$ character from above, TKF91 inserts a character while the generator remains in its Insert state.  \\
 \end{tabular}
-\caption{ \tablabel{mf-tkf91} Meaning of states in \figref{mf-tkf91}.
+\caption{ \tablabel{mf-tkf91} Meaning of states in
+transducer $\generate(MF) \cdot \tkf$ (\figref{mf-tkf91}).
 Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
 where
 $i$ is the state of the generator transducer and
@@ -1368,8 +1371,9 @@ $M\delta_F$ & TKF91 absorbs and emits a character via a Match state and it is re
 $WW_F$ & Both transducers are in Wait states: TKF91 in its only Wait state and the recognizer in the Wait state following the $F$ character.  \\
 $DW_F$ & TKF91 absorbs a character from above and deletes it; recognizer remains in the Wait state ($W_F$).   \\
 \end{tabular}
-\caption{ \tablabel{tkf91-mf} Meaning of states in \figref{tkf91-mf}.
-Since it is an ensemble of two transducers, every state of \figref{tkf91-mf} corresponds to a tuple $(b,d)$
+\caption{ \tablabel{tkf91-mf} Meaning of states in
+transducer $\tkf \cdot \recognize(MF)$ (\figref{tkf91-mf}).
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(b,d)$
 where
 $b$ is the state of the TKF91 transducer and
 $d$ is the state of the recognizer transducer.
@@ -1427,7 +1431,8 @@ $W_FWW_V$ & All transducers are in their Wait states which precede the End state
 \\
 $EEE$ & All transducers are in their End states.  No characters are emitted or absorbed. 
 \end{tabular}
-\caption{ \tablabel{mf-tkf91-liv} Meaning of states in \figref{mf-tkf91-liv}.
+\caption{ \tablabel{mf-tkf91-liv} Meaning of states in
+transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$ (\figref{mf-tkf91-liv}).
 Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
 where
 $i$ is the state of the generator transducer,
