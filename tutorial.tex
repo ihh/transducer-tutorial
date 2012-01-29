@@ -1127,13 +1127,15 @@ then the I/O weight function for the composite state QR in the two-transducer en
 
 
 \subsubsection{Multiplying two TKF91 models}
+\seclabel{tkf91-tkf91}
 %getrefs
 
 \widepdffig{tkf91-tkf91}{Transducer $\tkf \cdot \tkf$, the composition of the 
 TKF91 model (\figref{tkf91-labeled}) with itself, representing the action of
  two consecucive branches of evolution.
 Each composite state is labeled with the states of the two component transducers.  
-I/O weight functions, state labels, and meanings of transition parameters are explained in the text. 
+I/O weight functions, state labels, and meanings of transition parameters are explained
+in \tabref{tkf91-tkf91} and \secref{tkf91-tkf91}.
 }
 
 For a more complex example, consider the composition of a TKF91 transducer with itself.  
@@ -1152,15 +1154,12 @@ and by summing over the states of the composite machine we are essentially summi
 values for this sequence. 
 
 \figref{tkf91-tkf91} shows the state space of this transducer.  
-Every state corresponds to a tuple $(b_1,b_2)$
-where
-$b_1$ is the state of the first TKF91 transducer and
-$b_2$ is the state of the second TKF91 transducer.
+The meaning of the various states in this model are shown in \tabref{tkf91-tkf91}.
 
-The meaning of the various states in this model are
-
-\begin{tabular}{l|l}
+\begin{table}
+\begin{tabular}{c|p{.8\textwidth}}
 $b_1 b_2$ & Meaning \\
+\hline
 $SS$ & Both transducers are in the Start state.  No characters are absorbed or emitted. \\
 $EE$ & Both transducers are in the End state.  No characters are  absorbed or emitted. \\
 $WW$ & Both transducers are in the Wait state.  No characters are absorbed or emitted, but both are poised to absorb sequences from their input tapes. \\
@@ -1170,20 +1169,23 @@ $MM$ & The first transducer  absorbs (from the input tape) and emits a character
 $ID$ & The first transducer  emits a character (via the Insert state) which the second transducer absorbs and deletes (via its Delete state).  \\
 $MD$ & The first transducer  absorbs and emits a character (via the Match state) which the second transducer deletes (via its Delete state).  \\
 $DW$ & The first transducer absorbs and deletes a character, whereas the second transducer idles in a Wait state (since it has recieved no input from the first tranducer).   \\
+$II$ & The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here---the first is resting in an insertion state from a previous transition.   \\
+$MI$ & Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character. \\
 \end{tabular}
+\caption{ \tablabel{tkf91-tkf91} Meaning of states in \figref{tkf91-tkf91}.
+Every state corresponds to a tuple $(b_1,b_2)$
+where
+$b_1$ is the state of the first TKF91 transducer and
+$b_2$ is the state of the second TKF91 transducer.
+ }
+\end{table}
 
-The last two states, $II$ and $MI$, appear to contradict the co-ordination of the machines, 
+The last two states in \tabref{tkf91-tkf91}, $II$ and $MI$, appear to contradict the co-ordination of the machines, 
 since the second transducer is not absorbing while the first is emitting. 
 The reason for this is that the first transducer is not ``actively'' emitting; 
 its current state is a holdover from a previous emission (via an insertion or match). 
 After the second transducer processes this emitted character, it may enter an Insertion 
 state, wherein the first transducer remains idle in the Insert or Match state. 
-
-\begin{tabular}{l|l}
-$b_1 b_2$ & Meaning \\
-$II$ & The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here---the first is resting in an insertion state from a previous transition.   \\
-$MI$ & Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character. \\
-\end{tabular}
 
 
 
@@ -1206,50 +1208,56 @@ The Chapman-Kolmogorov equation for transducers
 is stated in \secref{ChapmanKolmogorov}.
 
 \subsubsection{Constraining the input to the substitution model}
+\seclabel{mf-substituter}
 %getrefs ?
 \pdffig{mf-substituter}{Transducer $\generate(MF) \cdot \substitute(Q)$
 corresponds to the generation of sequence MF (by the transducer in \figref{moore-mf-generator})
 and its subsequent mutation via substitutions (by the transducer in \figref{substituter}).
 Since no gaps are involved, and the initial sequence length is specified (by \figref{moore-mf-generator}),
 there is only one state path through this transducer.
-State types are indicated by the shape (as per \figref{legend}), and the I/O functions of the two Insert states are indicated.  }
+State types are indicated by the shape (as per \figref{legend}), and the I/O functions of the two Insert states are indicated.
+For more information see \tabref{mf-substituter} and \secref{mf-substituter}.
+}
 
 \figref{mf-substituter} is the composition of MF-generator with $\substitute(Q)$.  
 This is quite similar to a probabilistic weight matrix trained on the single sequence MF,
 as each of the Insert states has its own emission probability weights.
 
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
-where
-$i$ is the state of the generator transducer and
-$b$ is the state of the substituter transducer.
-The meaning of the various states in this model are
+The meaning of the various states in this model are shown in \tabref{mf-substituter}.
 
-\begin{tabular}{l|l}
+\begin{table}
+\begin{tabular}{c|p{.8\textwidth}}
 $i b$ & Meaning \\
+\hline
 $SS$ & Both transducers are in the Start state.  No characters are  absorbed or emitted. \\
 $\imath_MM$ & The generator emits character $M$ via an insert state, and the substituter absorbs and emits via a Match state. \\
 $\imath_FM$ & The generator emits character $F$ via an insert state, and the substituter absorbs and emits via a Match state. \\
 $WW$ & Both transducers are in the Wait state.  No characters are  absorbed or emitted. Both machines are poised to enter their respective End states. \\
 $EE$ & Both transducers are in their respective End states. No characters are  absorbed or emitted. \\
 \end{tabular}
+\caption{ \tablabel{mf-substituter} Meaning of states in \figref{mf-substituter}.
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+where
+$i$ is the state of the generator transducer and
+$b$ is the state of the substituter transducer.
+ }
+\end{table}
 
 \subsubsection{Constraining the input to the TKF91 model}
-\label{mf-tkf91}
-\tallpdffig{mf-tkf91}{Transducer $\generate(MF) \cdot \tkf$, the composition of the MF-generator (\figref{moore-mf-generator}) with the TKF91 transducer (\figref{tkf91-labeled}).  See Section \ref{mf-tkf91} for the meaning of each state. }
+\seclabel{mf-tkf91}
+\tallpdffig{mf-tkf91}{Transducer $\generate(MF) \cdot \tkf$, the composition of the MF-generator (\figref{moore-mf-generator}) with the TKF91 transducer (\figref{tkf91-labeled}).  See \secref{mf-tkf91} and \tabref{mf-tkf91} for the meaning of each state. }
 
 \figref{mf-tkf91} is the composition of MF-generator with TKF91.  
 In contrast to \figref{mf-substituter}, this machine generates
 a sequence descended from a known ancestor (MF) via indels and substitutions.  It is conceptually similar to a profile HMM
 trained on the single sequence MF (though without the Dirichlet prior distributions that are typically used when training a profile HMM).
 
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
-where
-$i$ is the state of the generator transducer and
-$b$ is the state of the TKF91 transducer.
-The meaning of the various states in this machine are
+The meaning of the various states in this machine are shown in \tabref{mf-tkf91}.
 
-\begin{tabular}{l|l}
+\begin{table}
+\begin{tabular}{c|p{.8\textwidth}}
 $i b$ & Meaning \\
+\hline
 $SS$ & Both transducers are in the Start state.  No characters are  absorbed or emitted. \\
 $EE$ & Both transducers are in the End state.  No characters are  absorbed or emitted. \\
 $W_FW$ & Both transducers are in their respective Wait states.  No characters are absorbed or emitted, and both are poised to enter the End state.  \\
@@ -1261,9 +1269,17 @@ $\imath_FM$ & The  generator inserts the $F$ character and TKF91 absorbs and emi
 $\imath_FD$ & The  generator inserts the $F$ character and TKF91 absorbs it via its Delete state. \\
 $\imath_FI$ & After absorbing the $F$ character from above, TKF91 inserts a character while the generator remains in its Insert state.  \\
 \end{tabular}
+\caption{ \tablabel{mf-tkf91} Meaning of states in \figref{mf-tkf91}.
+Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+where
+$i$ is the state of the generator transducer and
+$b$ is the state of the TKF91 transducer.
+ }
+\end{table}
 
 
-A crucial point here is that the {\em composite} machine contains no states of
+As noted in \secref{Tutorial.Composition}, a generator composed with any transducer is still a generator.
+That as, the {\em composite} machine contains no states of
  type Match or Delete, since it accepts null input (since its immediately-upstream
 transducer, the MF-generator, accepts null input).  
 Even when the TKF91 is in a state that accepts input symbols (Match or Delete),
@@ -1308,12 +1324,15 @@ The composite machines accept sequence on input, and emit null output.
 %% and the meaning (it is a probabilistic recognition profile for ancestral descendants of sequence LIV)...
 
 \subsubsection{Constraining the output of the TKF91 model}
+\seclabel{tkf91-mf}
 
 \tallpdffig{tkf91-mf}{Transducer $\tkf \cdot \recognize(MF)$
 computes the probability that a given ancestral input sequence will evolve (via the TKF91 model) into the specific descendant MF.  
 It can therefore be thought of as a {\em recognizer} for the ancestor of MF.
 This machine absorbs sequence on its input and has null output due to 
-the recognizer's null output.}
+the recognizer's null output.
+See \secref{tkf91-mf} and \tabref{tkf91-mf} for more information.
+}
 
 \figref{tkf91-mf} shows the composition of a TKF91 transducer with the MF-recognizer.  
 This machine is related to the MF-generator/TKF91 composition described  earlier.  
@@ -1326,14 +1345,12 @@ for a sequence $S$,
 whereas \figref{mf-tkf91} with $S$ as output computes $P(S|MF)$
 (probability that descendant of MF is $S$).
 
-Since it is an ensemble of two transducers, every state of \figref{tkf91-mf} corresponds to a tuple $(b,d)$
-where
-$b$ is the state of the TKF91 transducer and
-$d$ is the state of the recognizer transducer.
-The meaning of the various states in this model are
+The meaning of the various states in this model are shown in \tabref{tkf91-mf}.
 
-\begin{tabular}{l|l}
+\begin{table}
+\begin{tabular}{c|p{.8\textwidth}}
 $b d$ & Meaning \\
+\hline
 $SS$ & Both transducers are in the Start state.  No characters are  absorbed or emitted. \\
 $EE$ & Both transducers are in the End state.  No characters are  absorbed or emitted. \\
 $WW_0$ & Both transducers are in Wait states.  No characters are absorbed or emitted; both are poised to accept input from above.  \\
@@ -1347,6 +1364,13 @@ $M\delta_F$ & TKF91 absorbs and emits a character via a Match state and it is re
 $WW_F$ & Both transducers are in Wait states: TKF91 in its only Wait state and the recognizer in the Wait state following the $F$ character.  \\
 $DW_F$ & TKF91 absorbs a character from above and deletes it; recognizer remains in the Wait state ($W_F$).   \\
 \end{tabular}
+\caption{ \tablabel{tkf91-mf} Meaning of states in \figref{tkf91-mf}.
+Since it is an ensemble of two transducers, every state of \figref{tkf91-mf} corresponds to a tuple $(b,d)$
+where
+$b$ is the state of the TKF91 transducer and
+$d$ is the state of the recognizer transducer.
+ }
+\end{table}
 
 
 
@@ -1365,24 +1389,24 @@ This is correct: the path weight of zero is the probability of transforming MF t
 
 
 \subsubsection{Specifying input and output to the TKF91 model}
+\seclabel{mf-tkf91-liv}
 
 \widepdffig{mf-tkf91-liv}{Transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$ is a Markov chain (with no input or output) wherein every Start$\to$End state path describes an indel history
-via which sequence MF mutates to sequence LIV. Note that the structure of this Markov chain is very similar to a dynamic programming matrix for pairwise sequence alignment. The ``rows'' and ``cells'' of this matrix are shown as boxes.}
+via which sequence MF mutates to sequence LIV. Note that the structure of this Markov chain is very similar to a dynamic programming matrix for pairwise sequence alignment. The ``rows'' and ``cells'' of this matrix are shown as boxes.
+See \secref{mf-tkf91-liv} and \tabref{mf-tkf91-liv} for more information on state types.
+}
 
 \figref{mf-tkf91-liv} shows the composition of three transducers, the MF-generator, TKF91 and LIV-recognizer
 (transitions are omitted for clarity).
 This is one step beyond the machine in \figref{mf-substituter-cs}, as it allows 
 insertions and deletions to separate the generated (MF) and recognized (CS) sequences.  
 
-Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
-where
-$i$ is the state of the generator transducer,
-$b$ is the state of the TKF91 transducer and
-$d$ is the state of the recognizer transducer.
-The meaning of the various states in this model are
+The meaning of the various states in this model are shown in \tabref{mf-tkf91-liv}.
 
-\begin{tabular}{l|l}
+\begin{table}
+\begin{tabular}{c|p{.8\textwidth}}
 $i b d$ & Meaning \\
+\hline
 $SSS$ & All transducers are in the Start state.  No characters are emitted or absorbed. 
 \\
 $SI\delta_y$ & The component TKF91 machine emits a character via the Insert state which is read by the $\delta_y$ state of the recognizer; the generator remains in the Start state, not yet having emitted any characters. 
@@ -1399,6 +1423,14 @@ $W_FWW_V$ & All transducers are in their Wait states which precede the End state
 \\
 $EEE$ & All transducers are in their End states.  No characters are emitted or absorbed. 
 \end{tabular}
+\caption{ \tablabel{mf-tkf91-liv} Meaning of states in \figref{mf-tkf91-liv}.
+Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
+where
+$i$ is the state of the generator transducer,
+$b$ is the state of the TKF91 transducer and
+$d$ is the state of the recognizer transducer.
+ }
+\end{table}
 
 
 \figref{mf-tkf91-liv}, like \figref{mf-substituter-cs}, contains only null states (no match, insert, or delete states), making it a pure Markov chain with no I/O.  
