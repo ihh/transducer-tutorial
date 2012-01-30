@@ -1443,11 +1443,12 @@ $d$ is the state of the recognizer transducer.
 
 \figref{mf-substituter-cs} shows the composition of the MF-generator, substituter, and CS-recognizer.  
 This machine is a pure Markov chain (with no inputs or outputs) which can be used to compute 
-the weight of transforming MF to CS.  
+the probability of transforming MF to CS.
+Specifically, this probability is equal to the weight of the single path through \figref{mf-substituter-cs}.
 
 Note that composing $\generate(MF) \cdot \substitute(Q) \cdot \recognize(LIV) $
-would result in zero weight since $\substitute(Q)$ cannot change sequence length.  
-This is correct: the path weight of zero is the probability of transforming MF to LIV by point substitutions alone.  
+would result in a state graph with no valid paths from Start to End, since $\substitute(Q)$ cannot change sequence length.  
+This is correct: the total path weight of zero, corresponding to the probability of transforming MF to LIV by point substitutions alone.  
 
 
 \subsubsection{Specifying input and output to the TKF91 model}
