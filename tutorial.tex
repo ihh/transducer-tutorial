@@ -530,7 +530,7 @@ The pruning algorithm computes the likelihood of observing a single column of a 
 Crucially, the algorithm sums over all unobserved substitution histories on internal branches of the tree.
 For a tree containing $N$ taxa, the algorithm achieves ${\cal O}(N)$ time and memory complexity by computing and tabulating intermediate probability functions of the form $G_n(x) = P(Y_n|x_n=x)$,
 where $x_n$ represents the individual residue state of ancestral node $n$,
-and $Y_n$ represents all the data that is causally descended from node $n$ in the tree (i.e. the observed residues at all the leaf nodes whose most recent common ancestor is node $n$).
+and $Y_n=\{y_m\}$ represents all the data at leaves $\{m\}$ descended from node $n$ in the tree (i.e. the observed residues at all leaf nodes $m$ whose ancestors include node $n$).
 
 The pruning recursion visits all nodes in postorder.
 Each $G_n$ function is computed in terms of the functions $G_l$ and $G_r$ of its immediate left and right children (assuming a binary tree):
