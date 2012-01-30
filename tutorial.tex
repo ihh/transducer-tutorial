@@ -575,9 +575,7 @@ Our chosen class of ``infinite substitution matrix'' is one that has a finite re
 namely, the {\em finite-state transducer}, a probabilistic automaton that transforms an input sequence to an output sequence,
 and a familiar tool of statistical linguistics \cite{MohriPereiraRiley2000}.
 
-By generalizing the idea of matrix multiplication ($AB$) to two transducers ($A$ and $B$),
-and introducing a notation for feeding the same input sequence to two transducers in parallel ($A \fork B$),
-we are able to write Felsenstein's algorithm in vector form (see \secref{EvidenceExpandedModel}):
+In vector form, Felsenstein's pruning recursion is
 \[
 G_n = \left\{
 \begin{array}{ll}
@@ -586,19 +584,23 @@ G_n = \left\{
 \end{array}
 \right.
 \]
-where $\recognize(y_n)$ is the transducer equivalent of the Kronecker delta $\delta(x=y_n)$.
-The function $G_n$ is now encapsulated by a transducer ``profile'' of node $n$.
-This representation has complexity ${\cal O}(L^N)$, which we reduce to ${\cal O}(LN)$ by stochastic approximation of the $G_n$.
+where $A \fork B$ is the pointwise Hadamard product
+and $\recognize(n)$ is the unit column vector in dimension $n$.
+By generalizing a few key algebraic ideas from matrices to transducers
+(matrix multiplication, the pointwise product, row vectors and column vectors),
+we are able to interpret this vector-space form of Felsenstein's algorithm
+as the specification of a composite phylogenetic transducer
+that spans all possible alignments (see \secref{EvidenceExpandedModel}).
 
-The new algorithm is a natural generalization of Felsenstein's pruning recursion to indels,
-since it calculates
+The transducer approach offers a natural generalization of Felsenstein's pruning recursion to indels,
+since it can be used to calculate
 \[
 P(S|T,\theta) = \sum_A P(S,A|T,\theta)
 \]
 i.e. the likelihood of sequences $S$ given tree $T$ and parameters $\theta$, summed over all alignments $A$.
 Previous attempts to address indels phylogenetically have mostly returned $P(S|\hat{A},T,\theta)$ where $\hat{A}$ represents a single alignment
 (typically estimated by a separate alignment program, which may introduce undetermined biases).
-The exceptions to this rule are the ``statistical alignment'' methods \cite{HeinEtal2000,HolmesBruno2001,SuchardRedelings2006}
+The exceptions to this rule are the ``statistical alignment'' methods \cite{HeinEtal2000,Hein2001,HolmesBruno2001,Metzler2003,SuchardRedelings2006}
 which also marginalize alignments in an unbiased way---albeit more slowly, since they use Markov Chain Monte Carlo methods (MCMC).
 In this sense, the new algorithm may be thought of as a fast, non-MCMC approximation to statistical alignment.
 
@@ -607,7 +609,7 @@ that uses structures similar to partial-order graphs to represent ensembles of a
 Yet another interpretation is that it represents the application of standard message-passing on a phylogenetic factor graph,
 where the conditional distributions (the factors of the graph) are finite-state transducers \cite{KschischangEtAl98}.
 
-The purpose of this technical report is a clean theoretical presentation of the algorithm.
+The purpose of this manuscript is a clean theoretical presentation of the algorithm.
 In separate work (manuscript {\em submitted}) we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
 as indicated by proxy statistics such as the estimated indel rate.
 
