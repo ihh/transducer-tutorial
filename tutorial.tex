@@ -587,7 +587,7 @@ G_n = \left\{
 \right.
 \]
 where $A \fork B$ is the pointwise (Hadamard) product
-and $\recognize(n)$ is the unit column vector in dimension $n$.
+and $\recognize(x)$ is the unit column vector in dimension $x$.
 By generalizing a few key algebraic ideas from matrices to transducers
 (matrix multiplication, the pointwise product, row vectors and column vectors),
 we are able to interpret this vector-space form of Felsenstein's algorithm
@@ -1124,7 +1124,7 @@ What remains is to detail the various ways of connecting transducers by
 %getrefs
 The first way of connecting transducers that we will consider is  ``composition'':
 feeding the output of one transducer, $T$, into the input of another, $U$.
-The two transducers are now connected in a sense, since the output of $T$ must be
+The two transducers are now connected, in a sense, since the output of $T$ must be
  synchronized with inputs from $U$: when $T$ emits a character, $U$ must be ready to absorb a character.  
 
 We can equivalently  consider the two connected transducers as
@@ -1396,10 +1396,9 @@ See \secref{tkf91-mf} and \tabref{tkf91-mf} for more information.
 }
 
 \figref{tkf91-mf} shows the composition of a TKF91 transducer with the MF-recognizer.  
-This machine is related to the MF-generator/TKF91 composition described  earlier.  
-Compare the recognizer in \figref{tkf91-mf}
+It is worth comparing the recognizer in \figref{tkf91-mf}
 with the analogous generator in \figref{mf-tkf91}. 
-While related, the generator and the recognizer are not the same;
+While similar, the generator and the recognizer are not the same;
 for a sequence $S$,
 \figref{tkf91-mf} with $S$ as input computes $P(MF|S)$
 (probability that descendant of $S$ is MF), 
@@ -1444,11 +1443,12 @@ $d$ is the state of the recognizer transducer.
 
 \figref{mf-substituter-cs} shows the composition of the MF-generator, substituter, and CS-recognizer.  
 This machine is a pure Markov chain (with no inputs or outputs) which can be used to compute 
-the weight of transforming MF to CS.  
+the probability of transforming MF to CS.
+Specifically, this probability is equal to the weight of the single path through \figref{mf-substituter-cs}.
 
 Note that composing $\generate(MF) \cdot \substitute(Q) \cdot \recognize(LIV) $
-would result in zero weight since $\substitute(Q)$ cannot change sequence length.  
-This is correct: the path weight of zero is the probability of transforming MF to LIV by point substitutions alone.  
+would result in a state graph with no valid paths from Start to End, since $\substitute(Q)$ cannot change sequence length.  
+This is correct: the total path weight of zero, corresponding to the probability of transforming MF to LIV by point substitutions alone.  
 
 
 \subsubsection{Specifying input and output to the TKF91 model}
@@ -1585,11 +1585,11 @@ M^{(n)}_{ij}=P(\mbox{node $n$ is in state $j$}|\mbox{parent of node $n$ is in st
 Then we can write the core recursion of Felsenstein's pruning algorithm in matrix form;
 $G^{(n)}$ is a vector, $M^{(n)}$ is a matrix, and the core recursion is
 \[
-G^{(n)} = \left( M^{(l)} \times G^{(l)} \right) \fork \left( M^{(r)} \times G^{(r)} \right)
+G^{(n)} = \left( M^{(l)} \cdot G^{(l)} \right) \fork \left( M^{(r)} \cdot G^{(r)} \right)
 \]
 where $(l,r)$ are the left- and right-children of node $n$,
-$\times$ denotes matrix multiplication,
-and $\fork$ denotes the {\em pointwise product} (also called the {\em Hadamard product}),
+``$\cdot$'' denotes matrix multiplication,
+and ``$\fork$'' denotes the {\em pointwise product} (also called the {\em Hadamard product}),
 defined as follows for two vectors $A$ and $B$:
 \[
 (A \fork B)_i = A_i B_i,
@@ -1601,8 +1601,8 @@ A_1 B_1 \\ A_2 B_2 \\ A_3 B_3 \\ \ldots \\ A_K B_K
 
 Thus the two core steps of Felsenstein's algorithm (in matrix notation)
 are (a) matrix multiplication and (b) the pointwise product.
-We have defined the transducer equivalent of matrix multiplication,
-now we need to define the transducer equivalent of the vector pointwise product.
+Composition provides the transducer equivalent of matrix multiplication;
+intersection provides the transducer equivalent of the vector pointwise product.
 
 Note also that $G^{(n)}(x)$ is the probability of node $n$'s observed descendants
 {\em conditional on} $x$, the state of node $n$.
@@ -1622,9 +1622,9 @@ G^{(n)}(x) = \delta(x=y)
 i.e. we initialize $G^{(n)}$ with a unit vector, when $n$ is a leaf.
 This unit vector is, in some sense, equivalent to our exact-match recognizer.
 In fact, generators and recognizers are analogous to (respectively) row-vectors and column-vectors
-in our countably-infinite vector space.
-The exact-match generator $\recognize(S)$ resembles a unit column-vector in the $S$-direction,
-while $\generate(S)$ resembles a unit row-vector in the $S$-direction.
+in our infinite-dimensional vector space (where every dimension represents a different sequence).
+The exact-match recognizer $\recognize(S)$ resembles a unit column-vector in the $S$-dimension,
+while the exact-match generator $\generate(S)$ resembles a unit row-vector in the $S$-dimension.
 
 \subsubsection{Recognizer for a common ancestor under the substitution model}
 \seclabel{fork-subcs-submf}
