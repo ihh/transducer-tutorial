@@ -558,12 +558,18 @@ For an alignment of length $L$, the time complexity is ${\cal O}(LN)$ and the me
 This approach works well for marginalizing substitution histories, but is essentially incompatible with summing over indel histories,
 since there exists a multitude of indel histories which are consistent with any given alignment.
 
-The purpose of this technical report is to introduce another way of extending Felsenstein's recursion from single residues (or small groups of residues)
+The purpose of this manuscript is to introduce another way of extending Felsenstein's recursion from single residues (or small groups of residues)
 to entire, full-length sequences, without needing to condition on a single alignment.
-The time and memory complexities are ${\cal O}(L^2N)$, dropping to ${\cal O}(LN)$ if a ``guide alignment'' is provided as a clue to the algorithm
-(note however that the guide alignment is not a hard constraint, and may be controllably relaxed, or dispensed with altogether).
+With no constraints on the algorithm,
+the time and memory complexities are ${\cal O}(L^N)$,
+with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
+This drops to ${\cal O}(L^2 N)$ when a stochastic lower-bound approximation is used; in this form,
+the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
+The complexity drops further to ${\cal O}(LN)$ if a ``guide alignment'' is provided as a clue to the algorithm.
+The guide alignment is not a hard constraint,
+and may be controllably relaxed, or dispensed with altogether.
 
-The new algorithm is algebraically equivalent to Felsenstein's algorithm,
+The new algorithm is, essentially, algebraically equivalent to Felsenstein's algorithm,
 if the concept of a ``substitution matrix'' over a particular alphabet is extended to the countably-infinite set of all sequences over that alphabet.
 Our chosen class of ``infinite substitution matrix'' is one that has a finite representation:
 namely, the {\em finite-state transducer}, a probabilistic automaton that transforms an input sequence to an output sequence,
@@ -798,7 +804,7 @@ Some other features of this view include the following:
  (compare \figref{fanned-emission} and \figref{condensed-emission}).
 \item The function $e_j$ can be thought of as a conditional-probability substitution matrix
  (for Match states, c.f. $Q$ in \figref{condensed-emission}),
-a row vector representing probability distribution
+a row vector representing a probability distribution
  (for Insert states, c.f. $U$ in \figref{condensed-emission}),
 or a column vector of conditional probabilities
  (for Delete states, c.f. $V$ in \figref{condensed-emission})
@@ -1057,7 +1063,8 @@ The transducer in \figref{tkf91-root} serves as a suitable root generator.
 \tallpdffig{triplet}{A transducer whose indels are a multiple of 3 in length.
 (This is not in strict normal form, but could be made so by adding Wait states after every Delete state.)}
 
-\subsubsection{A generator for the equilibrium distribution of the TKF91 model} TKF91 is an input/output transducer that
+\subsubsection{A generator for the equilibrium distribution of the TKF91 model}
+TKF91 is an input/output transducer that
 operates on individual branches.  In order to arrange this model on a phylogenetic tree,
 we need a generating transducer at the root.  
 Shown in \figref{tkf91-root} is the equilibrium TKF91 generator, conceptually the same as
@@ -1176,8 +1183,10 @@ $DW$ & The first transducer absorbs and deletes a character, whereas the second 
 $II$ & The second transducer inserts a character while the first remains in the Insert state from a previous insertion.  Only the second transducer is emitting a character here---the first is resting in an insertion state from a previous transition.   \\
 $MI$ & Similarly to the previous state $II$, here the second transducer is inserting a character {\em after} having deleted or matched an absorbed character. \\
 \end{tabular}
-\caption{ \tablabel{tkf91-tkf91} Meaning of states in
-transducer $\tkf \cdot \tkf$ (\figref{tkf91-tkf91}).
+\caption{ \tablabel{tkf91-tkf91} Meaning of all states in
+transducer $\tkf \cdot \tkf$ (\figref{tkf91-tkf91}),
+the composition of two TKF91 transducers
+(an individual TKF91 transducer is shown in \figref{tkf91-labeled}).
 Every state corresponds to a tuple $(b_1,b_2)$
 where
 $b_1$ is the state of the first TKF91 transducer and
@@ -1240,9 +1249,11 @@ $\imath_FM$ & The generator emits character $F$ via an insert state, and the sub
 $WW$ & Both transducers are in the Wait state.  No characters are  absorbed or emitted. Both machines are poised to enter their respective End states. \\
 $EE$ & Both transducers are in their respective End states. No characters are  absorbed or emitted. \\
 \end{tabular}
-\caption{ \tablabel{mf-substituter} Meaning of states in
-transducer $\generate(MF) \cdot \substitute(Q)$ (\figref{mf-substituter}).
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+\caption{ \tablabel{mf-substituter} Meaning of all labeled states in
+transducer $\generate(MF) \cdot \substitute(Q)$ (\figref{mf-substituter}),
+the composition of the MF-generator (\figref{moore-mf-generator})
+and the $Q$-substituter (\figref{substituter}).
+Since this is an ensemble of two transducers, every state corresponds to a pair $(i,b)$
 where
 $i$ is the state of the generator transducer and
 $b$ is the state of the substituter transducer.
@@ -1275,9 +1286,11 @@ $\imath_FM$ & The  generator inserts the $F$ character and TKF91 absorbs and emi
 $\imath_FD$ & The  generator inserts the $F$ character and TKF91 absorbs it via its Delete state. \\
 $\imath_FI$ & After absorbing the $F$ character from above, TKF91 inserts a character while the generator remains in its Insert state.  \\
 \end{tabular}
-\caption{ \tablabel{mf-tkf91} Meaning of states in
-transducer $\generate(MF) \cdot \tkf$ (\figref{mf-tkf91}).
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(i,b)$
+\caption{ \tablabel{mf-tkf91} Meaning of all states in
+transducer $\generate(MF) \cdot \tkf$ (\figref{mf-tkf91}),
+the composition of the MF-generator (\figref{moore-mf-generator})
+with the TKF91 transducer (\figref{tkf91-labeled}).
+Since this is an ensemble of two transducers, every state corresponds to a pair $(i,b)$
 where
 $i$ is the state of the generator transducer and
 $b$ is the state of the TKF91 transducer.
@@ -1371,9 +1384,10 @@ $M\delta_F$ & TKF91 absorbs and emits a character via a Match state and it is re
 $WW_F$ & Both transducers are in Wait states: TKF91 in its only Wait state and the recognizer in the Wait state following the $F$ character.  \\
 $DW_F$ & TKF91 absorbs a character from above and deletes it; recognizer remains in the Wait state ($W_F$).   \\
 \end{tabular}
-\caption{ \tablabel{tkf91-mf} Meaning of states in
-transducer $\tkf \cdot \recognize(MF)$ (\figref{tkf91-mf}).
-Since it is an ensemble of two transducers, every state corresponds to a tuple $(b,d)$
+\caption{ \tablabel{tkf91-mf} Meaning of all states in
+transducer $\tkf \cdot \recognize(MF)$ (\figref{tkf91-mf}),
+the composition of the TKF91 model (\figref{tkf91-labeled}) with the MF-recognizer (\figref{mf-labeled}).
+Since this is an ensemble of two transducers, every state corresponds to a pair $(b,d)$
 where
 $b$ is the state of the TKF91 transducer and
 $d$ is the state of the recognizer transducer.
@@ -1425,15 +1439,18 @@ $\imath_x M\delta_y$ & The generator emits character $x$ via an Insert state; TK
 the recognizer absorbs the character via state $\delta_y$.  
 \\
 $\imath_x D W_y$ & The generator emits character $x$ via an Insert state, and TKF91 absorbs and deletes it via a Delete state.  
-the recognizer  remains in $W_y$, the Wait  state following character $y$ (or $W_0$ if the recognizer  has not yet read any characters). 
+The recognizer  remains in $W_y$, the Wait  state following character $y$ (or $W_0$ if the recognizer  has not yet read any characters). 
 \\
 $W_FWW_V$ & All transducers are in their Wait states which precede the End states for each transducer.  No characters are emitted or absorbed. 
 \\
 $EEE$ & All transducers are in their End states.  No characters are emitted or absorbed. 
 \end{tabular}
 \caption{ \tablabel{mf-tkf91-liv} Meaning of states in
-transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$ (\figref{mf-tkf91-liv}).
-Since it is an ensemble of three transducers, every state corresponds to a tuple $(i,b,d)$
+transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$ (\figref{mf-tkf91-liv}),
+the composition of the MF-generator (\figref{moore-mf-generator}),
+TKF91 (\figref{tkf91-labeled}) and
+the LIV-recognizer (\figref{liv-labeled}).
+Since this is an ensemble of three transducers, every state corresponds to a triple $(i,b,d)$
 where
 $i$ is the state of the generator transducer,
 $b$ is the state of the TKF91 transducer and
@@ -1492,7 +1509,7 @@ if $T$ and $U$ are both recognizers then $T \fork U$ is a recognizer also.
 % crossref
 Intersection is defined with mathematical precision in \secref{Fork}. 
 
-\subsubsection{Composition, intersection and Felsenstein's algorithm}
+\subsubsection{Composition, intersection and Felsenstein's pruning algorithm}
 \seclabel{Felsenstein}
 
 If a composition is like matrix multiplication
@@ -1555,6 +1572,10 @@ G^{(n)}(x) = \delta(x=y)
 \]
 i.e. we initialize $G^{(n)}$ with a unit vector, when $n$ is a leaf.
 This unit vector is, in some sense, equivalent to our exact-match recognizer.
+In fact, generators and recognizers are analogous to (respectively) row-vectors and column-vectors
+in our countably-infinite vector space.
+The exact-match generator $\recognize(S)$ resembles a unit column-vector in the $S$-direction,
+while $\generate(S)$ resembles a unit row-vector in the $S$-direction.
 
 \subsubsection{Recognizer for a common ancestor under the substitution model}
 \seclabel{fork-subcs-submf}
