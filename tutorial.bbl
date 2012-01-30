@@ -72,6 +72,26 @@ F.~R. Kschischang, B.~J. Frey, and H.-A. Loeliger.
 \newblock {\em {IEEE} Transactions on Information Theory}, 47(2):498--519,
   1998.
 
+\bibitem{SankoffCedergren83}
+D.~Sankoff and R.~J. Cedergren.
+\newblock Simultaneous comparison of three or more sequences related by a tree.
+\newblock In D.~Sankoff and J.~B. Kruskal, editors, {\em Time Warps, String
+  Edits, and Macromolecules: the Theory and Practice of Sequence Comparison},
+  chapter~9, pages 253--264. Addison-Wesley, Reading, MA, 1983.
+
+\bibitem{Hein2001}
+J.~Hein.
+\newblock An algorithm for statistical alignment of sequences related by a
+  binary tree.
+\newblock In R.~B. Altman, A.~K. Dunker, L.~Hunter, K.~Lauderdale, and T.~E.
+  Klein, editors, {\em Pacific Symposium on Biocomputing}, pages 179--190,
+  Singapore, 2001. World Scientific.
+
+\bibitem{LeeGrassoSharlow2002}
+C.~Lee, C.~Grasso, and M.F. Sharlow.
+\newblock {{M}ultiple sequence alignment using partial order graphs}.
+\newblock {\em Bioinformatics}, 18:452--464, Mar 2002.
+
 \bibitem{MohriPereiraRiley2000}
 M.~Mohri, F.~Pereira, and M.~Riley.
 \newblock Weighted finite-state transducers in speech recognition.
@@ -88,6 +108,12 @@ I.~Holmes and W.~J. Bruno.
 \newblock Evolutionary {HMM}s: a {B}ayesian approach to multiple alignment.
 \newblock {\em Bioinformatics}, 17(9):803--820, 2001.
 
+\bibitem{Metzler2003}
+D.~Metzler.
+\newblock Statistical alignment based on fragment insertion and deletion
+  models.
+\newblock {\em Bioinformatics}, 19(4):490--499, 2003.
+
 \bibitem{SuchardRedelings2006}
 Marc~A Suchard and Benjamin~D Redelings.
 \newblock {{B}{A}li-{P}hy: simultaneous {B}ayesian inference of alignment and
@@ -98,11 +124,6 @@ Marc~A Suchard and Benjamin~D Redelings.
 D.~G. Higgins and P.~M. Sharp.
 \newblock Fast and sensitive multiple sequence alignments on a microcomputer.
 \newblock {\em Computer Applications in the Biosciences}, 5:151--153, 1989.
-
-\bibitem{LeeGrassoSharlow2002}
-C.~Lee, C.~Grasso, and M.F. Sharlow.
-\newblock {{M}ultiple sequence alignment using partial order graphs}.
-\newblock {\em Bioinformatics}, 18:452--464, Mar 2002.
 
 \bibitem{Holmes2003}
 I.~Holmes.
@@ -127,13 +148,6 @@ B.~Paten, J.~Herrero, S.~Fitzgerald, K.~Beal, P.~Flicek, I.~Holmes, and
 \newblock {{G}enome-wide nucleotide-level mammalian ancestor reconstruction}.
 \newblock {\em Genome Research}, 18:1829--1843, Nov 2008.
 
-\bibitem{SankoffCedergren83}
-D.~Sankoff and R.~J. Cedergren.
-\newblock Simultaneous comparison of three or more sequences related by a tree.
-\newblock In D.~Sankoff and J.~B. Kruskal, editors, {\em Time Warps, String
-  Edits, and Macromolecules: the Theory and Practice of Sequence Comparison},
-  chapter~9, pages 253--264. Addison-Wesley, Reading, MA, 1983.
-
 \bibitem{Durbin98}
 R.~Durbin, S.~Eddy, A.~Krogh, and G.~Mitchison.
 \newblock {\em Biological Sequence Analysis: Probabilistic Models of Proteins
@@ -145,14 +159,6 @@ J.~L. Thorne, H.~Kishino, and J.~Felsenstein.
 \newblock An evolutionary model for maximum likelihood alignment of {DNA}
   sequences.
 \newblock {\em Journal of Molecular Evolution}, 33:114--124, 1991.
-
-\bibitem{Hein2001}
-J.~Hein.
-\newblock An algorithm for statistical alignment of sequences related by a
-  binary tree.
-\newblock In R.~B. Altman, A.~K. Dunker, L.~Hunter, K.~Lauderdale, and T.~E.
-  Klein, editors, {\em Pacific Symposium on Biocomputing}, pages 179--190,
-  Singapore, 2001. World Scientific.
 
 \bibitem{DialloEtAl2007}
 A.~B. Diallo, V.~Makarenkov, and M.~Blanchette.
