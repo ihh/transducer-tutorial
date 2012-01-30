@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[x11names,rgb]{xcolor}
+\usepackage{auto-pst-pdf}
+\usepackage[landscape]{geometry}
+% (0bp,0bp)(287bp,364bp)
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{amsmath}
+%
+%
+%
+
+
+\begin{document}
+\pagestyle{empty}
+%
+%
+\enlargethispage{100cm}
+
+% Start of code
+\begin{pspicture}[linewidth=1bp](0bp,0bp)(287bp,364bp)
+
+  \pstVerb{2 setlinejoin} % set line join style to 'mitre'
+%%
+\psset{linecolor=black}
+  % Edge: bif1 -> tkf_cs
+  \psbezier[arrows=->](177.94bp,288.06bp)(181.46bp,284.54bp)(194.35bp,271.65bp)(213.95bp,252.05bp)
+  % Edge: tkf_mf -> MF
+  \psbezier[arrows=->](193.98bp,71.697bp)(194.86bp,63.983bp)(195.92bp,54.712bp)(198.05bp,36.104bp)
+  % Edge: bif1 -> tkf_inter
+  \psbezier[arrows=->](176.06bp,288.06bp)(172.54bp,284.54bp)(159.65bp,271.65bp)(140.05bp,252.05bp)
+  % Edge: root -> bif1
+  \psbezier[arrows=->](177bp,327.91bp)(177bp,319.48bp)(177bp,309.54bp)(177bp,291.94bp)
+  % Edge: tkf_inter -> bif2
+  \psbezier[arrows=->](123bp,215.7bp)(123bp,202.63bp)(123bp,185.11bp)(123bp,163.81bp)
+  % Edge: bif2 -> tkf_mf
+  \psbezier[arrows=->](123.77bp,160.21bp)(128.13bp,155.8bp)(149.98bp,133.63bp)(175.12bp,108.12bp)
+  % Edge: bif2 -> tkf_liv
+  \psbezier[arrows=->](122.39bp,160.21bp)(119.05bp,155.88bp)(102.49bp,134.42bp)(82.21bp,108.12bp)
+  % Edge: tkf_liv -> LIV
+  \psbezier[arrows=->](67.022bp,71.697bp)(66.141bp,63.983bp)(65.081bp,54.712bp)(62.955bp,36.104bp)
+  % Edge: tkf_cs -> CS
+  \psbezier[arrows=->](231bp,215.7bp)(231bp,207.98bp)(231bp,198.71bp)(231bp,180.1bp)
+  % Node: MF
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](259bp,36bp)(145bp,36bp)(141bp,32bp)(141bp,0bp)(255bp,0bp)(259bp,4bp)
+  \psline(255bp,32bp)(141bp,32bp)
+  \psline(255bp,32bp)(255bp,0bp)
+  \psline(255bp,32bp)(259bp,36bp)
+  \rput(200bp,18bp){MF-recognizer, $\nabla(MF)$}
+}%
+  % Node: tkf_mf
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](237bp,108bp)(151bp,108bp)(147bp,104bp)(147bp,72bp)(233bp,72bp)(237bp,76bp)
+  \psline(233bp,104bp)(147bp,104bp)
+  \psline(233bp,104bp)(233bp,72bp)
+  \psline(233bp,104bp)(237bp,108bp)
+  \rput(192bp,90bp){TKF91 model, ${\cal B}$}
+}%
+  % Node: tkf_inter
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](168bp,252bp)(82bp,252bp)(78bp,248bp)(78bp,216bp)(164bp,216bp)(168bp,220bp)
+  \psline(164bp,248bp)(78bp,248bp)
+  \psline(164bp,248bp)(164bp,216bp)
+  \psline(164bp,248bp)(168bp,252bp)
+  \rput(123bp,234bp){TKF91 model, ${\cal B}$}
+}%
+  % Node: LIV
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](122bp,36bp)(4bp,36bp)(0bp,32bp)(0bp,0bp)(118bp,0bp)(122bp,4bp)
+  \psline(118bp,32bp)(0bp,32bp)
+  \psline(118bp,32bp)(118bp,0bp)
+  \psline(118bp,32bp)(122bp,36bp)
+  \rput(61bp,18bp){LIV-recognizer, $\nabla(LIV)$}
+}%
+  % Node: bif1
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \psset{fillcolor=[rgb]{0.0,0.0,0.0}}
+  \psellipse[fillstyle=solid](177bp,290bp)(2bp,2bp)
+}%
+  % Node: tkf_cs
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](276bp,252bp)(190bp,252bp)(186bp,248bp)(186bp,216bp)(272bp,216bp)(276bp,220bp)
+  \psline(272bp,248bp)(186bp,248bp)
+  \psline(272bp,248bp)(272bp,216bp)
+  \psline(272bp,248bp)(276bp,252bp)
+  \rput(231bp,234bp){TKF91 model, ${\cal B}$}
+}%
+  % Node: bif2
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \psset{fillcolor=[rgb]{0.0,0.0,0.0}}
+  \psellipse[fillstyle=solid](123bp,162bp)(2bp,2bp)
+}%
+  % Node: CS
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](287bp,180bp)(179bp,180bp)(175bp,176bp)(175bp,144bp)(283bp,144bp)(287bp,148bp)
+  \psline(283bp,176bp)(175bp,176bp)
+  \psline(283bp,176bp)(283bp,144bp)
+  \psline(283bp,176bp)(287bp,180bp)
+  \rput(231bp,162bp){CS-recognizer, $\nabla(CS)$}
+}%
+  % Node: tkf_liv
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](114bp,108bp)(28bp,108bp)(24bp,104bp)(24bp,72bp)(110bp,72bp)(114bp,76bp)
+  \psline(110bp,104bp)(24bp,104bp)
+  \psline(110bp,104bp)(110bp,72bp)
+  \psline(110bp,104bp)(114bp,108bp)
+  \rput(69bp,90bp){TKF91 model, ${\cal B}$}
+}%
+  % Node: root
+{%
+  \psset{linecolor=[rgb]{0.0,0.0,0.0}}
+  \pspolygon[](240bp,364bp)(118bp,364bp)(114bp,360bp)(114bp,328bp)(236bp,328bp)(240bp,332bp)
+  \psline(236bp,360bp)(114bp,360bp)
+  \psline(236bp,360bp)(236bp,328bp)
+  \psline(236bp,360bp)(240bp,364bp)
+  \rput(177bp,346bp){TKF91 root generator, ${\cal R}$}
+}%
+%
+\end{pspicture}
+% End of code
+%
+\end{document}
+%
+
+%
+
+
