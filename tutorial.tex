@@ -1585,10 +1585,10 @@ M^{(n)}_{ij}=P(\mbox{node $n$ is in state $j$}|\mbox{parent of node $n$ is in st
 Then we can write the core recursion of Felsenstein's pruning algorithm in matrix form;
 $G^{(n)}$ is a vector, $M^{(n)}$ is a matrix, and the core recursion is
 \[
-G^{(n)} = \left( M^{(l)} \times G^{(l)} \right) \fork \left( M^{(r)} \times G^{(r)} \right)
+G^{(n)} = \left( M^{(l)} \cdot G^{(l)} \right) \fork \left( M^{(r)} \cdot G^{(r)} \right)
 \]
 where $(l,r)$ are the left- and right-children of node $n$,
-$\times$ denotes matrix multiplication,
+$\cdot$ denotes matrix multiplication,
 and $\fork$ denotes the {\em pointwise product} (also called the {\em Hadamard product}),
 defined as follows for two vectors $A$ and $B$:
 \[
@@ -1601,8 +1601,8 @@ A_1 B_1 \\ A_2 B_2 \\ A_3 B_3 \\ \ldots \\ A_K B_K
 
 Thus the two core steps of Felsenstein's algorithm (in matrix notation)
 are (a) matrix multiplication and (b) the pointwise product.
-We have defined the transducer equivalent of matrix multiplication,
-now we need to define the transducer equivalent of the vector pointwise product.
+Composition provides the transducer equivalent of matrix multiplication;
+intersection provides the transducer equivalent of the vector pointwise product.
 
 Note also that $G^{(n)}(x)$ is the probability of node $n$'s observed descendants
 {\em conditional on} $x$, the state of node $n$.
