@@ -628,6 +628,27 @@ Whenever possible, we provide references between the examples and their technica
 
 \section{Informal tutorial on transducer composition}
 
+In this section we introduce (via verbal descriptions and graphical representations)
+the various machines and manners of combining them necessary for the
+task of modeling evolution along a tree as shown in  \figref{cs-mf-liv-tree}.  
+While the conceptual underpinnings of our algorithm are not unusually complex, 
+a complete mathematical description demands a significant amount of technical notation (which we provide in \secref{Formal}). 
+For this reason, we aim to avoid such notation in this section,
+and include an array of example machines ranging from trivial to complex. 
+
+We first describe the sorts of state machines used, beginning
+ with simple linear machines
+ (which appear at the leaves of the tree in \figref{cs-mf-liv-tree}) 
+and moving on to the various possibities of the branch model. 
+Then we describe (and provide examples for) the techniques which allow us to 
+co-ordinate these machines on a phylogeny: composition and intersection. 
+
+Finally, we outline how combinations of these machines allow a straightforward definition
+of Felsenstein's pruning algorithm for models allowing insertion/deletion events,
+and a stochastic approximation technique which will allow inference on datasets
+of common practical size.  
+
+
 Our algorithm may be viewed as a consolidation of several approaches:
 \begin{itemize}
 \item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods \cite{Felsenstein81}
@@ -1890,6 +1911,7 @@ final Felsenstein probability is a good approximation.
 
 \pagebreak
 \section{Formal definitions}
+\seclabel{Formal}
 This report makes our transducer-related definitions precise,
  including notation for state types, weights (i.e. probabilities),
  transducer composition, etc.
