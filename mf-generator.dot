@@ -1,4 +1,6 @@
 digraph G {
+	rankdir=LR;
+	
     S [label="", shape=circle, color=red];
     E [label="", shape=diamond, color=red];
 

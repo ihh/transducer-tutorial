@@ -1,4 +1,5 @@
 digraph G {
+	rankdir=LR;
     S [label="$S$", shape=circle, color=red];
     E [label="$E$", shape=diamond, color=red];
     
