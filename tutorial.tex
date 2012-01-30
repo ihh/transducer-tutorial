@@ -1452,19 +1452,27 @@ $i b d$ & Meaning \\
 \hline
 $SSS$ & All transducers are in the Start state.  No characters are emitted or absorbed. 
 \\
-$SI\delta_y$ & The component TKF91 machine emits a character via the Insert state which is read by the $\delta_y$ state of the recognizer; the generator remains in the Start state, not yet having emitted any characters. 
-\\
-$\imath_x I\delta_y$ & The component  TKF91 machine emits a character via the Insert state which is read by the $\delta_y$ state of the recognizer; the generator remains in an Insert state corresponding to the last character $x$ which it generated. 
-\\
-$\imath_x M\delta_y$ & The generator emits character $x$ via an Insert state; TKF91 absorbs and emits it via a Match state;  
-the recognizer absorbs the character via state $\delta_y$.  
-\\
-$\imath_x D W_y$ & The generator emits character $x$ via an Insert state, and TKF91 absorbs and deletes it via a Delete state.  
-The recognizer  remains in $W_y$, the Wait  state following character $y$ (or $W_0$ if the recognizer  has not yet read any characters). 
-\\
 $W_FWW_V$ & All transducers are in their Wait states which precede the End states for each transducer.  No characters are emitted or absorbed. 
 \\
 $EEE$ & All transducers are in their End states.  No characters are emitted or absorbed. 
+\\
+$SI\delta_y$ &
+($y \in \{C,S\}$)
+ The component TKF91 machine emits a character via the Insert state ($I$) which is read by the $\delta_y$ state of the recognizer; the generator remains in the Start state ($S$), not yet having emitted any characters. 
+\\
+$\imath_x I\delta_y$ &
+($x \in \{M,F\}, y \in \{C,S\}$)
+ The component  TKF91 machine emits a character via the Insert state ($I$) which is read by the $\delta_y$ state of the recognizer; the generator remains in an Insert state ($\imath_x$) corresponding to the last character $x$ which it generated. 
+\\
+$\imath_x M\delta_y$ & 
+($x \in \{M,F\}, y \in \{C,S\}$)
+The generator emits character $x$ via an Insert state ($\imath_x$); TKF91 absorbs and emits it via a Match state ($M$);  
+the recognizer absorbs the character via state $\delta_y$.  
+\\
+$\imath_x D W_y$ & 
+($x \in \{M,F\}, y \in \{C,S\}$)
+The generator emits character $x$ via an Insert state ($\imath_x$), and TKF91 absorbs and deletes it via a Delete state ($D$).  
+The recognizer  remains in $W_y$, the Wait  state following character $y$ (or $W_0$ if the recognizer  has not yet read any characters). 
 \end{tabular}
 \caption{ \tablabel{mf-tkf91-liv} Meaning of states in
 transducer $\generate(MF) \cdot \tkf \cdot \recognize(LIV)$ (\figref{mf-tkf91-liv}),
