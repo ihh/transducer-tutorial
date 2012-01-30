@@ -2363,10 +2363,7 @@ In this paper, we have deferred the difficult problem of finding time-parameteri
 (and so may be appropriate for Felsenstein recursions).
 For studies of this problem the reader is referred to previous work \cite{ThorneEtal91,ThorneEtal92,KnudsenMiyamoto2003,MiklosLunterHolmes2004,Rivas05}.
 
-\section{Hierarchy of phylogenetic transducers}
-\seclabel{Hierarchy}
-
-\subsection{Model structure}
+\subsection{Hierarchy of phylogenetic transducers}
 \seclabel{ModelStructure}
 \subsubsection{Phylogenetic tree ($n$, $\leaves$)}
 Suppose we have an evolutionary model defined on a rooted binary phylogenetic tree,
@@ -3111,9 +3108,7 @@ However, $M_n$ does contain cycles among states of type $(I,M,D,W,D,W)$.
 These correspond to characters output by $R$ that are then deleted by both $B_l$ and $B_r$.
 It is necessary to eliminate these states from $M_n$ by marginalization, and to then restore them probabilistically when sampling paths through $M_n$.
 
-\section{Inference algorithms}
-
-\subsection{Dynamic programming}
+\subsection{Dynamic programming algorithms}
 \seclabel{DynamicProgramming}
 The recursion for $\wtrans{\weight}{\epsilon}{M_n}{\epsilon}$ is
 \begin{eqnarray*}
@@ -3665,7 +3660,7 @@ Note the following correspondences between the previously-defined  $\transweight
 \transtowait{E_n}(\profilewait{i},\profilewait{j}) & = & \delta(i=j) \\
 \end{eqnarray*}
 
-\section{Message-passing interpretation}
+\subsection{Message-passing interpretation}
 \seclabel{MessagePassing}
 
 In the interpretation of Felsenstein's pruning algorithm \cite{Felsenstein81} and Elston and Stewart's more general peeling algorithm \cite{ElstonStewart71} as message-passing on factor graphs \cite{KschischangEtAl98},
