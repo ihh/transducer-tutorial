@@ -1,0 +1,256 @@
+\begin{thebibliography}{10}
+
+\bibitem{Felsenstein81}
+J.~Felsenstein.
+\newblock Evolutionary trees from {DNA} sequences: a maximum likelihood
+  approach.
+\newblock {\em Journal of Molecular Evolution}, 17:368--376, 1981.
+
+\bibitem{Yang94b}
+Z.~Yang.
+\newblock Estimating the pattern of nucleotide substitution.
+\newblock {\em Journal of Molecular Evolution}, 39:105--111, 1994.
+
+\bibitem{RannalaYang96}
+B.~Rannala and Z.~Yang.
+\newblock Probability distribution of molecular evolutionary trees: a new
+  method of phylogenetic inference.
+\newblock {\em Journal of Molecular Evolution}, 43:304--311, 1996.
+
+\bibitem{SiepelHaussler04b}
+A.~Siepel and D.~Haussler.
+\newblock Combining phylogenetic and hidden {M}arkov models in biosequence
+  analysis.
+\newblock {\em Journal of Computational Biology}, 11(2-3):413--428, 2004.
+
+\bibitem{YangEtAl2000}
+Z.~Yang, R.~Nielsen, N.~Goldman, and A.-M. Pedersen.
+\newblock Codon-substitution models for heterogeneous selection pressure at
+  amino acid sites.
+\newblock {\em Genetics}, 155:432--449, 2000.
+
+\bibitem{ThorneEtAl96}
+J.~L. Thorne, N.~Goldman, and D.~T. Jones.
+\newblock Combining protein evolution and secondary structure.
+\newblock {\em Molecular Biology and Evolution}, 13:666--673, 1996.
+
+\bibitem{SiepelHaussler04}
+A.~Siepel and D.~Haussler.
+\newblock Phylogenetic estimation of context-dependent substitution rates by
+  maximum likelihood.
+\newblock {\em Molecular Biology and Evolution}, 21(3):468--488, 2004.
+
+\bibitem{KnudsenHein99}
+B.~Knudsen and J.~Hein.
+\newblock {RNA} secondary structure prediction using stochastic context-free
+  grammars and evolutionary history.
+\newblock {\em Bioinformatics}, 15(6):446--454, 1999.
+
+\bibitem{SiepelHaussler04c}
+A.~Siepel and D.~Haussler.
+\newblock Computational identification of evolutionarily conserved exons.
+\newblock In P.~Bourne and D.~Gusfield, editors, {\em Proceedings of the eighth
+  annual international conference on research in computational molecular
+  biology, San Diego, March 27-31 2004}, pages 177--186. ACM, 2004.
+
+\bibitem{PedersenEtAl2006}
+J.~S. Pedersen, G.~Bejerano, A.~Siepel, K.~Rosenbloom, K.~Lindblad-Toh, E.~S.
+  Lander, J.~Kent, W.~Miller, and D.~Haussler.
+\newblock {Identification and classification of conserved {RNA} secondary
+  structures in the human genome}.
+\newblock {\em PLoS Computational Biology}, 2(4):e33, Apr 2006.
+
+\bibitem{MatsenEtAl2010}
+F.~A. Matsen, R.~B. Kodner, and E.~V. Armbrust.
+\newblock {pplacer: linear time maximum-likelihood and {B}ayesian phylogenetic
+  placement of sequences onto a fixed reference tree}.
+\newblock {\em BMC Bioinformatics}, 11:538, 2010.
+
+\bibitem{KschischangEtAl98}
+F.~R. Kschischang, B.~J. Frey, and H.-A. Loeliger.
+\newblock Factor graphs and the sum-product algorithm.
+\newblock {\em {IEEE} Transactions on Information Theory}, 47(2):498--519,
+  1998.
+
+\bibitem{MohriPereiraRiley2000}
+M.~Mohri, F.~Pereira, and M.~Riley.
+\newblock Weighted finite-state transducers in speech recognition.
+\newblock {\em Computer Speech and Language}, 16(1):69--88, 2002.
+
+\bibitem{HeinEtal2000}
+J.~Hein, C.~Wiuf, B.~Knudsen, M.~B. Moller, and G.~Wibling.
+\newblock Statistical alignment: computational properties, homology testing and
+  goodness-of-fit.
+\newblock {\em Journal of Molecular Biology}, 302:265--279, 2000.
+
+\bibitem{HolmesBruno2001}
+I.~Holmes and W.~J. Bruno.
+\newblock Evolutionary {HMM}s: a {B}ayesian approach to multiple alignment.
+\newblock {\em Bioinformatics}, 17(9):803--820, 2001.
+
+\bibitem{SuchardRedelings2006}
+Marc~A Suchard and Benjamin~D Redelings.
+\newblock {{B}{A}li-{P}hy: simultaneous {B}ayesian inference of alignment and
+  phylogeny}.
+\newblock {\em Bioinformatics}, 22(16):2047--2048, Aug 2006.
+
+\bibitem{HigginsSharp89}
+D.~G. Higgins and P.~M. Sharp.
+\newblock Fast and sensitive multiple sequence alignments on a microcomputer.
+\newblock {\em Computer Applications in the Biosciences}, 5:151--153, 1989.
+
+\bibitem{LeeGrassoSharlow2002}
+C.~Lee, C.~Grasso, and M.F. Sharlow.
+\newblock {{M}ultiple sequence alignment using partial order graphs}.
+\newblock {\em Bioinformatics}, 18:452--464, Mar 2002.
+
+\bibitem{Holmes2003}
+I.~Holmes.
+\newblock Using guide trees to construct multiple-sequence evolutionary {HMM}s.
+\newblock {\em Bioinformatics}, 19 Suppl. 1:i147--157, 2003.
+
+\bibitem{BradleyHolmes2007}
+R.~K. Bradley and I.~Holmes.
+\newblock {{T}ransducers: an emerging probabilistic framework for modeling
+  indels on trees}.
+\newblock {\em Bioinformatics}, 23:3258--3262, Dec 2007.
+
+\bibitem{SatijaEtAl2008}
+R.~Satija, L.~Pachter, and J.~Hein.
+\newblock Combining statistical alignment and phylogenetic footprinting to
+  detect regulatory elements.
+\newblock {\em Bioinformatics}, 24(10):1236--1242, 2008.
+
+\bibitem{PatenEtAl2008}
+B.~Paten, J.~Herrero, S.~Fitzgerald, K.~Beal, P.~Flicek, I.~Holmes, and
+  E.~Birney.
+\newblock {{G}enome-wide nucleotide-level mammalian ancestor reconstruction}.
+\newblock {\em Genome Research}, 18:1829--1843, Nov 2008.
+
+\bibitem{SankoffCedergren83}
+D.~Sankoff and R.~J. Cedergren.
+\newblock Simultaneous comparison of three or more sequences related by a tree.
+\newblock In D.~Sankoff and J.~B. Kruskal, editors, {\em Time Warps, String
+  Edits, and Macromolecules: the Theory and Practice of Sequence Comparison},
+  chapter~9, pages 253--264. Addison-Wesley, Reading, MA, 1983.
+
+\bibitem{Durbin98}
+R.~Durbin, S.~Eddy, A.~Krogh, and G.~Mitchison.
+\newblock {\em Biological Sequence Analysis: Probabilistic Models of Proteins
+  and Nucleic Acids}.
+\newblock Cambridge University Press, Cambridge, UK, 1998.
+
+\bibitem{ThorneEtal91}
+J.~L. Thorne, H.~Kishino, and J.~Felsenstein.
+\newblock An evolutionary model for maximum likelihood alignment of {DNA}
+  sequences.
+\newblock {\em Journal of Molecular Evolution}, 33:114--124, 1991.
+
+\bibitem{Hein2001}
+J.~Hein.
+\newblock An algorithm for statistical alignment of sequences related by a
+  binary tree.
+\newblock In R.~B. Altman, A.~K. Dunker, L.~Hunter, K.~Lauderdale, and T.~E.
+  Klein, editors, {\em Pacific Symposium on Biocomputing}, pages 179--190,
+  Singapore, 2001. World Scientific.
+
+\bibitem{DialloEtAl2007}
+A.~B. Diallo, V.~Makarenkov, and M.~Blanchette.
+\newblock Exact and heuristic algorithms for the indel maximum likelihood
+  problem.
+\newblock {\em Journal of Computational Biology}, 14(4):446--461, 2007.
+
+\bibitem{KimSinha2007}
+J.~Kim and S.~Sinha.
+\newblock {{I}ndelign: a probabilistic framework for annotation of insertions
+  and deletions in a multiple alignment}.
+\newblock {\em Bioinformatics}, 23(3):289--297, Feb 2007.
+
+\bibitem{Yang94}
+Z.~Yang.
+\newblock Maximum likelihood phylogenetic estimation from {DNA} sequences with
+  variable rates over sites: approximate methods.
+\newblock {\em Journal of Molecular Evolution}, 39:306--314, 1994.
+
+\bibitem{Bruno96}
+W.~J. Bruno.
+\newblock Modelling residue usage in aligned protein sequences via maximum
+  likelihood.
+\newblock {\em Molecular Biology and Evolution}, 13(10):1368--1374, 1996.
+
+\bibitem{HolmesRubin2002b}
+I.~Holmes and G.~M. Rubin.
+\newblock An {E}xpectation {M}aximization algorithm for training hidden
+  substitution models.
+\newblock {\em Journal of Molecular Biology}, 317(5):757--768, 2002.
+
+\bibitem{MiklosLunterHolmes2004}
+I.~Mikl\'{o}s, G.~Lunter, and I.~Holmes.
+\newblock A long indel model for evolutionary sequence alignment.
+\newblock {\em Molecular Biology and Evolution}, 21(3):529--540, 2004.
+
+\bibitem{KnudsenMiyamoto2003}
+B.~Knudsen and M.~Miyamoto.
+\newblock Sequence alignments and pair hidden {M}arkov models using
+  evolutionary history.
+\newblock {\em Journal of Molecular Biology}, 333(2):453--460, 2003.
+
+\bibitem{Rivas05}
+E.~Rivas.
+\newblock Evolutionary models for insertions and deletions in a probabilistic
+  modeling framework.
+\newblock {\em BMC Bioinformatics}, 6(63), 2005.
+
+\bibitem{BradleyHolmes2009}
+R.~K. Bradley and I.~Holmes.
+\newblock {{E}volutionary triplet models of structured {R}{N}{A}}.
+\newblock {\em PLoS Comput. Biol.}, 5:e1000483, Aug 2009.
+
+\bibitem{GraphViz}
+http://www.graphviz.org/.
+
+\bibitem{KarlinTaylor75}
+S.~Karlin and H.~Taylor.
+\newblock {\em A First Course in Stochastic Processes}.
+\newblock Academic Press, San Diego, CA, 1975.
+
+\bibitem{ThorneEtal92}
+J.~L. Thorne, H.~Kishino, and J.~Felsenstein.
+\newblock Inching toward reality: an improved likelihood model of sequence
+  evolution.
+\newblock {\em Journal of Molecular Evolution}, 34:3--16, 1992.
+
+\bibitem{Holmes2005}
+I.~Holmes.
+\newblock Accelerated probabilistic inference of {RNA} structure evolution.
+\newblock {\em BMC Bioinformatics}, 6(73), 2005.
+
+\bibitem{ElstonStewart71}
+R.~C. Elston and J.~Stewart.
+\newblock A general model for the genetic analysis of pedigree data.
+\newblock {\em Human Heredity}, 21(6):523--542, 1971.
+
+\bibitem{JukesCantor69}
+T.~H. Jukes and C.~Cantor.
+\newblock Evolution of protein molecules.
+\newblock In {\em Mammalian Protein Metabolism}, pages 21--132. Academic Press,
+  New York, 1969.
+
+\bibitem{HasegawaEtAl85}
+M.~Hasegawa, H.~Kishino, and T.~Yano.
+\newblock Dating the human-ape splitting by a molecular clock of mitochondrial
+  {DNA}.
+\newblock {\em Journal of Molecular Evolution}, 22:160--174, 1985.
+
+\bibitem{WongEtAl2008}
+K.~M. Wong, M.~A. Suchard, and J.~P. Huelsenbeck.
+\newblock Alignment uncertainty and genomic analysis.
+\newblock {\em Science}, 319(5862):473--6, 2008.
+
+\bibitem{LoytynojaGoldman2008}
+A~L\"oytynoja and N~Goldman.
+\newblock Phylogeny-aware gap placement prevents errors in sequence alignment
+  and evolutionary analysis.
+\newblock {\em Science}, 320(5883):1632--1635, Jun 2008.
+
+\end{thebibliography}
