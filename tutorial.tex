@@ -1851,8 +1851,12 @@ and Wait states (where the ensemble waits for the next input symbol).
 \subsubsection{The Felsenstein likelihood for a two-branch tree using the TKF91 model}
 
 \widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
-The sum-over-paths weight through this Markov model corresponds to the final Felsenstein likelihood. 
 This machine is equivalent to the generator in \figref{tkf91-root} coupled to the input of the recognizer in \figref{fork-tkf91liv-tkf91mf}.
+Because it is a generator coupled to a recognizer,
+there is no net input or output, and so we can think of this as a straightforward Markov model,
+albeit with some probability ``missing'': the total sum-over-paths weight from Start$\to$End is less than one.
+Indeed, the total sum-over-paths weight through this Markov model
+corresponds to the joint likelihood of the two sibling sequences, LIV and MF.
 % crossref
 \formaldefs
 This type of machine is denoted $M_n$ in \secref{ConstrainedExpanded}.  
