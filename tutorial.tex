@@ -2622,19 +2622,19 @@ This prior is an approximation to replace the true (but as yet unknown) posterio
 (including $n$'s parent, and ancestors all the way back to the root, as well as siblings, cousins etc.)
 
 A plausible choice for this prior, equivalent to assuming {\em stationarity} of the underlying evolutionary process, is the same prior that we use for the root node; that is, the generator model $R$.
-We define
+We therefore define
 \begin{eqnarray*}
 M_n & = & R \compose H_n \\
 & = & R \compose ((B_l \compose E_l) \fork (B_r \compose E_r))
 \end{eqnarray*}
-to be the corresponding generative transducer.
-(\figref{root-fork-tkf91liv-tkf91mf} is an example of this.)
 
 We can represent $M_n$ diagramatically as
 \begin{parsetree}
  ( .$R$. ( .$\idfork$. ( .$B_l$. .$E_l$. ) ( .$B_r$. .$E_r$. )  ) )
 \end{parsetree}
 \\
+
+\figref{root-fork-tkf91liv-tkf91mf} is an example of the $M_n$ type of model.
 
 The transducer $Q_n = R \compose (B_l \fork B_r)$, which forms the comparison kernel of $M_n$, is also useful.
 It can be represented as
@@ -2649,6 +2649,9 @@ making two copies of it, and feeding the two copies into $B_l$ and $B_r$ respect
 The outputs of $B_l$ and $B_r$ are the two outputs of the Pair HMM.
 The different states of $Q_n$ encode information about how each output symbol originated
 (e.g. by root insertions that were then matched on the branches, {\em vs} insertions on the branches).
+
+Transducer $M_n$ can be thought of as the dynamic programming matrix that we get
+if we use the Pair HMM $Q_n$ to align the recognition profiles $E_l$ and $E_r$.
 
 \subsubsection{Component state tuples $\mstate$}
 Suppose that $a \in \statesof{A}, b \in \statesof{B}, \upsilon \in \statesof{\idfork}$.
