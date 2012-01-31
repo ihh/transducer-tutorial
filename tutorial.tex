@@ -698,9 +698,10 @@ In this tutorial section we are going to work through a small examples of using 
 for three tiny protein sequences (MF, CS, LIV).
 Specifically, we will compute the likelihood of the tree shown in \figref{cs-mf-liv-tree},
 explaining the common descent of these three sequences
-under the so-called TKF91 model (\figref{tkf91}).
+under the so-called TKF91 model (\figref{tkf91}),
+as well as a simpler model that only allows point substitutions.
 To do this we will construct (progressively, from the bottom up) the ensemble of transducer machines shown in \figref{cs-mf-liv-machines}.
-We will see that the full state space of \figref{cs-mf-liv-machines} is equivalent to Sankoff's ${\cal O}(L^N)$ alignment algorithm;
+We will see that the full state space of \figref{cs-mf-liv-machines} is equivalent to Hein's ${\cal O}(L^N)$ alignment algorithm for the TKF91 model \cite{Hein2001};
 ${\cal O}(NL^2)$ progressive alignment corresponds to a greedy Viterbi/maximum likelihood-traceback approximation,
 and partial-order graph alignment corresponds to a Forward/stochastic-traceback approximation.
 
@@ -997,6 +998,10 @@ according to the distribution $Q_{xy}$.
 Since there are no states of type Insert or Delete, the output sequence will necessarily
 be the same length as the input.  
 
+This is something of a trivial example, since it is certainly not necessary to use transducer machinery
+to model point substitution processes. Our aim is to show explicitly how a familiar simple case
+(the Felsenstein algorithm for point substitution) is represented using the more elaborate transducer notation.
+
 \pdffig{substituter}{Transducer $\substitute(Q)$ (``the substituter'') introduces substitutions (according to substitution matrix $Q$) but no indels.  
 Whenever the machine makes a transition into the rectangular Match state, a character $x$ is read from the input and a character $y$ emitted to the output,
 with the output character sampled from the conditional distribution $P(y|x) = Q_{xy}$.}
@@ -1012,7 +1017,8 @@ with the output character sampled from the conditional distribution $P(y|x) = Q_
 \right.
 \]
 % crossref
-These ideas are defined with greater precision in \secref{Identity}. 
+The identity essentially copies its input to its output directly.
+It is defined formally in \secref{Identity}. 
 
 \pdffig{identity}{Transducer $\identity$, the identity transducer, 
 simply copies the input tape to the output tape.  This can be thought of as a special case of the substituter transducer in \figref{substituter}
