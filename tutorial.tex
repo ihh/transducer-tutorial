@@ -1361,12 +1361,12 @@ $SS$ & Both transducers are in the Start state.  No characters are  absorbed or 
 $EE$ & Both transducers are in the End state.  No characters are  absorbed or emitted. &  \\
 $W_FW$ & Both transducers are in their respective Wait states.  No characters are absorbed or emitted, and both are poised to enter the End state.  &  \\
 $SI$ & The TKF91 transducer inserts a character $y$ while the generator remains in the start state.  & $\pi_y$ \\
-$\imath_MM$ & The  generator inserts the M character, which TKF91 absorbs via its Match state and emits character $y$. & $\exp(Rt)_{My}$ \\
-$\imath_MD$ & The  generator inserts the M character, which TKF91 absorbs via its Delete state. &  \\
-$\imath_MI$ & Having previously absorbed the M character, TKF91 inserts a character $y$ while the generator remains in the Insert state from which it emitted the M.  & $\pi_y$ \\
-$\imath_FM$ & The  generator inserts the F character, which TKF91 absorbs via its Match state and emits character $y$. & $\exp(Rt)_{Fy}$ \\
-$\imath_FD$ & The  generator inserts the F character, which TKF91 absorbs via its Delete state. &  \\
-$\imath_FI$ & Having previously absorbed the F character, TKF91 inserts a character while the generator remains in the Insert state from which it emitted the F.  & $\pi_y$ \\
+$\imath_MM$ & The  generator emits the M character, which TKF91 absorbs via its Match state and emits character $y$. & $\exp(Rt)_{My}$ \\
+$\imath_MD$ & The  generator emits the M character, which TKF91 absorbs via its Delete state. &  \\
+$\imath_MI$ & TKF91 inserts a character $y$ while the generator remains in the Insert state from which it emitted its last character (M).  & $\pi_y$ \\
+$\imath_FM$ & The  generator emits the F character, which TKF91 absorbs via its Match state and emits character $y$. & $\exp(Rt)_{Fy}$ \\
+$\imath_FD$ & The  generator emits the F character, which TKF91 absorbs via its Delete state. &  \\
+$\imath_FI$ & TKF91 inserts a character $y$ while the generator remains in the Insert state from which it emitted its last character (F).  & $\pi_y$ \\
 \end{tabular}
 \caption{ \tablabel{mf-tkf91} Meanings (and, where applicable, I/O functions) of all states in
 transducer $\generate(MF) \cdot \tkf$ (\figref{mf-tkf91}),
