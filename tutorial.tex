@@ -606,11 +606,6 @@ The exceptions to this rule are the ``statistical alignment'' methods \cite{Hein
 which also marginalize alignments in an unbiased way---albeit more slowly, since they use Markov Chain Monte Carlo methods (MCMC).
 In this sense, the new algorithm may be thought of as a fast, non-MCMC approximation to statistical alignment.
 
-Our algorithm may, equivalently, be thought of as a phylogenetic generalization of progressive multiple alignment \cite{HigginsSharp89}
-that uses structures similar to partial-order graphs to represent ensembles of alignments \cite{LeeGrassoSharlow2002}.
-Yet another interpretation is that it represents the application of standard message-passing on a phylogenetic factor graph,
-where the conditional distributions (the factors of the graph) are finite-state transducers \cite{KschischangEtAl98}.
-
 The purpose of this manuscript is a clean theoretical presentation of the algorithm.
 In separate work (manuscript {\em submitted}) we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
 as indicated by proxy statistics such as the estimated indel rate.
@@ -637,6 +632,8 @@ Each example presented in this informal section
 correspond to rigorously-defined mathematical constructs defined in the technical section. 
 Whenever possible, we provide references between the examples and their technical definitions.
 
+The final section of the tutorial, \secref{FormalTutorialRelationship}, gives a detailed account of the connections between the tutorial and formal sections.
+
 \section{Informal tutorial on transducer composition}
 
 In this section we introduce (via verbal descriptions and graphical representations)
@@ -659,25 +656,6 @@ Finally, we outline how combinations of these machines allow a straightforward d
 of Felsenstein's pruning algorithm for models allowing insertion/deletion events,
 and a stochastic approximation technique which will allow inference on datasets
 of common practical size.  
-
-
-Our algorithm may be viewed as a consolidation of several approaches:
-\begin{itemize}
-\item Felsenstein's pruning algorithm for calculating statistical phylogenetic likelihoods \cite{Felsenstein81};
-\item Sankoff's ${\cal O}(L^N)$ algorithm for simultaneous multiple alignment, ancestral reconstruction and phylogeny \cite{SankoffCedergren83};
-\item Heuristic approximations (at ${\cal O}(NL^2)$ or thereabouts) to Sankoff's algorithm including progressive alignment \cite{HigginsSharp89} and partial-order graph alignment \cite{LeeGrassoSharlow2002};
-\item Hidden Markov Model theory for sequence profiling \cite{Durbin98};
-\item The Thorne-Kishino-Felsenstein model for indels \cite{ThorneEtal91};
- and the related algorithm of Hein \cite{Hein2001};
-\item Algorithms for ancestral sequence reconstruction conditioned on an alignment, including:
- TreeHMM \cite{DialloEtAl2007}, Indelign \cite{KimSinha2007}, and Ortheus \cite{PatenEtAl2008}.
-\end{itemize}
-
-The algorithm uses the theory of finite state transducers to connect these fields,
-and suggests a way to extend the literature on
-site-dependent and latent-variable substitution models \cite{Yang94,Bruno96,YangEtAl2000,HolmesRubin2002b}
-to indel models.
-
 
 \subsection{Transducers as input-output machines}
 
@@ -1917,7 +1895,11 @@ the algorithmic internals are detailed in \secref{Traceback}.
 the machine of \figref{root-fork-tkf91liv-tkf91mf}
  corresponds to the most likely evolutionary history relating the two sequences.  
 Equivalently, this path corresponds to an alignment of the two sequences and their 
-ancestors.}
+ancestors.
+% crossref
+\formaldefs
+The subset of the state graph corresponding to this path is denoted $M'_n$ in \secref{ConstrainedExpanded}.
+}
 
 In \figref{viterbi-root-fork-tkf91liv-tkf91mf}, the highest-weight (Viterbi) traceback path
 is highlighted.  
@@ -1967,6 +1949,7 @@ it is possible to sample suboptimal paths proportional to their posterior probab
 Here, two sampled paths through the state graph are shown. 
 % crossref
 \formaldefs
+The subset of the state graph covered by the set of sampled paths is denoted $M'_n$ in \secref{ConstrainedExpanded}.
 The mathematical detail of sampling paths is described in \secref{Traceback}.}
 
 Instead of only saving the single highest-weight path through
@@ -2019,7 +2002,8 @@ reflecting the possible uncertainty in our alignment/ancestral prediction, shown
 % crossref
 (which is a transducer of the form $E_n$ in \secref{ConstrainedExpanded}).
 % crossref
-The exact transformations required (removing the root generator, eliminating null states, and adding wait states to restore the machine to Moore normal form)
+The exact series of transformations required to convert \figref{forward2-root-fork-tkf91liv-tkf91mf} into \figref{forward2-profile}
+(removing the root generator, eliminating null states, and adding wait states to restore the machine to Moore normal form)
 is detailed in \secref{Mn2En}.  
 
 Note that these are all still approximations to the full
@@ -2054,6 +2038,9 @@ For clarity, many transitions in this diagram have been removed or collapsed.
 is the full recognition profile for the root-ancestral sequence in \figref{cs-mf-liv-tree}, 
 representing all the possible evolutionary histories relating the three sequences.  
 For clarity, many transitions in this diagram have been removed or collapsed.
+%crossref
+\formaldefs
+This transducer, which recognizes the root sequence in \figref{cs-mf-liv-tree}, is denoted $G_1$ in \secref{EvidenceExpandedModel}.
 }
 
 \subsubsection{Felsenstein probability on a larger TKF91 tree}
@@ -2266,6 +2253,44 @@ This type of transducer is called $Q_n$ in \secref{ConstrainedExpanded}.
 When both its outputs are connected to recognizers ($H_l$ and $H_r$),
 then one obtains a transducer of the form $M_n$.
 }
+
+\subsection{A note on the relationship between this tutorial and the formal definitions section}
+\seclabel{FormalTutorialRelationship}
+
+As noted throughout the tutorial, the example phylogeny and transducers can be directly related to the ``Hierarchy of phylogenetic transducers''
+described in \secref{ModelStructure}.
+
+Consider the tree of \figref{cs-mf-liv-tree}.
+Let the nodes of this tree be numbered as follows:
+(1) Ancestral sequence,
+(2) Intermediate sequence,
+(3) Sequence LIV,
+(4) Sequence MF,
+(5) Sequence CS.
+
+Some of the transducers defined for this tree in \secref{ModelStructure} include
+% $F_n$, $G_n$, $H_n$, $M_n$, $E_n$ and $Q_n$
+\[
+\begin{array}{rcll}
+E_5 = H_5 = G_5 & = & \recognize(CS) & \mbox{\figref{cs-labeled}} \\
+E_4 = H_4 = G_4 & = & \recognize(MF) & \mbox{\figref{mf-labeled}} \\
+E_3 = H_3 = G_3 & = & \recognize(LIV) & \mbox{\figref{liv-labeled}} \\
+G_2 & = & (\tkf \cdot G_3) \fork (\tkf \cdot G_4) & \\
+& = & ( \tkf \cdot \recognize(LIV) ) \fork ( \tkf \cdot \recognize(MF) ) & \mbox{\figref{fork-tkf91liv-tkf91mf}} \\
+H_2 & = & (\tkf \cdot E_3) \fork (\tkf \cdot E_4) & \\
+& = & G_2 & \mbox{\figref{fork-tkf91liv-tkf91mf} again} \\
+M_2 & = & \tkfroot \cdot H_2 & \\
+    & = & \tkfroot \cdot ( \tkf \cdot \recognize(LIV) ) \fork ( \tkf \cdot \recognize(MF) ) & \mbox{\figref{root-fork-tkf91liv-tkf91mf}} \\
+E_2 & \subseteq & H_2 & \mbox{\figref{viterbi-profile}, \figref{forward2-profile}} \\
+G_1 & = & (\tkf \cdot G_2) \fork (\tkf \cdot G_5) & \\
+& = & (\tkf \cdot (\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))\fork(\tkf \cdot \recognize(CS)) & \mbox{\figref{fork3-tkf91liv-tkf91mf-tkf91cs}} \\
+H_1 & = & (\tkf \cdot E_2) \fork (\tkf \cdot E_5) & \mbox{\figref{fork-tkf91viterbi-tkf91cs}, \figref{fork-tkf91forward2-tkf91cs}} \\
+G_0 & = & \tkfroot \cdot G_1 & \\
+& = & \tkfroot \cdot (\tkf \cdot (\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))\fork(\tkf \cdot \recognize(CS)) & \mbox{\figref{cs-mf-liv-machines}} \\
+\forall n \in \{1,2\}: Q_n & = & \tkfroot \fork (\tkf \cdot \tkf) & \mbox{\figref{root-fork-tkf91-tkf91}} \\
+\end{array}
+\]
+
 
 \pagebreak
 \section{Formal definitions}
@@ -2680,6 +2705,8 @@ for the tree of \figref{cs-mf-liv-tree}.
 
 The complete evidence-expanded model is
 $G_0 = R \compose G_1$.
+(In our tutorial example, the state graph of this transducer has too many transitions to show, but it is
+the configuration shown in \figref{cs-mf-liv-machines}.)
 
 The probability that the forward model $F_0$ generates the evidential sequences $\outputs$
 is identical to the probability that the evidence-expanded model $G_0$ generates the empty string

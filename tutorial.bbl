@@ -120,11 +120,6 @@ Marc~A Suchard and Benjamin~D Redelings.
   phylogeny}.
 \newblock {\em Bioinformatics}, 22(16):2047--2048, Aug 2006.
 
-\bibitem{HigginsSharp89}
-D.~G. Higgins and P.~M. Sharp.
-\newblock Fast and sensitive multiple sequence alignments on a microcomputer.
-\newblock {\em Computer Applications in the Biosciences}, 5:151--153, 1989.
-
 \bibitem{Holmes2003}
 I.~Holmes.
 \newblock Using guide trees to construct multiple-sequence evolutionary {HMM}s.
@@ -148,47 +143,11 @@ B.~Paten, J.~Herrero, S.~Fitzgerald, K.~Beal, P.~Flicek, I.~Holmes, and
 \newblock {{G}enome-wide nucleotide-level mammalian ancestor reconstruction}.
 \newblock {\em Genome Research}, 18:1829--1843, Nov 2008.
 
-\bibitem{Durbin98}
-R.~Durbin, S.~Eddy, A.~Krogh, and G.~Mitchison.
-\newblock {\em Biological Sequence Analysis: Probabilistic Models of Proteins
-  and Nucleic Acids}.
-\newblock Cambridge University Press, Cambridge, UK, 1998.
-
 \bibitem{ThorneEtal91}
 J.~L. Thorne, H.~Kishino, and J.~Felsenstein.
 \newblock An evolutionary model for maximum likelihood alignment of {DNA}
   sequences.
 \newblock {\em Journal of Molecular Evolution}, 33:114--124, 1991.
-
-\bibitem{DialloEtAl2007}
-A.~B. Diallo, V.~Makarenkov, and M.~Blanchette.
-\newblock Exact and heuristic algorithms for the indel maximum likelihood
-  problem.
-\newblock {\em Journal of Computational Biology}, 14(4):446--461, 2007.
-
-\bibitem{KimSinha2007}
-J.~Kim and S.~Sinha.
-\newblock {{I}ndelign: a probabilistic framework for annotation of insertions
-  and deletions in a multiple alignment}.
-\newblock {\em Bioinformatics}, 23(3):289--297, Feb 2007.
-
-\bibitem{Yang94}
-Z.~Yang.
-\newblock Maximum likelihood phylogenetic estimation from {DNA} sequences with
-  variable rates over sites: approximate methods.
-\newblock {\em Journal of Molecular Evolution}, 39:306--314, 1994.
-
-\bibitem{Bruno96}
-W.~J. Bruno.
-\newblock Modelling residue usage in aligned protein sequences via maximum
-  likelihood.
-\newblock {\em Molecular Biology and Evolution}, 13(10):1368--1374, 1996.
-
-\bibitem{HolmesRubin2002b}
-I.~Holmes and G.~M. Rubin.
-\newblock An {E}xpectation {M}aximization algorithm for training hidden
-  substitution models.
-\newblock {\em Journal of Molecular Biology}, 317(5):757--768, 2002.
 
 \bibitem{MiklosLunterHolmes2004}
 I.~Mikl\'{o}s, G.~Lunter, and I.~Holmes.
@@ -214,6 +173,12 @@ R.~K. Bradley and I.~Holmes.
 
 \bibitem{GraphViz}
 http://www.graphviz.org/.
+
+\bibitem{Durbin98}
+R.~Durbin, S.~Eddy, A.~Krogh, and G.~Mitchison.
+\newblock {\em Biological Sequence Analysis: Probabilistic Models of Proteins
+  and Nucleic Acids}.
+\newblock Cambridge University Press, Cambridge, UK, 1998.
 
 \bibitem{KarlinTaylor75}
 S.~Karlin and H.~Taylor.
