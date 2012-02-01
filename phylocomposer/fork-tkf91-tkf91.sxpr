@@ -1,0 +1,48 @@
+(branch
+ (from $NULL) (to $ROOT)
+ (transducer IDENTITY)
+ (branch
+  (to $L)
+  (transducer TKF91_BRANCH))
+ (branch
+  (to $R)
+  (transducer TKF91_BRANCH)))
+
+(token (x))
+
+(transducer
+ (name IDENTITY)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name M) (type match))
+
+ (transition (from S) (to W))
+ (transition (from W) (to M))
+ (transition (from M) (to W))
+ (transition (from W) (to E)))
+
+
+(transducer
+ (name TKF91_BRANCH)
+
+ (state (name S) (type start))
+ (state (name E) (type end))
+ (state (name W) (type wait))
+ (state (name M) (type match))
+ (state (name D) (type delete))
+ (state (name I) (type insert))
+
+ (transition (from S) (to I))
+ (transition (from S) (to W))
+ (transition (from W) (to M))
+ (transition (from W) (to D))
+ (transition (from W) (to E))
+ (transition (from M) (to I))
+ (transition (from M) (to W))
+ (transition (from D) (to I))
+ (transition (from D) (to W))
+ (transition (from I) (to I))
+ (transition (from I) (to W)))
+

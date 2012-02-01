@@ -1850,7 +1850,8 @@ and Wait states (where the ensemble waits for the next input symbol).
 
 \subsubsection{The Felsenstein likelihood for a two-branch tree using the TKF91 model}
 
-\widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence which then evolves into LIV and MF in parallel.  
+\widepngfig{root-fork-tkf91liv-tkf91mf}{Transducer $\tkfroot \cdot ((\tkf \cdot \recognize(LIV))\fork(\tkf \cdot \recognize(MF)))$ models the generation of an ancestral sequence
+which is then duplicated; the two copies are mutated (in parallel) by two TKF91 transducers into (respectively) LIV and MF.  
 This machine is equivalent to the generator in \figref{tkf91-root} coupled to the input of the recognizer in \figref{fork-tkf91liv-tkf91mf}.
 Because it is a generator coupled to a recognizer,
 there is no net input or output, and so we can think of this as a straightforward Markov model,
@@ -2100,11 +2101,11 @@ until more sequences are observed.
 
 \subsection{Stochastic lower bound version of Felsenstein recursion}
 
-Our stochastic lower bound version is intermediate to these two.
-Rather than just sampling the best linear profile for each parent
-(as in \figref{viterbi-fork-tkf91liv-tkf91mf}),
+Our stochastic lower bound version is intermediate to the progressive alignment (Viterbi-like) algorithm and the full Sankoff algorithm.
+Rather than just sampling the best linear profile for each parent, as in progressive alignment
+(\figref{viterbi-fork-tkf91liv-tkf91mf}),
 we sample some fixed number of such paths
-(as in \figref{forward2-fork-tkf91liv-tkf91mf}).
+(\figref{forward2-fork-tkf91liv-tkf91mf}).
 This allows us to account for some amount of alignment uncertainty,
 while avoiding the full complexity of the complete ancestral profile
 (\figref{fork3-tkf91liv-tkf91mf-tkf91cs}).
@@ -2158,6 +2159,92 @@ recover the maximum likelihood reconstruction at the root level, and so the
 lower bound is a good one.
 
 
+\subsection{A Pair HMM for aligning siblings}
+
+While we have constructed our hierarchy of phylogenetic transducers by using recognizers,
+it is also sometimes useful (and perhaps more conventional in bioinformatics) to think in terms of generators.
+For example, we can describe the multi-sequence HMM that simultaneously emits an alignment of all of the sequences;
+this is a generator, and in fact is the model $F_n$ described in \secref{ForwardModel}.
+(An animation of such a multi-sequence generator emitting a small alignment can be viewed at
+\url{http://youtu.be/EcLj5MSDPyM} with more at \url{http://biowiki.org/PhyloFilm}.)
+
+If we take the intersection of two TKF91 transducers, we obtain a transducer that has one input sequence and two output sequences
+(or, equivalently, one output tape that encodes a pairwise alignment of two sequences).
+This transducer is shown in \figref{fork-tkf91-tkf91}.
+If we then connect a TKF91 equilibrium generator (\figref{tkf91-root}) to the input of \figref{fork-tkf91-tkf91},
+we get \figref{root-fork-tkf91-tkf91}: a generator with two output tapes, i.e. a Pair HMM.
+(To avoid introducing yet more tables and cross-references, we have confined the descriptions
+ of the states in \figref{root-fork-tkf91-tkf91} and \figref{fork-tkf91-tkf91}
+ to the respective figure captions.)
+
+The Pair HMM in \figref{root-fork-tkf91-tkf91} is particularly useful, as it crops up in our algorithm
+whenever we have to align two recognizers. Specifically, 
+\figref{root-fork-tkf91liv-tkf91mf}---which looks a bit like a pairwise dynamic programming matrix
+for aligning sequence LIV to sequence MF---is essentially
+\figref{root-fork-tkf91-tkf91} with one output tape connected to the LIV-recognizer (\figref{liv-labeled})
+and the other output tape connected to the MF-recognizer (\figref{mf-labeled}).
+In computing the state space of machines like \figref{root-fork-tkf91liv-tkf91mf}
+% crossref
+(which are called $M_n$ in \secref{ConstrainedExpanded}),
+it is useful to precompute the state space of the component machine in \figref{root-fork-tkf91-tkf91}
+% crossref
+(called $Q_n$ in \secref{ConstrainedExpanded}).
+This amounts to a run-time optimization, though it also helps us verify correctness of the model.
+
+\widepdffig{fork-tkf91-tkf91}{
+Transducer $\idfork \circ (\tkf \fork \tkf)$ is a bifurcation of two TKF91 transducers.
+It can be viewed as a transducer with one input tape and two output tapes.
+Each state has the form $\upsilon b_1 b_2$ where
+ $\upsilon$ is the state of the bifurcation transducer (\secref{Identity}),
+ $b_1$ is the state of the first TKF91 machine (\figref{tkf91-labeled}) and $b_2$ is the state of the second TKF91 machine.
+The meaning of I/O states (Match, Insert, Delete) is subtle in this model, because there are two output tapes.
+Dealing first with the Inserts:
+in states $SIW$ and $MIW$, the first TKF91 transducer is inserting symbols to the first output tape,
+while in states $SSI$, $MMI$ and $MDI$, the second TKF91 transducer is emitting symbols to the second output tape.
+Dealing now with the Matches and Deletes:
+the four states that can receive an input symbol all have $\upsilon=M$ and $b_1,b_2 \in \{M,D\}$
+(i.e. $MMM$, $MMD$, $MDM$ and $MDD$).
+Of these,
+$MMM$ emits a symbol to both output tapes (and so is a Match);
+$MMD$ only emits a symbol to the first output tape (and so qualifies as a Match because it has input and output);
+$MDM$ only emits a symbol to the second output tape (and so qualifies as a Match);
+and $MDD$ produces no output at all (and is therefore the only true Delete state).
+}
+
+\widepdffig{root-fork-tkf91-tkf91}{
+Transducer $\tkfroot \circ (\tkf \fork \tkf)$ represents the operation
+of sampling a sequence from the TKF91 equilibrium distribution
+and then feeding that sequence independently into two TKF91 transducers.
+Equivalently, it is the composition of the TKF91 equilibrium generator (\figref{tkf91-root})
+with a bifurcation of two TKF91 transducers (\figref{fork-tkf91-tkf91}).
+It can be viewed as a generator with two output tapes; i.e. a Pair HMM.
+Each state has the form $\rho b_1 b_2$ where
+ $\rho$ is the state of the generator,
+ $b_1$ is the state of the first TKF91 machine and $b_2$ is the state of the second.
+As in \figref{fork-tkf91-tkf91},
+the meaning of I/O states is subtle in this model, because there are two output tapes.
+We first deal with Insert states where one of the TKF91 transducers is responsible for the insertion.
+In states $SIW$ and $IIW$, the first TKF91 transducer is emitting symbols to the first output tape;
+in states $SSI$, $IDI$ and $IMI$, the second TKF91 transducer is emitting symbols to the second output tape.
+The remaining states (excluding $SSS$ and $EEE$) all involve symbol emissions by the generator,
+that are then processed by the two TKF91 models in various ways.
+These four states that involve emissions by the generator all have $\rho=I$ and $b_1,b_2 \in \{M,D\}$
+(i.e. $IMM$, $IMD$, $IDM$ and $IDD$).
+Of these,
+$IMM$ emits a symbol to both output tapes (and so qualifies as an Insert state);
+$IMD$ only emits a symbol to the first output tape (and is an Insert state);
+$IDM$ only emits a symbol to the second output tape (and is an Insert state);
+and $IDD$ produces no output at all (and is therefore a Null state).
+Note that \figref{root-fork-tkf91liv-tkf91mf},
+which looks a bit like a pairwise dynamic programming matrix,
+is essentially
+this Pair HMM with one output tape connected to the LIV-recognizer (\figref{liv-labeled})
+and the other output tape connected to the MF-recognizer (\figref{mf-labeled}),
+\formaldefs
+This type of transducer is called $Q_n$ in \secref{ConstrainedExpanded}.
+When both its outputs are connected to recognizers ($H_l$ and $H_r$),
+then one obtains a transducer of the form $M_n$.
+}
 
 \pagebreak
 \section{Formal definitions}
@@ -2649,6 +2736,8 @@ making two copies of it, and feeding the two copies into $B_l$ and $B_r$ respect
 The outputs of $B_l$ and $B_r$ are the two outputs of the Pair HMM.
 The different states of $Q_n$ encode information about how each output symbol originated
 (e.g. by root insertions that were then matched on the branches, {\em vs} insertions on the branches).
+% crossref
+\figref{root-fork-tkf91-tkf91} shows an example of a $Q_n$-like transducer.
 
 Transducer $M_n$ can be thought of as the dynamic programming matrix that we get
 if we use the Pair HMM $Q_n$ to align the recognition profiles $E_l$ and $E_r$.

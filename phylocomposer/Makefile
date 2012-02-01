@@ -19,6 +19,13 @@
 	cat $< | perl -pe 'while(s/<[^>]+>//){};s/label=(\S+)>/label="$$1"/' | grep -v plaintext >$@
 
 # Custom sort rules
+# Fork
+fork-%.bigdot: fork-%.html.dot
+	./sort-fork.pl $< >$@
+
+root-fork-%.bigdot: root-fork-%.html.dot
+	./sort-fork.pl $< >$@
+
 # Two-sequence DP via a forked recognizer
 fork2-%.bigdot: fork2-%.html.dot
 	./sort-fork2.pl $< >$@
