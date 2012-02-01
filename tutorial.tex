@@ -2202,8 +2202,8 @@ Dealing first with the Inserts:
 in states $SIW$ and $MIW$, the first TKF91 transducer is inserting symbols to the first output tape,
 while in states $SSI$, $MMI$ and $MDI$, the second TKF91 transducer is emitting symbols to the second output tape.
 Dealing now with the Matches and Deletes:
-the four states that can receive an input symbol all have $\upsilon=M$ and $b_1,b_2 \in \{M,D\}$
-(i.e. $MMM$, $MMD$, $MDM$ and $MDD$).
+the four states that can receive an input symbol
+are $MMM$, $MMD$, $MDM$ and $MDD$.
 Of these,
 $MMM$ emits a symbol to both output tapes (and so is a Match);
 $MMD$ only emits a symbol to the first output tape (and so qualifies as a Match because it has input and output);
@@ -2228,8 +2228,8 @@ In states $SIW$ and $IIW$, the first TKF91 transducer is emitting symbols to the
 in states $SSI$, $IDI$ and $IMI$, the second TKF91 transducer is emitting symbols to the second output tape.
 The remaining states (excluding $SSS$ and $EEE$) all involve symbol emissions by the generator,
 that are then processed by the two TKF91 models in various ways.
-These four states that involve emissions by the generator all have $\rho=I$ and $b_1,b_2 \in \{M,D\}$
-(i.e. $IMM$, $IMD$, $IDM$ and $IDD$).
+These four states that involve emissions by the generator
+are $IMM$, $IMD$, $IDM$ and $IDD$.
 Of these,
 $IMM$ emits a symbol to both output tapes (and so qualifies as an Insert state);
 $IMD$ only emits a symbol to the first output tape (and is an Insert state);
