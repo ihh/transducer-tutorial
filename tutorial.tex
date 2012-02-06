@@ -648,7 +648,7 @@ instead focusing on a selection of illustrative example machines ranging from si
 We first describe the sorts of state machines used, beginning
  with simple linear machines
  (which appear at the leaves of the tree in \figref{cs-mf-liv-machines}) 
-and moving on to the various possibities of the branch model. 
+and moving on to the various possibilities of the branch model. 
 Then we describe (and provide examples for) the techniques which allow us to 
 co-ordinate these machines on a phylogeny: composition and intersection. 
 
@@ -725,10 +725,14 @@ Generators and recognizers are defined with greater precision in \secref{GenSing
 \figref{liv-small} is an example of a recognizer that uniquely recognizes (and deletes) the protein sequence LIV.
 
 \widepngfig{mf-generator}{Generator for protein sequence MF.  
-This is a trivial state machine which emits (generates) the sequence MF with weight (probability) 1. }
+This is a trivial state machine which emits (generates) the sequence MF with weight (probability) 1.
+The red circle indicates the Start state, and the red diamond the End state.
+}
 
 \widepngfig{liv-small}{Recognizer for protein sequence LIV.
-This is a trivial state machine which absorbs (recognizes) the sequence LIV with weight (probability) 1, and all other sequences with weight 0.  }
+This is a trivial state machine which absorbs (recognizes) the sequence LIV with weight (probability) 1, and all other sequences with weight 0.
+The red circle indicates the Start state, and the red diamond the End state.
+}
 
 These Figures illustrate the visual notation we use throughout the illustrative Figures of this tutorial.
 States and transitions are shown as a graph.
@@ -826,7 +830,7 @@ A state's type determines its I/O capabilities:
  a Delete state absorbs (reads) an input character,
 and
  a Match state both absorbs an input character and emits an output character.
-Mnemonics: Insert states point upwards, Delete states point Downwards, Wait states are octagonal like Stop signs.
+Mnemonics: Insert states point upwards, Delete states point Downwards, Wait states are octagonal like US Stop signs.
 }
 
 Some other features of this view include the following:
@@ -1053,8 +1057,8 @@ Characters are all deleted with the same weight: once a Delete state is entered 
 absorbed character is deleted with weight 1 regardless of its value.  
 Inserted characters $y$ are emitted according to the equilibrium distribution $\pi_y$.
 
-In the language of \cite{ThorneEtal91}, every state path contains a Start$\to$Wait segment that corresponds to the ``mortal link'',
-and every Wait$\to$Wait tour corresponds to an ``immortal link''.
+In the language of \cite{ThorneEtal91}, every state path contains a Start$\to$Wait segment that corresponds to the ``immortal link'',
+and every Wait$\to$Wait tour corresponds to an ``mortal link''.
 
 \widepdffig{tkf91}{The TKF91 transducer, labeled with transition weights and I/O functions.  
 This transducer models the sequence transformations of the TKF91 model \cite{ThorneEtal91}.
@@ -1410,11 +1414,11 @@ The composite machines accept sequence on input, and emit null output.
 
 \widepdffig{substituter-mf}{Transducer $\substitute(Q) \cdot \recognize(MF)$ `recognizes' sequences ancestral to MF:
 it computes the probability that a given input sequence will mutate into MF, assuming a point substitution model.
-In contrast to the machine in \figref{mf-substituter}, this machine accepts an ancestral sequence as input and emits null output.  Note than a sequence of any length besides 2 will have recognition weight zero. }
+In contrast to the machine in \figref{mf-substituter}, this machine accepts an ancestral sequence as input and emits null output.  Note that a sequence of any length besides 2 will have recognition weight zero. }
 
 \widepdffig{substituter-cs}{Transducer $\substitute(Q) \cdot \recognize(CS)$ `recognizes' sequences ancestral to CS:
 it computes the probability that a given input sequence will mutate into CS, assuming a point substitution model.
-In contrast to the machine in \figref{mf-substituter}, this machine accepts an ancestral sequence as input and emits null output.  Note than a sequence of any length besides 2 will have recognition weight zero. }
+In contrast to the machine in \figref{mf-substituter}, this machine accepts an ancestral sequence as input and emits null output.  Note that a sequence of any length besides 2 will have recognition weight zero. }
 
 %% \subsubsection{Composition of TKF91 with LIV-recognizer}
 
@@ -1942,7 +1946,7 @@ This machine, and the one in \figref{forward2-profile}, are examples of the reco
 \subsubsection{Sampling ancestral reconstructions under the TKF91 model}
 
 \widepngfig{forward2-root-fork-tkf91liv-tkf91mf}{
-Additionally to finding just the highest-weight path through
+As well as finding just the highest-weight path through
 the machine of \figref{root-fork-tkf91liv-tkf91mf}
 (as in \figref{viterbi-root-fork-tkf91liv-tkf91mf}),
 it is possible to sample suboptimal paths proportional to their posterior probability.  
