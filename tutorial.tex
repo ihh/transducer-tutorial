@@ -805,13 +805,33 @@ and compare it with the more compact Moore-machine-like view of \figref{condense
 
 \widepngfig{fanned-emission}
 {All combinations of input and output characters are frequently observed.  
-In a Mealy-machine-like representation, each possible pair of characters must be given its own transition, complicating the visualization.}
+The transitions in this diagram include all possible deletion, insertion, and substitution transitions between a pair of transducer states.
+Each transition is labeled with I/O characters (blue) and selected transitions are labeled with the transition weights (green).
+Insertions (I/O label ``{\tt -/y}'') have weight $fU(y)$,
+deletions (I/O label ``{\tt x/-}'') have weight $hV(x)$,
+and substitutions (I/O label ``{\tt x/y}'') have weight $gQ(x,y)$.
+The large number of transitions complicates the visualization of such ``Mealy-machine'' transducers.
+We therefore use a ``Moore-machine'' representation, where all transitions of each type between a pair of states
+are collapsed into a single transition, and emission weights are associated with states (\figref{condensed-emission}).
+}
 
 \widepngfig{condensed-emission}
 {In a condensed Moore-machine-like representation, possible combinations of input and output characters are encoded in the distributions contained within each state,
 simplifying the display.  
-For most Figures in the remainder of this manuscript, we will omit the blue ``x/y'' labels on transitions,
-as they are implied by the state type of the destination state.}
+In this diagram, all four insertion transitions from \figref{fanned-emission} are collapsed into a single transition;
+similarly, all four deletion transitions from \figref{fanned-emission} are collapsed into one,
+and all sixteen substitution transitions are collapsed to one.
+To allow this, the transition weight must factorize into separate emission and transition components, as in \figref{fanned-emission}.
+In this example (corresponding to \figref{fanned-emission}), the emission weights are $U(y)$ for insertions, $V(x)$ for deletions, and $Q(x,y)$ for substitutions;
+while the transition weights are $f$ for insertions, $h$ for deletions, and $g$ for substitutions.
+{\bf Visual conventions.}
+The destination state node is bordered in red, to indicate that transitions into it have been collapsed.
+Instead of just a plain circle, the node shape is an upward house (insertions), a downward house (deletions), or a rectangle (substitutions).
+Instead of specific I/O characters ({\tt a/g} for a substitution of A to G, {\tt -/c} for an insertion of C, etc.)
+we now have generic labels like ``{\tt x/y}''; the actual characters (and their weights) are encoded by the emission functions.
+These labels are still written in blue.
+For most Figures in the remainder of this manuscript, we will omit these blue generic I/O labelings,
+as they are implied by the node shape of the destination state.}
 
 \figref{legend} shows the visual notation we use in this tutorial for Moore-form transducer state types.
 There are seven {\em state types}: Start, Match, Insert, Delete, End, Wait, and Null, frequently abbreviated to $S,M,I,D,E,W,N$.
@@ -1635,7 +1655,7 @@ A formal definition of transducer intersection,
 together with an algorithm for constructing the intersected transducer $T \fork U$,
 is presented in \secref{Fork}. 
 Like the construction of $TU$, this algorithmic construction of $T \fork U$
-serves both as a proof of the existence of $TU$, and an upper bound on its complexity.
+serves both as a proof of the existence of $T \fork U$, and an upper bound on its complexity.
 It is also essential as a formal means of verifying our later results.
 
 \subsubsection{Composition, intersection and Felsenstein's pruning algorithm}
