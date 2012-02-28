@@ -825,16 +825,16 @@ are collapsed into a single transition, and emission weights are associated with
 \widepngfig{condensed-emission}
 {In a condensed Moore-machine-like representation, possible combinations of input and output characters are encoded in the distributions contained within each state,
 simplifying the display.  
-In this diagram, all four insertion transitions from \figref{fanned-emission} are collapsed into a single transition;
-similarly, all four deletion transitions from \figref{fanned-emission} are collapsed into one,
-and all sixteen substitution transitions are collapsed to one.
-To allow this, the transition weight must factorize into separate emission and transition components, as in \figref{fanned-emission}.
-In this example (corresponding to \figref{fanned-emission}), the emission weights are $U(y)$ for insertions, $V(x)$ for deletions, and $Q(x,y)$ for substitutions;
-while the transition weights are $f$ for insertions, $h$ for deletions, and $g$ for substitutions.
+In this diagram, all four insertion transitions from \figref{fanned-emission} ({\tt -/A}, {\tt -/C}, etc.) are collapsed into a single {\tt -/y} transition;
+similarly, all four deletion transitions from \figref{fanned-emission} ({\tt A/-}, etc.) are collapsed into one {\tt x/-},
+and all sixteen substitution transitions ({\tt A/A}, {\tt A/C}, \ldots {\tt G/G}) are collapsed to one {\tt x/y}.
+To allow this, the transition weights for all the collapsed transitions must factorize into independent emission- and transition-associated components.
+In this example (corresponding to \figref{fanned-emission}), the emission weights are $U(y)$ for insertions, $Q(x,y)$ for substitutions and $V(x)$ for deletions;
+while the transition weights are $f$ for insertions, $g$ for substitutions, and $h$ for deletions.
 {\bf Visual conventions.}
 The destination state node is bordered in red, to indicate that transitions into it have been collapsed.
 Instead of just a plain circle, the node shape is an upward house (insertions), a downward house (deletions), or a rectangle (substitutions).
-Instead of specific I/O characters ({\tt a/g} for a substitution of A to G, {\tt -/c} for an insertion of C, etc.)
+Instead of specific I/O characters ({\tt A/G} for a substitution of A to G, {\tt -/C} for an insertion of C, etc.)
 we now have generic labels like ``{\tt x/y}''; the actual characters (and their weights) are encoded by the emission functions.
 These labels are still written in blue.
 For most Figures in the remainder of this manuscript, we will omit these blue generic I/O labelings,
