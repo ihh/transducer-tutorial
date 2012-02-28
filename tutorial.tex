@@ -802,7 +802,7 @@ In our mathematical descriptions, we will treat transducers as
 {\em Mealy machines}, meaning that absorptions and emissions are associated with transitions between states.  
 In the {\em Moore machine} view, absorptions and emissions are associated with states.  
 In our case, the distinction between these two is primarily a semantic one, since the structure 
-of the machines and the emission functions of the states is intimately tied.
+of the machines and the I/O functions of the states is intimately tied.
 
 The latter view (Moore) can be more useful in bioinformatics,
 where rapid point substitution means that all combinations of input and output characters 
@@ -819,7 +819,7 @@ deletions (I/O label ``{\tt x/-}'') have weight $hV(x)$,
 and substitutions (I/O label ``{\tt x/y}'') have weight $gQ(x,y)$.
 The large number of transitions complicates the visualization of such ``Mealy-machine'' transducers.
 We therefore use a ``Moore-machine'' representation, where all transitions of each type between a pair of states
-are collapsed into a single transition, and emission weights are associated with states (\figref{condensed-emission}).
+are collapsed into a single transition, and I/O weights are associated with states (\figref{condensed-emission}).
 }
 
 \widepngfig{condensed-emission}
@@ -828,14 +828,14 @@ simplifying the display.
 In this diagram, all four insertion transitions from \figref{fanned-emission} ({\tt -/A}, {\tt -/C}, etc.) are collapsed into a single {\tt -/y} transition;
 similarly, all four deletion transitions from \figref{fanned-emission} ({\tt A/-}, etc.) are collapsed into one {\tt x/-},
 and all sixteen substitution transitions ({\tt A/A}, {\tt A/C}, \ldots {\tt G/G}) are collapsed to one {\tt x/y}.
-To allow this, the transition weights for all the collapsed transitions must factorize into independent emission- and transition-associated components.
-In this example (corresponding to \figref{fanned-emission}), the emission weights are $U(y)$ for insertions, $Q(x,y)$ for substitutions and $V(x)$ for deletions;
+To allow this, the transition weights for all the collapsed transitions must factorize into independent I/O- and transition-associated components.
+In this example (corresponding to \figref{fanned-emission}), the I/O weights are $U(y)$ for insertions, $Q(x,y)$ for substitutions and $V(x)$ for deletions;
 while the transition weights are $f$ for insertions, $g$ for substitutions, and $h$ for deletions.
 {\bf Visual conventions.}
 The destination state node is bordered in red, to indicate that transitions into it have been collapsed.
 Instead of just a plain circle, the node shape is an upward house (insertions), a downward house (deletions), or a rectangle (substitutions).
 Instead of specific I/O character labels ({\tt A/G} for a substitution of A to G, {\tt -/C} for an insertion of C, etc.)
-we now have generic labels like {\tt x/y} representing the set of all substitutions; the actual characters (and their weights) are encoded by the emission functions.
+we now have generic labels like {\tt x/y} representing the set of all substitutions; the actual characters (and their weights) are encoded by the I/O functions.
 For most Figures in the remainder of this manuscript, we will omit these blue generic I/O labels,
 as they are implied by the node shape of the destination state.}
 
@@ -866,7 +866,8 @@ The six Moore normal form states are all red.
 Insert states point upwards; Delete states point downwards; Match states are rectangles; Wait states are octagons (like U.S. Stop signs);
 Start is a circle and End is a diamond.
 There is a seventh state type, Null, which is written as a black circle to distinguish it from the six Moore-form state types.
-(Null states are often nuisance states that must be eliminated.)
+(Null states have no associated inputs or outputs; they arise as a side-effect of algorithmically-constructed transducers in \secref{Tutorial.Composition} and \secref{Tutorial.Intersection}.
+In practice, they are nuisance states that must be eliminated by marginalization, or otherwise dealt with somehow.)
 This visual shorthand will be used throughout.
 \item We impose certain constraints on states that involve I/O:
  they must be typed  as Insert, Delete, or Match, and
@@ -1352,7 +1353,7 @@ For more information see
 
 \figref{mf-substituter} is the composition of the MF-generator (\figref{moore-mf-generator}) with the $Q$-substituter (\figref{substituter}). 
 This is quite similar to a probabilistic weight matrix trained on the single sequence MF,
-as each of the Insert states has its own emission probability weights.
+as each of the Insert states has its own I/O probability weights.
 
 % The meaning of the various states in this model are shown in \tabref{mf-substituter}.
 % 
@@ -2414,7 +2415,7 @@ such that
 then the transducer is in {\em (weak) normal form}.
 If, additionally, $\statesoftype{N} = \emptyset$, then the transducer is in {\em strict normal form}.
 % crossref
-The above transition and emission constraints are summarized graphically in \figref{transitions}. 
+The above transition and I/O constraints are summarized graphically in \figref{transitions}. 
 
 
 {\em Interpretation:}
@@ -2889,16 +2890,16 @@ The state space of $Q_n$ is
 \statesof{Q_n} = \{ \startstateof{Q_n},\ \laststateof{Q_n} \}\ \cup\ \matchstates\ \cup\ \leftemitstates\ \cup\ \rightemitstates\ \cup\ \nullstates\ \cup\ \qwaitstates
 \]
 
-It is possible to calculate transition/emission weights of $Q_n$
+It is possible to calculate transition and I/O weights of $Q_n$
 by starting with the example constructions given for $T \compose U$ and $T \fork U$,
 then eliminating states that are not in the above set.
 This gives the results described in the following sections.
 
-\subsubsection{Emission weights of $Q_n$}
+\subsubsection{I/O weights of $Q_n$}
 
 Let $(\omega_l,\omega_r)\ \in \gapsquared$.
 
-The emission weight function for $Q_n$ is
+The I/O weight function for $Q_n$ is
 \[
 \emitweightfun{Q_n}(\epsilon,(\omega_l,\omega_r),q) = \left\{
 \begin{array}{ll}
@@ -3060,12 +3061,12 @@ The complete set of $M_n$-states is
 & & \quad \cup\ \{ \mstate: \qstate \in \waitstates,\ \statetype(e_l)=\statetype(e_r)=W \}
 \end{eqnarray*}
 
-\subsubsection{Emission weights of $M_n$}
+\subsubsection{I/O weights of $M_n$}
 Let $m = \mstate$ be an $M_n$-state and $q = \qstate$ the subsumed $Q'_n$-state.
 
 Similarly, let $m' = \mstatedest$ and $q' = \qstatedest$.
 
-The emission weight function for $M_n$ is
+The I/O weight function for $M_n$ is
 \[
 \emitweightfun{M_n}(\epsilon,\epsilon,m) = \left\{
 \begin{array}{ll}
@@ -3209,21 +3210,21 @@ The complete set of $H_n$-states is
 \statesof{H_n} = \{ \startstateof{H_n},\ \laststateof{H_n} \}\ \cup\ \externalcascades\ \cup\ \internalcascades\ \cup\ \waitstates
 \]
 
-It is possible to calculate transition/emission weights of $H_n$
+It is possible to calculate transition and I/O weights of $H_n$
 by starting with the example constructions given for $T \compose U$ and $T \fork U$,
 then eliminating states that are not in the above set.
 This gives the results described in the following sections.
 
-\subsubsection{Emission weights of $H_n$}
+\subsubsection{I/O weights of $H_n$}
 
 Let $\omega,\omega' \in \gappedalphabet{}$.
 
-Let $C_n(b_n,e_n)$ be the emission weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$ where $\statetype(b_n,e_n)=(I,D)$
+Let $C_n(b_n,e_n)$ be the I/O weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$ where $\statetype(b_n,e_n)=(I,D)$
 \[
 C_n(b_n,e_n) = \sum_{\omega \in \Omega} \emitweightfun{B_n}(\epsilon,\omega,b_n) \emitweightfun{E_n}(\omega,\epsilon,e_n)
 \]
 
-Let $D_n(\omega,b_n,e_n)$ be the emission weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$
+Let $D_n(\omega,b_n,e_n)$ be the I/O weight function for $B_n \compose E_n$ on a transition into composite state $(b_n,e_n)$
  where $\statetype(b_n,e_n) \in \{(M,D),(D,W)\}$ with input symbol $\omega$ 
 \[
 D_n(\omega,b_n,e_n) = \left\{
@@ -3237,7 +3238,7 @@ D_n(\omega,b_n,e_n) = \left\{
 \right.
 \]
 
-The emission weight function for $H_n$ is
+The I/O weight function for $H_n$ is
 \[
 \emitweightfun{H_n}(\omega,\epsilon,h) = \left\{
 \begin{array}{ll}
@@ -3372,12 +3373,12 @@ The complete set of $M_n$-states is
 & & \quad \cup\ \{ \mstate: \hstate \in \internalcascades,\ \statetype(\rho)=I,\ \statetype(\upsilon)=M \}
 \end{eqnarray*}
 
-\subsubsection{Emission weights of $M_n$}
+\subsubsection{I/O weights of $M_n$}
 Let $m = \mstate$ be an $M_n$-state and $h = \hstate$ the subsumed $H_n$-state.
 
 Similarly, let $m' = \mstatedest$ and $h' = \hstatedest$.
 
-The emission weight function for $M_n$ is
+The I/O weight function for $M_n$ is
 \[
 \emitweightfun{M_n}(\epsilon,\epsilon,m) = \left\{
 \begin{array}{ll}
@@ -3845,7 +3846,7 @@ The state space of $M'_n$ is the union of all states used by the paths in  $\Pi_
 \]
 where $\pi_i$ is the $i^{th}$ state in a path $\pi \in (\transitionsof{M_n})^\ast$.
 
-The emission and transition weight functions for $M'_n$ are the same as those of $M_n$:
+The I/O and transition weight functions for $M'_n$ are the same as those of $M_n$:
 
 \begin{eqnarray*}
 \transweightfun{M'_n}(m,m') & = & \transweightfun{M_n}(m,m') \\
@@ -3861,7 +3862,7 @@ Let $E''_n$ be a the transducer constructed via removing the $R$ states from the
 \statesof{E''_n} = \{ \hstate : \exists \mstate \in M'_n \}
 \]
 
-The emission and transition weight functions for $E''_n$ are the same as those of $H_n$:
+The I/O and transition weight functions for $E''_n$ are the same as those of $H_n$:
 
 \begin{eqnarray*}
 \transweightfun{E''_n}(e,e') & = & \transweightfun{H_n}(e,e') \\
