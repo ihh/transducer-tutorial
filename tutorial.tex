@@ -37,6 +37,13 @@
 \newcommand{\widepdffig}[2]{\easyfig{#1-fig.pdf}{width=\textwidth}{#1}{#2}}
 \newcommand{\tallpdffig}[2]{\easyfig{#1-fig.pdf}{height=.8\textheight}{#1}{#2}}
 
+\newcommand{\sidewayspngfig}[2]{
+\begin{sidewaysfigure}
+\includegraphics[width=\textwidth]{#1.png}
+\caption{#2}
+\end{sidewaysfigure}
+}
+
 % ToDo
 \newcommand{\needfig}[1]{{\bf Need figure: } #1 }
 \newcommand{\needfigref}[1]{Figure~??? [#1] }
@@ -51,6 +58,7 @@
 \usepackage{amssymb}
 \usepackage{color} 
 \usepackage{ifthen}
+\usepackage{rotating}
 
 
 
@@ -803,8 +811,7 @@ In such situations, the Mealy type of machine can suffer from an excess of trans
 For example, consider the Mealy-machine-like view of  \figref{fanned-emission},
 and compare it with the more compact Moore-machine-like view of \figref{condensed-emission}.  
 
-\widepngfig{fanned-emission}
-{All combinations of input and output characters are frequently observed.  
+\sidewayspngfig{fanned-emission}{All combinations of input and output characters are frequently observed.  
 The transitions in this diagram include all possible deletion, insertion, and substitution transitions between a pair of transducer states.
 Each transition is labeled with I/O characters (blue) and selected transitions are labeled with the transition weights (green).
 Insertions (I/O label ``{\tt -/y}'') have weight $fU(y)$,
