@@ -59,6 +59,7 @@
 \usepackage{color} 
 \usepackage{ifthen}
 \usepackage{rotating}
+\usepackage{soul}
 
 
 
@@ -570,12 +571,15 @@ but does not readily generalize to summation over indel histories or alignments.
 
 The purpose of this manuscript is to introduce another way of extending Felsenstein's recursion from single residues (or small groups of residues)
 to entire, full-length sequences, without needing to condition on a single alignment.
-With no constraints on the algorithm,
-the time and memory complexities are ${\cal O}(L^N)$,
+With no constraints on the algorithm, \hl{using a branch transducer with $c$ states,}
+the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
-This drops to ${\cal O}(L^2 N)$ when a stochastic lower-bound approximation is used; in this form,
+\hl{For a maximum profile size of $M$ (chosen by the user), }
+this drops to \hl{ ${\cal O}((cM)^2 N)$} when
+ a stochastic lower-bound approximation is used; 
+in this form,
 the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
-The complexity drops further to ${\cal O}(LN)$ if a ``guide alignment'' is provided as a clue to the algorithm.
+The complexity drops further to \hl{${\cal O}(cLN)$} if a ``guide alignment'' is provided as a clue to the algorithm.
 The guide alignment is not a hard constraint,
 and may be controllably relaxed, or dispensed with altogether.
 
@@ -2184,7 +2188,7 @@ Finally we compose the root generator (\figref{tkf91-root})
 with \figref{fork-tkf91forward2-tkf91cs}.
 (If there were more than two internal nodes in this tree,
 we would simply continue the process of aligning siblings and sampling a recognition profile for the parent,
-iteratng until the root node was reached.)
+iterating until the root node was reached.)
 The sum of all path weights through the state graph of the final machine
  represents the stochastic lower-bound
 on the final Felsenstein probability for this tree.
@@ -2777,7 +2781,7 @@ We can represent $H_n$ diagramatically as
 \figref{fork-tkf91liv-tkf91mf}, \figref{fork-tkf91viterbi-tkf91cs} and \figref{fork-tkf91forward2-tkf91cs} are examples of $H_n$ transducers.
 
 Transducer $E_n$, which is what we mean by the ``constrained-expanded model'', is effectively a profile of sequences that might plausibly appear at node $n$, given the observed descendants of that node.
-\figref{viterbi-profile} and \figref{forward-profile} are examples of such transducers for
+\figref{viterbi-profile}  and \figref{forward2-profile} are examples of such  transducers for
 the ``intermediate sequence'' in the tree of \figref{cs-mf-liv-tree}.
 (\figref{viterbi-fork-tkf91liv-tkf91mf} and \figref{forward2-fork-tkf91liv-tkf91mf} show the relationship to the corresponding $H_n$ transducers).
 
@@ -3429,6 +3433,19 @@ If $E_n$ is in strict-normal form its $W$- and $D$-states will occur in pairs
 These $(D,W)$ pairs are largely redundant: the choice between $D$ and $W$ is dictated by the parent $B_n$,
 as can be seen from Table~\ref{HTransitionTypes} and the construction of $\statesof{H_n}$.)
 
+\hl{
+Since every combination of states in 
+$\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$ must be visited, filling the forward
+matrix has time complexity ${\cal O}(\numberofstates{E_l} \numberofstates{E_l} \numberofstates{Q_n})$.  
+The quantities $\numberofstates{E_*}$ can be bounded by a user-specified constant $m$  
+by terminating  stochastic sampling after $\numberofstates{E_*} \geq m$ (and discarding 
+the final sampled path, if desired).  
+Since $\statesof{Q_n}$ is comprised of pairs of states from transducers $B_l$ and $B_r$ (detailed in 
+}\secref{Qn}\hl{), it has size
+$\numberofstates{Q_n} = \numberofstates{B_l} \numberofstates{B_r}$.  
+Assuming the same branch transducer $B$ is used throughout, 
+the forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2m^2)$.}
+
 \begin{algorithm}
   Initialize $Z(\startstate) \leftarrow 1$;
   \BlankLine
@@ -4036,8 +4053,8 @@ In this article we have presented an algorithm that may be viewed in two equival
 or a phylogenetic generalization of progressive alignment.   
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
-We described a hierarchical  approximation technique enabling inference in ${\cal O}(L^2N)$ time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$). 
-Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to ${\cal O}(LN)$, making the algorithm practical for typical alignment problems.  
+We described a hierarchical  approximation technique enabling inference in \hl{ ${\cal O}((cL)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$). 
+Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to \hl{ ${\cal O}(cLN)$}, making the algorithm practical for typical alignment problems.  
 
 Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
 Further, most alignment programs account for the phylogeny relating sequences either in a heuristic sense, or not at all.  
