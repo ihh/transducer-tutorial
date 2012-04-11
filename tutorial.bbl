@@ -174,6 +174,12 @@ R.~K. Bradley and I.~Holmes.
 \bibitem{GraphViz}
 http://www.graphviz.org/.
 
+\bibitem{LoytynojaGoldman2008}
+A~L\"oytynoja and N~Goldman.
+\newblock Phylogeny-aware gap placement prevents errors in sequence alignment
+  and evolutionary analysis.
+\newblock {\em Science}, 320(5883):1632--1635, Jun 2008.
+
 \bibitem{Durbin98}
 R.~Durbin, S.~Eddy, A.~Krogh, and G.~Mitchison.
 \newblock {\em Biological Sequence Analysis: Probabilistic Models of Proteins
@@ -217,11 +223,5 @@ M.~Hasegawa, H.~Kishino, and T.~Yano.
 K.~M. Wong, M.~A. Suchard, and J.~P. Huelsenbeck.
 \newblock Alignment uncertainty and genomic analysis.
 \newblock {\em Science}, 319(5862):473--6, 2008.
-
-\bibitem{LoytynojaGoldman2008}
-A~L\"oytynoja and N~Goldman.
-\newblock Phylogeny-aware gap placement prevents errors in sequence alignment
-  and evolutionary analysis.
-\newblock {\em Science}, 320(5883):1632--1635, Jun 2008.
 
 \end{thebibliography}

@@ -574,12 +574,12 @@ to entire, full-length sequences, without needing to condition on a single align
 With no constraints on the algorithm, \hl{using a branch transducer with $c$ states,}
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
-\hl{For a maximum profile size of $M$ (chosen by the user), }
-this drops to \hl{ ${\cal O}((cM)^2 N)$} when
+\hl{For a user-specified maximum internal profile size  $m \geq L$, }
+this drops to \hl{ ${\cal O}((cm)^2 N)$} when
  a stochastic lower-bound approximation is used; 
 in this form,
 the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
-The complexity drops further to \hl{${\cal O}(cLN)$} if a ``guide alignment'' is provided as a clue to the algorithm.
+The complexity drops further to \hl{${\cal O}(cmN)$} if a ``guide alignment'' is provided as a clue to the algorithm.
 The guide alignment is not a hard constraint,
 and may be controllably relaxed, or dispensed with altogether.
 
@@ -2201,6 +2201,52 @@ The hope is that, in practice, by sampling sufficiently many paths we are able t
 recover the maximum likelihood reconstruction at the root level, and so the
 lower bound is a good one.
 
+\hl{
+In practice, we find that our method performs better than Viterbi progressive alignment and 
+approaches the accuracy of the true alignment. 
+We simulated indel histories under 5 indel rates
+ (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), and analyzed the unaligned leaf
+sequences using PRANK} \cite{LoytynojaGoldman2008} 
+\hl{ and an implementation of our algorithm, ProtPal.  
+Insertion and deletion rates were computed using basic event counts normalized by branch lengths 
+(more details are provided in Methods). 
+PRANK provides an excellent comparison since it is phylogenetically-oriented, but
+ uses progressive Viterbi reconstruction rather than  ensembles/profiles at internal nodes. 
+Comparing indel rates computed using  the true alignment gives
+ an idea how well PRANK and ProtPal compare to a  ``perfect''
+method.  Note that this does not necessarily correspond to sampling
+ infinitely many paths in our method, 
+since the maximum likelihood reconstruction may not always be the true alignment.  }
+
+\figref{estimates_biases_condensed} \hl{shows the error distributions 
+of estimated insertion and deletion
+rates using the PRANK, ProtPal, and true reconstructions.  The root mean squared error (RMSE),  
+a measure of the overall distance from the 'true' value ($\frac{inferred}{true} = 1$, indicated
+with a vertical dashed line), is shown 
+to the right of each distribution.  
+ProtPal's RMSE values lie between  PRANK's and the true alignment, indicating using alignment
+profiles at internal nodes allows for inferring more accurate alignments, or at least alignments
+which allow for more accurately computing summary statistics such as the indel rate.  
+ProtPal's distributions are also more symmetric than PRANK's between insertions and deletions. 
+Alignment profiles  may help to avoid the deletion bias described in} \cite{LoytynojaGoldman2008}. 
+
+\begin{center}
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{estimates_biases_condensed.png}
+\caption{In a  simulation experiment, an implementation of our algorithm
+outperforms PRANK \cite{LoytynojaGoldman2008} and approaches the accuracy of the true indel history.
+Alignments were simulated over range of evolutionary parameters, and unaligned leaf sequences
+along with a phylogeny were fed to PRANK and ProtPal, which each produced a predicted indel 
+reconstruction. From each reconstruction, insertion and deletion rates were calculated by event
+counts normalized by branch lengths.  The plot shows the ratio of $\frac{inferred}{true}$ rates
+pooled over all evolutionary parameters, with root mean squared error (RMSE) and middle 90\% 
+quantiles appearing to the right and below each histogram.  
+ }
+\figlabel{estimates_biases_condensed}
+\end{figure}
+\end{center}
+
+
 
 \subsection{A Pair HMM for aligning siblings}
 
@@ -3438,11 +3484,12 @@ Since every combination of states in
 $\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$ must be visited, filling the forward
 matrix has time complexity ${\cal O}(\numberofstates{E_l} \numberofstates{E_l} \numberofstates{Q_n})$.  
 The quantities $\numberofstates{E_*}$ can be bounded by a user-specified constant $m$  
-by terminating  stochastic sampling after $\numberofstates{E_*} \geq m$ (and discarding 
-the final sampled path, if desired).  
+by terminating  stochastic sampling such that $\numberofstates{E_*} \leq m$ 
+as described in} \secref{Mn2En} 
+\hl{
 Since $\statesof{Q_n}$ is comprised of pairs of states from transducers $B_l$ and $B_r$ (detailed in 
 }\secref{Qn}\hl{), it has size
-$\numberofstates{Q_n} = \numberofstates{B_l} \numberofstates{B_r}$.  
+${\cal O}( \numberofstates{B_l} \numberofstates{B_r})$.  
 Assuming the same branch transducer $B$ is used throughout, 
 the forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2m^2)$.}
 
@@ -3848,7 +3895,6 @@ E_{\mbox{guide}}(f,g) & = & \max_{m \in A_l(f), n \in A_r(g)} \max(\ |\mathcal{G
 \seclabel{Mn2En}
 
 Having sampled a set of paths through $M_n$, profile $E_n$ is constructed by applying a series of transformations.
-
 Refer to the previous sections for definitions pertaining to $M_n$ and $E_n$.
 
 \subsubsection{Transformation $M_n \to M'_n$: sampled paths}
@@ -3869,6 +3915,32 @@ The I/O and transition weight functions for $M'_n$ are the same as those of $M_n
 \transweightfun{M'_n}(m,m') & = & \transweightfun{M_n}(m,m') \\
 \emitweightfun{M'_n}(\epsilon,\epsilon,m') & = & \emitweightfun{M_n}(\epsilon,\epsilon,m')
 \end{eqnarray*}
+
+\hl{
+$M'_n$  can be updated after each path $\pi$ is sampled:}
+
+\[
+\statesof{M'_n} = \statesof{M'_n}  \cup \bigcup_{i=1}^{|\pi|} \pi_i  
+\]
+
+\hl{
+For some arbitrary limiting factor $m \geq L$,  if  $\numberofstates{M'_n} \geq m$ 
+upon addition of states of $\pi$, 
+sampling may be terminated.  This allows bounding $\numberofstates{E_n}$ as the 
+algorithm traverses up the phylogeny. 
+}
+
+\begin{center}
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{time.pdf}
+\caption{When using an alignment envelope, our implementation of the alignment algorithm
+scales approximately linearly with sequence length.  Alignments consisting of 12 sequences
+were simulated for lengths ranging from 800bp to 52kb and aligned using our software.
+Mean and middle 90\% quantiles (60 replicates) for  CPU time required on a 2GHz, 2GB RAM Linux machine are
+shown next to a linear fit (dashed line).  }
+\figlabel{time}
+\end{figure}
+\end{center}
 
 
 \subsubsection{Transformation $M'_n \to E''_n$: stripping out the prior}
@@ -4053,8 +4125,8 @@ In this article we have presented an algorithm that may be viewed in two equival
 or a phylogenetic generalization of progressive alignment.   
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
-We described a hierarchical  approximation technique enabling inference in \hl{ ${\cal O}((cL)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$). 
-Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to \hl{ ${\cal O}(cLN)$}, making the algorithm practical for typical alignment problems.  
+We described a hierarchical  approximation technique enabling inference in \hl{ ${\cal O}((cm)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$ and limiting factor $m\geq L$). 
+Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to \hl{ ${\cal O}(cmN)$}, making the algorithm practical for typical alignment problems.  
 
 Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
 Further, most alignment programs account for the phylogeny relating sequences either in a heuristic sense, or not at all.  
