@@ -4146,33 +4146,34 @@ can be found at \url{https://github.com/ihh/transducer-tutorial}
 \newcommand{\prank}{PRANK}
 \newcommand{\clustalw}{CLUSTALW}
 \newcommand{\rateRatio}[1]{\frac{\hat{\lambda}^{#1}_{\hat{H}}}{\lambda^#1}}
-Our simulation study is comprised of alignments simulated  using 5 different indel rates (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), each with 3 different substitution rates (0.5, 1, and 2 expected  substitutions per unit time) and 100 replicates.  
-Time is defined such that a sequence evolving for time $t$ with substitution rate $r$ is expected to accumulate $rt$ subsitutions per site. 
+Our simulation study is comprised of alignments simulated  using 5 different indel rates $\lambda$ (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), each with 3 different substitution rates (0.5, 1, and 2 expected  substitutions per unit time) and 100 replicates.  
+Time is defined such that a sequence evolving for time $t$ with substitution rate $r$ is expected to accumulate $rt$ subsitutions per site.
 
- We employed an independent third-party simulation program, \indelseqgen, specifically designed to generate realistic protein evolutionary histories \cite{StropeEtAl2009}.  \indelseqgen\ is capable of modeling an empirically-fitted indel length distribution, rate variation among sites, and a neighbor-aware distribution over inserted sequences allowing for small  local duplications.  Since the indel and substitution model used by \indelseqgen\ are separate from (and richer than) those used by \protpal, \protpal\ has no unfair advantage in this test.
+We employed an independent third-party simulation program, indel-seq-gen,specifically designed to generate realistic protein evolutionary histories \cite{StropeEtAl2009}. indel-seq-gen is capable of modeling an empirically-fitted indel length distribution, rate variation among sites, and a neighbor-aware distribution over inserted sequences allowing for small  local duplications.  Since the indel and substitution model used by indel-seq-gen\ are separate from (and richer than) those used by ProtPal, ProtPal has no unfair advantage in this test.
 
-\noindent \indelseqgen\ v2.0.6 was run with the following command:\\
+indel-seq-gen v2.0.6 was run with the following command:\\
 {\tt cat guidetree.tree| indel-seq-gen -m JTT -u xia --num\_gamma\_cats 3 -a 0.372 --branch\_scale r/b --outfile simulated\_alignment.fa  --quiet --outfile\_format f -s 10000  --write\_anc}
 
 
-The above command uses the ``JTT'' substition model,  the ``xia'' indel fill model (based on neighbor effects, estimated from E coli k-12 proteins \cite{StropeEtAl2009}), and 3 gamma-distributed rate categories with shape 0.372.  Branch lengths are scaled by the substitution rate for simulation rate $r$, normalized by the inverse of \indelseqgen's underlying substitution rate ($b=1.2$) so as to adhere to the above definition of evolutionary ``time''.   Similarly, indel rates, which are set in the guide tree file {\tt guidetree.tree}, are scaled by $\frac{b}{r}$ so that $t\lambda^*$ insertions/deletions are expected over time $t$ for rate $\lambda^*$.
+The above command uses the ``JTT'' substitution model,  the ``xia'' indel fill model (based on neighbor effects, estimated from E coli k-12 proteins \cite{StropeEtAl2009}), and 3 gamma-distributed rate categories with shape 0.372.  Branch lengths are scaled by the substitution rate for simulation rate $r$, normalized by the inverse of indel-seq-gen's underlying substitution rate ($b=1.2$) so as to adhere to the above definition of evolutionary ``time''.   Similarly, indel rates, which are set in the guide tree file {\tt guidetree.tree}, are scaled by $\frac{b}{r}$ so that $t\lambda^*$ insertions/deletions are expected over time $t$ for rate $\lambda^*$.
 
 The  simulations were run on a tree of twelve sequenced {\em Drosophila} genomes \cite{ClarkEtAl2007}.
-This  tree was made available to both \protpal\ and  \prank.
-To specify ancestral inference, the guide tree, and ``insertions opening forever'', \prank\ used the extra options
+This  tree was made available to both ProtPal and  PRANK.
+To specify ancestral inference, the guide tree, and ``insertions opening forever'', PRANK used the extra options
 ``{\tt -writeanc -t <treefile> +F}''.
-\prank's {\tt -F} option allows insertions to match characters at alignments closer to the root.  This can be a useful heuristic safeguard when an incorrect tree may produce errors in subtree alignments that cannot be corrected at internal nodes closer to the root.  
-Since the true guide tree is provided to \prank,  it is safe to treat insertions in a strict phylogenetic manner via the {\tt +F} option.  
+PRANK's {\tt -F} option allows insertions to match characters at alignments closer to the root.  This can be a useful heuristic safeguard when an incorrect tree may produce errors in subtree alignments that cannot be corrected at internal nodes closer to the root.  
+Since the true guide tree is provided to PRANK,  it is safe to treat insertions in a strict phylogenetic manner via the {\tt +F} option.  
 
-For computational efficiency,  \protpal\ was provided with a  \clustalw\ guide alignment.  Any alignment of the sequences can be used as a guide, and we chose \clustalw\ for its general poor performance in other tests, 
-so that \protpal\ would gain no unfair advantage by the information contained in the guide alignment. 
+For computational efficiency,  ProtPal was provided with a  \clustalw\ guide alignment.  Any alignment of the sequences can be used as a guide, and we chose \clustalw\ for its general poor performance in other tests, 
+so that ProtPal would gain no unfair advantage by the information contained in the guide alignment. 
 
 Indel rates were estimated by counting indel events in MAP reconstructed histories:
 \begin{equation}
 \eqnlabel{mapHistoryParams}                      
-\hat{\theta}_{\hat{H}} = argmax_{\theta'} P(\theta'|\hat{H},S,T) = argmax_{\theta'} P(\hat{H},S|T,\theta')
+\hat{\lambda}_{\hat{H}} = argmax_{\lambda'} P(\lambda'|\hat{H},S,T) = 
+argmax_{\lambda'} P(\hat{H},S|T,\lambda')
 \end{equation}
-where the latter step assumes a flat prior, $P(\theta') = \mbox{const.}$
+where the latter step assumes a flat prior, $P(\lambda') = \mbox{const.}$
 
 The root mean squared error (RMSE) for each error distribution was computed as follows:
 \begin{equation}
