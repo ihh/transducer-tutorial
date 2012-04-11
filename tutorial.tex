@@ -2240,7 +2240,7 @@ along with a phylogeny were fed to PRANK and ProtPal, which each produced a pred
 reconstruction. From each reconstruction, insertion and deletion rates were calculated by event
 counts normalized by branch lengths.  The plot shows the ratio of $\frac{inferred}{true}$ rates
 pooled over all evolutionary parameters, with root mean squared error (RMSE) and middle 90\% 
-quantiles appearing to the right and below each histogram.  
+quantiles appearing to the right and below each histogram. 
  }
 \figlabel{estimates_biases_condensed}
 \end{figure}
@@ -4138,6 +4138,48 @@ indicating the need for mathematically rigorous alignment algorithms, particular
 
 The source code to this paper, including the graphviz and phylocomposer files used to produce the diagrams,
 can be found at \url{https://github.com/ihh/transducer-tutorial}
+
+\section{Methods}
+
+\newcommand{\indelseqgen}{indel-seq-gen}
+\newcommand{\protpal}{ProtPal}
+\newcommand{\prank}{PRANK}
+\newcommand{\clustalw}{CLUSTALW}
+\newcommand{\rateRatio}[1]{\frac{\hat{\lambda}^{#1}_{\hat{H}}}{\lambda^#1}}
+Our simulation study is comprised of alignments simulated  using 5 different indel rates (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), each with 3 different substitution rates (0.5, 1, and 2 expected  substitutions per unit time) and 100 replicates.  
+Time is defined such that a sequence evolving for time $t$ with substitution rate $r$ is expected to accumulate $rt$ subsitutions per site. 
+
+ We employed an independent third-party simulation program, \indelseqgen, specifically designed to generate realistic protein evolutionary histories \cite{StropeEtAl2009}.  \indelseqgen\ is capable of modeling an empirically-fitted indel length distribution, rate variation among sites, and a neighbor-aware distribution over inserted sequences allowing for small  local duplications.  Since the indel and substitution model used by \indelseqgen\ are separate from (and richer than) those used by \protpal, \protpal\ has no unfair advantage in this test.
+
+\noindent \indelseqgen\ v2.0.6 was run with the following command:\\
+{\tt cat guidetree.tree| indel-seq-gen -m JTT -u xia --num\_gamma\_cats 3 -a 0.372 --branch\_scale r/b --outfile simulated\_alignment.fa  --quiet --outfile\_format f -s 10000  --write\_anc}
+
+
+The above command uses the ``JTT'' substition model,  the ``xia'' indel fill model (based on neighbor effects, estimated from E coli k-12 proteins \cite{StropeEtAl2009}), and 3 gamma-distributed rate categories with shape 0.372.  Branch lengths are scaled by the substitution rate for simulation rate $r$, normalized by the inverse of \indelseqgen's underlying substitution rate ($b=1.2$) so as to adhere to the above definition of evolutionary ``time''.   Similarly, indel rates, which are set in the guide tree file {\tt guidetree.tree}, are scaled by $\frac{b}{r}$ so that $t\lambda^*$ insertions/deletions are expected over time $t$ for rate $\lambda^*$.
+
+The  simulations were run on a tree of twelve sequenced {\em Drosophila} genomes \cite{ClarkEtAl2007}.
+This  tree was made available to both \protpal\ and  \prank.
+To specify ancestral inference, the guide tree, and ``insertions opening forever'', \prank\ used the extra options
+``{\tt -writeanc -t <treefile> +F}''.
+\prank's {\tt -F} option allows insertions to match characters at alignments closer to the root.  This can be a useful heuristic safeguard when an incorrect tree may produce errors in subtree alignments that cannot be corrected at internal nodes closer to the root.  
+Since the true guide tree is provided to \prank,  it is safe to treat insertions in a strict phylogenetic manner via the {\tt +F} option.  
+
+For computational efficiency,  \protpal\ was provided with a  \clustalw\ guide alignment.  Any alignment of the sequences can be used as a guide, and we chose \clustalw\ for its general poor performance in other tests, 
+so that \protpal\ would gain no unfair advantage by the information contained in the guide alignment. 
+
+Indel rates were estimated by counting indel events in MAP reconstructed histories:
+\begin{equation}
+\eqnlabel{mapHistoryParams}                      
+\hat{\theta}_{\hat{H}} = argmax_{\theta'} P(\theta'|\hat{H},S,T) = argmax_{\theta'} P(\hat{H},S|T,\theta')
+\end{equation}
+where the latter step assumes a flat prior, $P(\theta') = \mbox{const.}$
+
+The root mean squared error (RMSE) for each error distribution was computed as follows:
+\begin{equation}
+\eqnlabel{RMSE}
+RMSE = \sqrt{ \sum_{replicates} (\rateRatio{*}-1)^2 }
+\end{equation}
+
 
 \paragraph{Authors' contributions:} OW and IH developed the algorithm and wrote the paper.  BP and GL made substantial intellectual contributions to developing the algorithm.  
 

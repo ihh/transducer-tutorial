@@ -224,4 +224,16 @@ K.~M. Wong, M.~A. Suchard, and J.~P. Huelsenbeck.
 \newblock Alignment uncertainty and genomic analysis.
 \newblock {\em Science}, 319(5862):473--6, 2008.
 
+\bibitem{StropeEtAl2009}
+CL~Strope, K~Abel, SD~Scott, and EN~Moriyama.
+\newblock Biological sequence simulation for testing complex evolutionary
+  hypotheses: indel-seq-gen version 2.0.
+\newblock {\em Mol Biol Evol}, 26(11):2581--93, Aug 2009.
+
+\bibitem{ClarkEtAl2007}
+A.~G. Clark, M.~B. Eisen, D.~R. Smith, C.~M. Bergman, B.~Oliver, T.~A. Markow,
+  T.~C. Kaufman, M.~Kellis, W.~Gelbart, and V.~N. Iyer.
+\newblock Evolution of genes and genomes on the {D}rosophila phylogeny.
+\newblock {\em Nature}, 450(7167):203--218, 2007.
+
 \end{thebibliography}
