@@ -61,7 +61,7 @@
 \usepackage{rotating}
 \usepackage{soul}
 
-
+\newcommand{\profileSizeLimit}{p}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Imported parsetree.sty
@@ -575,12 +575,13 @@ With no constraints on the algorithm, \hl{using a branch transducer with $c$ sta
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
 \hl{For a user-specified maximum internal profile size  $m \geq L$, }
-this drops to \hl{ ${\cal O}((cm)^2 N)$} when
+this drops to \hl{ ${\cal O}((c\profileSizeLimit)^2 N)$} when
  a stochastic lower-bound approximation is used; 
 in this form,
 the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
-The complexity drops further to \hl{${\cal O}(cmN)$} if a ``guide alignment'' is provided as a clue to the algorithm.
-The guide alignment is not a hard constraint,
+\hl{Empirical tests indicate that the typical-case complexity drops further to
+ ${\cal O}(c\profileSizeLimit N)$ if an``alignment envelope'' is provided as a clue to the algorithm.}
+The  alignment envelope is not a hard constraint,
 and may be controllably relaxed, or dispensed with altogether.
 
 The new algorithm is, essentially, algebraically equivalent to Felsenstein's algorithm,
@@ -2227,8 +2228,9 @@ to the right of each distribution.
 ProtPal's RMSE values lie between  PRANK's and the true alignment, indicating using alignment
 profiles at internal nodes allows for inferring more accurate alignments, or at least alignments
 which allow for more accurately computing summary statistics such as the indel rate.  
-ProtPal's distributions are also more symmetric than PRANK's between insertions and deletions. 
-Alignment profiles  may help to avoid the deletion bias described in} \cite{LoytynojaGoldman2008}. 
+ProtPal's distributions are also more symmetric than PRANK's between insertions and deletions, 
+indicating that alignment profiles  may also help to avoid the    bias towards deletions
+ described in} \cite{LoytynojaGoldman2008}. 
 
 \begin{center}
 \begin{figure}[h!]
@@ -3479,19 +3481,31 @@ If $E_n$ is in strict-normal form its $W$- and $D$-states will occur in pairs
 These $(D,W)$ pairs are largely redundant: the choice between $D$ and $W$ is dictated by the parent $B_n$,
 as can be seen from Table~\ref{HTransitionTypes} and the construction of $\statesof{H_n}$.)
 
-\hl{
-Since every combination of states in 
-$\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$ must be visited, filling the forward
-matrix has time complexity ${\cal O}(\numberofstates{E_l} \numberofstates{E_l} \numberofstates{Q_n})$.  
-The quantities $\numberofstates{E_*}$ can be bounded by a user-specified constant $m$  
-by terminating  stochastic sampling such that $\numberofstates{E_*} \leq m$ 
-as described in} \secref{Mn2En} 
-\hl{
-Since $\statesof{Q_n}$ is comprised of pairs of states from transducers $B_l$ and $B_r$ (detailed in 
-}\secref{Qn}\hl{), it has size
+\hl{\paragraph{Time complexity}
+The skeleton structure of } Algorithm~\ref{ForwardTransducer} \hl{is three nested loops,
+over $\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$.  
+The state spaces $\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$ 
+are independent of each other, and so }Algorithm~\ref{ForwardTransducer} \hl{ has time complexity
+ ${\cal O}(\numberofstates{E_l} \numberofstates{E_l} \numberofstates{Q_n} t_{Z(m)})$, 
+where $t_{Z(m)}$ is the time required to compute $Z(m)$. 
+
+The quantities $\numberofstates{E_*}$ can be bounded by a user-specified constant $\profileSizeLimit$  
+by terminating  stochastic sampling such that $\numberofstates{E_*} \leq \profileSizeLimit$ 
+as described in} \secref{Mn2En}.
+\hl{$\statesof{Q_n}$ is comprised of pairs of states from transducers $B_l$ and $B_r$, (detailed in}
+ \secref{Qn}
+\hl{), and so it has size
 ${\cal O}( \numberofstates{B_l} \numberofstates{B_r})$.  
-Assuming the same branch transducer $B$ is used throughout, 
-the forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2m^2)$.}
+Computing $Z(m)$ (outlined in } Function~\ref{fillZ})
+\hl{requires summing over all incoming states, so $t_{Z(m)}$ has time complexity
+ ${\cal O}(|m:(m,\epsilon,\epsilon,m') \in \Transitions|)$.  
+In typical cases, this set will be small (e.g. a linear profile will have exactly one 
+incoming transition per state), though worst-case size is ${\cal O}(p)$.  
+If we assume the same branch transducer $B$ is used throughout, 
+the full forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2 \profileSizeLimit^3)$.}
+
+TODO: include $\tau$ in other mentions of complexity?  Motivate typical-case complexity and/or 
+align env performance?
 
 \begin{algorithm}
   Initialize $Z(\startstate) \leftarrow 1$;
@@ -3808,7 +3822,7 @@ profile, we are able to limit the number of solutions considered during progress
 
 
 \subsection{Alignment envelopes}
-
+\seclabel{alignmentEnvelopes}
 Note that states $e \in \statesof{E_n}$ of the constrained-expanded model, as with states $g \in \statesof{G_n}$ of the expanded model,
 can be associated with a vector of subsequence co-ordinates
 (one subsequence co-ordinate for each leaf-sequence in the clade descended from node $n$).
@@ -3924,7 +3938,7 @@ $M'_n$  can be updated after each path $\pi$ is sampled:}
 \]
 
 \hl{
-For some arbitrary limiting factor $m \geq L$,  if  $\numberofstates{M'_n} \geq m$ 
+For some arbitrary limiting factor $\profileSizeLimit \geq L$,  if  $\numberofstates{M'_n} \geq \profileSizeLimit$ 
 upon addition of states of $\pi$, 
 sampling may be terminated.  This allows bounding $\numberofstates{E_n}$ as the 
 algorithm traverses up the phylogeny. 
@@ -4125,8 +4139,13 @@ In this article we have presented an algorithm that may be viewed in two equival
 or a phylogenetic generalization of progressive alignment.   
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
-We described a hierarchical  approximation technique enabling inference in \hl{ ${\cal O}((cm)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ for exact, exhaustive inference ($N$ sequences of length $L$ and limiting factor $m\geq L$). 
-Adding additional constraints (in the form of a ``guide alignment'')  bring time and memory complexity down to \hl{ ${\cal O}(cmN)$}, making the algorithm practical for typical alignment problems.  
+We described a hierarchical  approximation technique enabling inference 
+in \hl{ ${\cal O}((c\profileSizeLimit)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ 
+for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
+and branch transducer with $c$ states). 
+\hl{Empirical tests indicate that } adding additional constraints
+ (in the form of an \hl{``alignment envelope''})  brings typical-case time complexity 
+down to \hl{ ${\cal O}(c\profileSizeLimit N)$}, making the algorithm practical for typical alignment problems.  
 
 Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
 Further, most alignment programs account for the phylogeny relating sequences either in a heuristic sense, or not at all.  
@@ -4146,7 +4165,7 @@ can be found at \url{https://github.com/ihh/transducer-tutorial}
 \newcommand{\prank}{PRANK}
 \newcommand{\clustalw}{CLUSTALW}
 \newcommand{\rateRatio}[1]{\frac{\hat{\lambda}^{#1}_{\hat{H}}}{\lambda^#1}}
-Our simulation study is comprised of alignments simulated  using 5 different indel rates $\lambda$ (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), each with 3 different substitution rates (0.5, 1, and 2 expected  substitutions per unit time) and 100 replicates.  
+\paragraph{Accuracy simulation study} Our simulation study is comprised of alignments simulated  using 5 different indel rates $\lambda$ (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), each with 3 different substitution rates (0.5, 1, and 2 expected  substitutions per unit time) and 100 replicates.  
 Time is defined such that a sequence evolving for time $t$ with substitution rate $r$ is expected to accumulate $rt$ subsitutions per site.
 
 We employed an independent third-party simulation program, indel-seq-gen,specifically designed to generate realistic protein evolutionary histories \cite{StropeEtAl2009}. indel-seq-gen is capable of modeling an empirically-fitted indel length distribution, rate variation among sites, and a neighbor-aware distribution over inserted sequences allowing for small  local duplications.  Since the indel and substitution model used by indel-seq-gen\ are separate from (and richer than) those used by ProtPal, ProtPal has no unfair advantage in this test.
@@ -4180,6 +4199,14 @@ The root mean squared error (RMSE) for each error distribution was computed as f
 \eqnlabel{RMSE}
 RMSE = \sqrt{ \sum_{replicates} (\rateRatio{*}-1)^2 }
 \end{equation}
+
+\paragraph{Time simulation study} In order to empirically determine the time complexity of our method,
+alignments of varying lengths (800, 1600, 3200, 6400, 12800, 25600, 52000 positions) were simulated
+using indel-seq-gen (default parameters) on the 12 {\em Drosophila} species tree 
+and aligned with ProtPal using a  guide alignment with restriction
+parameter ({\tt -s} option described in \secref{alignmentEnvelopes}) set to 10. 
+The analysis time on a 2GHz, 2GB machine was averaged over 60 replicates and plotted next to 
+a linear fit computed using R (www.r-project.org).   
 
 
 \paragraph{Authors' contributions:} OW and IH developed the algorithm and wrote the paper.  BP and GL made substantial intellectual contributions to developing the algorithm.  
