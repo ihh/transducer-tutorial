@@ -575,7 +575,8 @@ With no constraints on the algorithm, \hl{using a branch transducer with $c$ sta
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
 \hl{For a user-specified maximum internal profile size  $m \geq L$, }
-this drops to \hl{ ${\cal O}((c\profileSizeLimit)^2 N)$} when
+the worst-case complexity drops to \hl{ ${\cal O}((c\profileSizeLimit)^3 N)$ 
+(typical case is ${\cal O}((c\profileSizeLimit)^2 N)$} when
  a stochastic lower-bound approximation is used; 
 in this form,
 the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
@@ -2222,14 +2223,14 @@ since the maximum likelihood reconstruction may not always be the true alignment
 \figref{estimates_biases_condensed} \hl{shows the error distributions 
 of estimated insertion and deletion
 rates using the PRANK, ProtPal, and true reconstructions.  The root mean squared error (RMSE),  
-a measure of the overall distance from the 'true' value ($\frac{inferred}{true} = 1$, indicated
+a measure of the overall distance from the `true' value ($\frac{inferred}{true} = 1$, indicated
 with a vertical dashed line), is shown 
 to the right of each distribution.  
 ProtPal's RMSE values lie between  PRANK's and the true alignment, indicating using alignment
 profiles at internal nodes allows for inferring more accurate alignments, or at least alignments
 which allow for more accurately computing summary statistics such as the indel rate.  
 ProtPal's distributions are also more symmetric than PRANK's between insertions and deletions, 
-indicating that alignment profiles  may also help to avoid the    bias towards deletions
+indicating that it is more able to avoid the bias towards deletions
  described in} \cite{LoytynojaGoldman2008}. 
 
 \begin{center}
@@ -3487,7 +3488,7 @@ over $\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$.
 The state spaces $\statesof{E_l}, \statesof{E_r}$, and $\statesof{Q_n}$ 
 are independent of each other, and so }Algorithm~\ref{ForwardTransducer} \hl{ has time complexity
  ${\cal O}(\numberofstates{E_l} \numberofstates{E_l} \numberofstates{Q_n} t_{Z(m)})$, 
-where $t_{Z(m)}$ is the time required to compute $Z(m)$. 
+where $t_{Z(m)}$ is the time required to compute $Z(m)$ for a given $m \in M_n$. 
 
 The quantities $\numberofstates{E_*}$ can be bounded by a user-specified constant $\profileSizeLimit$  
 by terminating  stochastic sampling such that $\numberofstates{E_*} \leq \profileSizeLimit$ 
@@ -3500,12 +3501,9 @@ Computing $Z(m)$ (outlined in } Function~\ref{fillZ})
 \hl{requires summing over all incoming states, so $t_{Z(m)}$ has time complexity
  ${\cal O}(|m:(m,\epsilon,\epsilon,m') \in \Transitions|)$.  
 In typical cases, this set will be small (e.g. a linear profile will have exactly one 
-incoming transition per state), though worst-case size is ${\cal O}(p)$.  
+incoming transition per state), though the worst-case size is ${\cal O}(p)$.  
 If we assume the same branch transducer $B$ is used throughout, 
 the full forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2 \profileSizeLimit^3)$.}
-
-TODO: include $\tau$ in other mentions of complexity?  Motivate typical-case complexity and/or 
-align env performance?
 
 \begin{algorithm}
   Initialize $Z(\startstate) \leftarrow 1$;
@@ -4140,7 +4138,8 @@ or a phylogenetic generalization of progressive alignment.
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
 We described a hierarchical  approximation technique enabling inference 
-in \hl{ ${\cal O}((c\profileSizeLimit)^2N)$} time and memory, as opposed to ${\cal O}(L^N)$ 
+in \hl{ ${\cal O}((c\profileSizeLimit)^3N)$} time and memory 
+(typical-case ${\cal O}((c\profileSizeLimit)^2 N)$) , as opposed to ${\cal O}(L^N)$ 
 for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
 and branch transducer with $c$ states). 
 \hl{Empirical tests indicate that } adding additional constraints
