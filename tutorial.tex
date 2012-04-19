@@ -575,7 +575,7 @@ With no constraints on the algorithm, \hl{using a branch transducer with $c$ sta
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
 \hl{For a user-specified maximum internal profile size  $m \geq L$, }
-the worst-case complexity drops to \hl{ ${\cal O}((c\profileSizeLimit)^3 N)$ 
+the worst-case complexity drops to \hl{ ${\cal O}(c^2\profileSizeLimit^3 N)$ 
 (typical case is ${\cal O}((c\profileSizeLimit)^2 N)$} when
  a stochastic lower-bound approximation is used; 
 in this form,
@@ -4138,7 +4138,7 @@ or a phylogenetic generalization of progressive alignment.
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
 We described a hierarchical  approximation technique enabling inference 
-in \hl{ ${\cal O}((c\profileSizeLimit)^3N)$} time and memory 
+in \hl{ ${\cal O}(c^2\profileSizeLimit^3N)$} time and memory 
 (typical-case ${\cal O}((c\profileSizeLimit)^2 N)$) , as opposed to ${\cal O}(L^N)$ 
 for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
 and branch transducer with $c$ states). 
