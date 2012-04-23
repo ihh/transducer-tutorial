@@ -574,7 +574,7 @@ to entire, full-length sequences, without needing to condition on a single align
 With no constraints on the algorithm, \hl{using a branch transducer with $c$ states,}
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
-\hl{For a user-specified maximum internal profile size  $m \geq L$, }
+\hl{For a user-specified maximum internal profile size  $\profileSizeLimit \geq L$, }
 the worst-case complexity drops to \hl{ ${\cal O}(c^2\profileSizeLimit^3 N)$ 
 (typical case is ${\cal O}((c\profileSizeLimit)^2 N)$} when
  a stochastic lower-bound approximation is used; 
@@ -589,7 +589,7 @@ The new algorithm is, essentially, algebraically equivalent to Felsenstein's alg
 if the concept of a ``substitution matrix'' over a particular alphabet is extended to the countably-infinite set of all sequences over that alphabet.
 Our chosen class of ``infinite substitution matrix'' is one that has a finite representation:
 namely, the {\em finite-state transducer}, a probabilistic automaton that transforms an input sequence to an output sequence,
-and a familiar tool of statistical linguistics \cite{MohriPereiraRiley2000}.
+a familiar tool of statistical linguistics \cite{MohriPereiraRiley2000}.
 
 In vector form, Felsenstein's pruning recursion is
 \[
@@ -624,12 +624,11 @@ The purpose of this manuscript is a clean theoretical presentation of the algori
 In separate work (manuscript {\em submitted}) we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
 as indicated by proxy statistics such as the estimated indel rate.
 
-The use of transducers in bioinformatics has been reported before \cite{Holmes2003,BradleyHolmes2007,SatijaEtAl2008,PatenEtAl2008}
+The use of transducers in bioinformatics has been reported before \cite{Searls95,Holmes2003,BradleyHolmes2007,SatijaEtAl2008,PatenEtAl2008}
 including an application to genome reconstruction that is conceptually similar to what we do here for proteins \cite{PatenEtAl2008}.
-However, this paper represents a clearer presentation of the underlying mathematics.
 In particular, to maximize accessibility, we have chosen to use a formulation of finite-state transducers
-that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/wiki/Finite\_state\_transducer}).
-
+that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/w/index.php?title=Finite\_state\_transducer\&oldid=486381386}).
+This presentation is consistent with others described in the computer science literature \cite{MohriPereiraRiley2000}.
 
 \subsection{Document structure}  
 We will begin with a narrative, ``tutorial'' overview that introduces the main
@@ -2090,7 +2089,7 @@ transducer version of the Felsenstein recursion.
 Essentially, composition replaces matrix multiplication, intersection replaces the 
 pointwise product, and the initiation/termination steps involve (respectively) recognizers and generators.
 
-The full recursion (with the same $O(L^N)$ complexity as the Sankoff algorithm \cite{SankoffCedergren83}
+The full recursion (with the same ${\cal O}(L^N)$ complexity as the Sankoff algorithm \cite{SankoffCedergren83}
 for simultaneously aligning $N$ sequences of length $L$, ignoring secondary structure)
 involves starting with exact-match recognition profiles at the leaves (\figref{mf-labeled}, \figref{liv-labeled}),
 using those to construct recognition profiles for the parents (\figref{fork-tkf91liv-tkf91mf}),
@@ -2158,7 +2157,8 @@ while avoiding the full complexity of the complete ancestral profile
 By sampling a fixed number of traceback paths,
 we can construct a recognition profile for the ancestral sequence
 that is linearly bounded in size and offers a stochastic ``lower bound''
-on the probability computed by the full Felsenstein transducer in \figref{root-fork-tkf91liv-tkf91mf}.
+on the probability computed by the full Felsenstein transducer in \figref{root-fork-tkf91liv-tkf91mf}
+\hl{that (if we include the Viterbi path along with the sampled paths) is guaranteed to improve on the Viterbi lower-bound for the full Felsenstein probability.}
 
 \widepngfig{fork-tkf91forward2-tkf91cs}{Transducer $(\tkf \cdot \profile_2)\fork(\tkf \cdot \recognize(CS))$ shows the alignment of the sequence CS with the sampled profile $\profile_2$.
 Transducer $\profile_2$, shown in \figref{forward2-profile}, is a branched profile whose different paths represent alternate ancestries of sibling sequences MF and LIV.
@@ -2202,9 +2202,12 @@ we discard some low-probability states and therefore leak a little bit of probab
 The hope is that, in practice, by sampling sufficiently many paths we are able to 
 recover the maximum likelihood reconstruction at the root level, and so the
 lower bound is a good one.
+\hl{Furthermore, as long as we include the Viterbi path in with the retained sampled paths at every progressive step,
+then the final state machine will be a superset of the machine that Viterbi progressive alignment will have constructed,
+so we are guaranteed that the final likelihood will be greater than the Viterbi likelihood, while still representing a lower bound.}
 
 \hl{
-In practice, we find that our method performs better than Viterbi progressive alignment and 
+In terms of accuracy at estimating indel rates, we find that our method performs significantly better than Viterbi progressive alignment and 
 approaches the accuracy of the true alignment. 
 We simulated indel histories under 5 indel rates
  (0.005, 0.01, 0.02, 0.04, and 0.08 indels per unit time), and analyzed the unaligned leaf
