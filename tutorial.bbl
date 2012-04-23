@@ -120,6 +120,14 @@ Marc~A Suchard and Benjamin~D Redelings.
   phylogeny}.
 \newblock {\em Bioinformatics}, 22(16):2047--2048, Aug 2006.
 
+\bibitem{Searls95}
+D.~B. Searls and K.~P. Murphy.
+\newblock Automata-theoretic models of mutation and alignment.
+\newblock In C.~Rawlings, D.~Clark, R.~Altman, L.~Hunter, T.~Lengauer, and
+  S.~Wodak, editors, {\em Proceedings of the Third International Conference on
+  Intelligent Systems for Molecular Biology}, pages 341--349, Menlo Park, CA,
+  1995. AAAI Press.
+
 \bibitem{Holmes2003}
 I.~Holmes.
 \newblock Using guide trees to construct multiple-sequence evolutionary {HMM}s.

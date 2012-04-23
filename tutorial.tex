@@ -279,6 +279,8 @@
 
 
 % Tutorial transducers
+\newcommand\wikipediaTransducerUrl{http://en.wikipedia.org/w/index.php?title=Finite\_state\_transducer\&oldid=486381386}
+
 \newcommand\nullmodel{{\cal N}}
 \newcommand\substitute{{\cal S}}
 \newcommand\tkf{{\cal B}}
@@ -627,7 +629,7 @@ as indicated by proxy statistics such as the estimated indel rate.
 The use of transducers in bioinformatics has been reported before \cite{Searls95,Holmes2003,BradleyHolmes2007,SatijaEtAl2008,PatenEtAl2008}
 including an application to genome reconstruction that is conceptually similar to what we do here for proteins \cite{PatenEtAl2008}.
 In particular, to maximize accessibility, we have chosen to use a formulation of finite-state transducers
-that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt http://en.wikipedia.org/w/index.php?title=Finite\_state\_transducer\&oldid=486381386}).
+that closely mirrors the formulation available on Wikipedia at the time of writing ({\tt \wikipediaTransducerUrl}).
 This presentation is consistent with others described in the computer science literature \cite{MohriPereiraRiley2000}.
 
 \subsection{Document structure}  
@@ -678,7 +680,7 @@ These ideas are defined with greater mathematical precision in \secref{Transduce
 
 % Begin quote from Wikipedia
 {\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to } recognize {\em a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. $(\dagger\dagger\dagger)$ Alternatively, we can say that an automaton } generates {\em strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
-\url{http://en.wikipedia.org/wiki/Finite_state_transducer}
+\url{\wikipediaTransducerUrl}
 % End quote from Wikipedia
 \\
 $(\dagger\dagger\dagger)$ For a weighted transducer this mapping is,
