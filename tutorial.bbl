@@ -120,6 +120,12 @@ Marc~A Suchard and Benjamin~D Redelings.
   phylogeny}.
 \newblock {\em Bioinformatics}, 22(16):2047--2048, Aug 2006.
 
+\bibitem{WestessonEtAl2012}
+O~Westesson, G~Lunter, B~Paten, and I~Holmes.
+\newblock Accurate reconstruction of insertion-deletion histories by
+  statistical phylogenetics.
+\newblock {\em PLoS One, In press}.
+
 \bibitem{Searls95}
 D.~B. Searls and K.~P. Murphy.
 \newblock Automata-theoretic models of mutation and alignment.
@@ -204,6 +210,11 @@ J.~L. Thorne, H.~Kishino, and J.~Felsenstein.
 \newblock Inching toward reality: an improved likelihood model of sequence
   evolution.
 \newblock {\em Journal of Molecular Evolution}, 34:3--16, 1992.
+
+\bibitem{Motwani2010}
+R.~Motwani and P.~Raghavan.
+\newblock {\em Randomized algorithms}.
+\newblock Chapman \& Hall/CRC, 2010.
 
 \bibitem{Holmes2005}
 I.~Holmes.

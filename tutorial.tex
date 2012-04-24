@@ -623,7 +623,7 @@ which also marginalize alignments in an unbiased way---albeit more slowly, since
 In this sense, the new algorithm may be thought of as a fast, non-MCMC approximation to statistical alignment.
 
 The purpose of this manuscript is a clean theoretical presentation of the algorithm.
-In separate work (manuscript {\em submitted}) we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
+In separate work \cite{WestessonEtAl2012} we find that the algorithm appears to recover more accurate reconstructions of simulated phylogenetic indel histories,
 as indicated by proxy statistics such as the estimated indel rate.
 
 The use of transducers in bioinformatics has been reported before \cite{Searls95,Holmes2003,BradleyHolmes2007,SatijaEtAl2008,PatenEtAl2008}
@@ -3716,6 +3716,34 @@ with probability $\frac{weights_i}{sum(weights)}$.
 % crossref
 A state path with two sampled paths is shown in \figref{forward2-fork-tkf91liv-tkf91mf}. 
 
+\hl{
+\paragraph{Alternative sampling schemes}  The above stochastic 
+sampling strategy was chosen for its
+ease of presentation and implementation, but our approach is sufficiently general to 
+allow any algorithm which selects  a subset of complete paths through $M_n$.  
+This selection may be by random (as ours is) or deterministic means. 
+Randomized algorithms are widespread in computer science} \cite{Motwani2010}, 
+\hl{though deterministic algorithms may be easier to analyze mathematically. 
+
+For instance, if an analog to the backward algorithm for HMMs was developed
+for the state space of $M_n$ (e.g. Algorithm } \ref{ForwardTransducerFull} \hl{reversed), 
+we could select
+a set of states according to their posterior probability (e.g. the $n$ states with highest
+posterior probability), and determine the most likely paths (via Viterbi paths)
+ from start to end
+which include these states.  Alternatively, a decision theory-based ``optimal accuracy'' 
+approach could be used to 
+optimize the total posterior probability of the selected states. 
+These approaches require  an additional dynamic programming
+recursion (the backward algorithm) at each step, and we suspect 
+the improvement in accuracy may be
+minimal in the limit of sampling  many paths.  
+Empirically, we have observed that sampling paths is
+very fast compared to filling a DP matrix, and so we have focused our attention on the 
+outlined stochastic approach.
+}
+
+
 \begin{algorithm}
 \KwIn{Z}
 \KwOut{A path  $\pi$ through $M_n$ sampled proportional to $\transweightfun{M_n}(\pi)$.}
@@ -4148,7 +4176,7 @@ in \hl{ ${\cal O}(c^2\profileSizeLimit^3N)$} time and memory
 for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
 and branch transducer with $c$ states). 
 \hl{Empirical tests indicate that } adding additional constraints
- (in the form of an \hl{``alignment envelope''})  brings typical-case time complexity 
+ (in the form of an \hl{``alignment envelope'')  brings typical-case} time complexity 
 down to \hl{ ${\cal O}(c\profileSizeLimit N)$}, making the algorithm practical for typical alignment problems.  
 
 Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
