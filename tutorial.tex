@@ -59,7 +59,8 @@
 \usepackage{color} 
 \usepackage{ifthen}
 \usepackage{rotating}
-\usepackage{soul}
+%\usepackage{soul}
+\newcommand{\hl}[1]{#1}
 
 \newcommand{\profileSizeLimit}{p}
 
@@ -578,13 +579,18 @@ the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
 % Complexity mentioned
 \hl{For a user-specified maximum internal profile size  $\profileSizeLimit \geq L$, }
-the worst-case complexity drops to \hl{ ${\cal O}(c^2\profileSizeLimit^3 N)$ 
-(typical case is ${\cal O}((c\profileSizeLimit)^2 N)$} when
+the worst-case time complexity drops to \hl{ ${\cal O}(c^2\profileSizeLimit^4 N)$ 
+(typical case is ${\cal O}((c\profileSizeLimit)^2 N)$}) when
  a stochastic lower-bound approximation is used; 
-in this form,
+memory complexity is ${\cal O}((c\profileSizeLimit)^2 + pN)$. 
+In this form,
 the algorithm is similar to the partial order graph for multiple sequence alignment \cite{LeeGrassoSharlow2002}.
-\hl{Empirical tests indicate that the typical-case complexity drops further to
- ${\cal O}(c\profileSizeLimit N)$ if an``alignment envelope'' is provided as a clue to the algorithm.}
+\hl{If an``alignment envelope'' is provided as a clue to the algorithm,
+the typical-case time complexity drops further to
+ ${\cal O}(c^2\profileSizeLimit^\alpha N)$,
+with empirical tests indicating that $\alpha = 1.55$. 
+That is, the alignment envelope brings the complexity to sub-quadratic with respect to 
+sequence length. }
 The  alignment envelope is not a hard constraint,
 and may be controllably relaxed, or dispensed with altogether.
 
@@ -3510,7 +3516,7 @@ In typical cases, this set will be small (e.g. a linear profile will have exactl
 incoming transition per state), though the worst-case size is ${\cal O}(p)$.  
 If we assume the same branch transducer $B$ is used throughout, 
 % Complexity mentioned
-the full forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2 \profileSizeLimit^3)$.}
+the full forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2 \profileSizeLimit^4)$.}
 
 \begin{algorithm}
   Initialize $Z(\startstate) \leftarrow 1$;
@@ -3982,10 +3988,10 @@ algorithm traverses up the phylogeny.
 \includegraphics[width=1\textwidth]{time.pdf}
 \caption{When using an alignment envelope, our implementation of the alignment algorithm
 % Complexity mentioned
-scales approximately linearly with sequence length.  Alignments consisting of 12 sequences
+scales sub-quadratically with respect to sequence length.  Alignments consisting of 12 sequences
 were simulated for lengths ranging from 800bp to 52kb and aligned using our software.
 Mean and middle 90\% quantiles (60 replicates) for  CPU time required on a 2GHz, 2GB RAM Linux machine are
-shown next to a linear fit (dashed line).  }
+shown next to a log-log linear fit (dashed line: CPU Hours $\propto Columns^{1.55}$)).  }
 \figlabel{time}
 \end{figure}
 \end{center}
@@ -4175,13 +4181,13 @@ Our algorithm  extends the concept of a character substitution matrix (e.g. \cit
 
 We described a hierarchical  approximation technique enabling inference 
 % Complexity mentioned
-in \hl{ ${\cal O}(c^2\profileSizeLimit^3N)$} time and memory 
+in \hl{ ${\cal O}(c^2\profileSizeLimit^4N)$} time and memory 
 (typical-case ${\cal O}((c\profileSizeLimit)^2 N)$) , as opposed to ${\cal O}(L^N)$ 
 for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
 and branch transducer with $c$ states). 
 \hl{Empirical tests indicate that } adding additional constraints
  (in the form of an \hl{``alignment envelope'')  brings typical-case} time complexity 
-down to \hl{ ${\cal O}(c\profileSizeLimit N)$}, making the algorithm practical for typical alignment problems.  
+down to \hl{ ${\cal O}(c^2\profileSizeLimit^{1.55} N)$}, making the algorithm practical for typical alignment problems.  
 
 Much of computational biology depends on a multiple sequence alignment as input, yet the uncertainty and bias engendered by an alignment is rarely accounted for.  
 Further, most alignment programs account for the phylogeny relating sequences either in a heuristic sense, or not at all.  
@@ -4243,7 +4249,7 @@ and aligned with ProtPal using a  guide alignment with restriction
 parameter ({\tt -s} option described in \secref{alignmentEnvelopes}) set to 10. 
 The analysis time on a 2GHz, 2GB machine was averaged over 60 replicates and plotted next to 
 % Complexity mentioned
-a linear fit computed using R (www.r-project.org).   
+a log-log fit computed using R (www.r-project.org).   
 
 
 \paragraph{Authors' contributions:} OW and IH developed the algorithm and wrote the paper.  BP and GL made substantial intellectual contributions to developing the algorithm.  
