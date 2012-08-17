@@ -576,6 +576,7 @@ to entire, full-length sequences, without needing to condition on a single align
 With no constraints on the algorithm, \hl{using a branch transducer with $c$ states,}
 the time and memory complexities are ${\cal O}((cL)^N)$,
 with close similarity to the algorithms of Sankoff \cite{SankoffCedergren83} and Hein \cite{Hein2001}.
+% Complexity mentioned
 \hl{For a user-specified maximum internal profile size  $\profileSizeLimit \geq L$, }
 the worst-case complexity drops to \hl{ ${\cal O}(c^2\profileSizeLimit^3 N)$ 
 (typical case is ${\cal O}((c\profileSizeLimit)^2 N)$} when
@@ -3508,6 +3509,7 @@ Computing $Z(m)$ (outlined in } Function~\ref{fillZ})
 In typical cases, this set will be small (e.g. a linear profile will have exactly one 
 incoming transition per state), though the worst-case size is ${\cal O}(p)$.  
 If we assume the same branch transducer $B$ is used throughout, 
+% Complexity mentioned
 the full forward recursion has worst-case time complexity ${\cal O}(\numberofstates{B}^2 \profileSizeLimit^3)$.}
 
 \begin{algorithm}
@@ -3979,6 +3981,7 @@ algorithm traverses up the phylogeny.
 \begin{figure}[h!]
 \includegraphics[width=1\textwidth]{time.pdf}
 \caption{When using an alignment envelope, our implementation of the alignment algorithm
+% Complexity mentioned
 scales approximately linearly with sequence length.  Alignments consisting of 12 sequences
 were simulated for lengths ranging from 800bp to 52kb and aligned using our software.
 Mean and middle 90\% quantiles (60 replicates) for  CPU time required on a 2GHz, 2GB RAM Linux machine are
@@ -4171,6 +4174,7 @@ or a phylogenetic generalization of progressive alignment.
 Our algorithm  extends the concept of a character substitution matrix (e.g. \cite{JukesCantor69, HasegawaEtAl85}) to finite-state transducers, replacing matrix multiplication with transducer composition.
 
 We described a hierarchical  approximation technique enabling inference 
+% Complexity mentioned
 in \hl{ ${\cal O}(c^2\profileSizeLimit^3N)$} time and memory 
 (typical-case ${\cal O}((c\profileSizeLimit)^2 N)$) , as opposed to ${\cal O}(L^N)$ 
 for exact, exhaustive inference ($N$ sequences of length $L$, limiting factor $m\geq L$ 
@@ -4238,6 +4242,7 @@ using indel-seq-gen (default parameters) on the 12 {\em Drosophila} species tree
 and aligned with ProtPal using a  guide alignment with restriction
 parameter ({\tt -s} option described in \secref{alignmentEnvelopes}) set to 10. 
 The analysis time on a 2GHz, 2GB machine was averaged over 60 replicates and plotted next to 
+% Complexity mentioned
 a linear fit computed using R (www.r-project.org).   
 
 
