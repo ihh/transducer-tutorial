@@ -687,7 +687,7 @@ These ideas are defined with greater mathematical precision in \secref{Transduce
 
 % Begin quote from Wikipedia
 {\em A finite state transducer is a finite state machine with two tapes: an input tape and an output tape. ... An automaton can be said to } recognize {\em a string if we view the content of its tape as input. In other words, the automaton computes a function that maps strings into the set $\{0,1\}$. $(\dagger\dagger\dagger)$ Alternatively, we can say that an automaton } generates {\em strings, which means viewing its tape as an output tape. On this view, the automaton generates a formal language, which is a set of strings. The two views of automata are equivalent: the function that the automaton computes is precisely the indicator function of the set of strings it generates... Finite State Transducers can be weighted, where each transition is labeled with a weight in addition to the input and output labels. }
-\url{\wikipediaTransducerUrl}
+{\tt \wikipediaTransducerUrl}
 % End quote from Wikipedia
 \\
 $(\dagger\dagger\dagger)$ For a weighted transducer this mapping is,
@@ -824,6 +824,10 @@ are possible.
 In such situations, the Mealy type of machine can suffer from an excess of transitions, complicating the presentation.  
 For example, consider the Mealy-machine-like view of  \figref{fanned-emission},
 and compare it with the more compact Moore-machine-like view of \figref{condensed-emission}.  
+
+The majority of this paper deals with Moore machines.
+However, \appref{Mealy} reformulates the key algorithms of transducer composition (\secref{Composition})
+and transducer intersection (\secref{Fork}) as Mealy machines.
 
 \sidewayspngfig{fanned-emission}{All combinations of input and output characters are frequently observed.  
 The transitions in this diagram include all possible deletion, insertion, and substitution transitions between a pair of transducer states.
@@ -2270,7 +2274,7 @@ it is also sometimes useful (and perhaps more conventional in bioinformatics) to
 For example, we can describe the multi-sequence HMM that simultaneously emits an alignment of all of the sequences;
 this is a generator, and in fact is the model $F_n$ described in \secref{ForwardModel}.
 (An animation of such a multi-sequence generator emitting a small alignment can be viewed at
-\url{http://youtu.be/EcLj5MSDPyM} with more at \url{http://biowiki.org/PhyloFilm}.)
+\url{http://youtu.be/EcLj5MSDPyM}.)
 
 If we take the intersection of two TKF91 transducers, we obtain a transducer that has one input sequence and two output sequences
 (or, equivalently, one output tape that encodes a pairwise alignment of two sequences).
@@ -2544,6 +2548,7 @@ The resulting transducer is in weak-normal form (it can be converted to a strict
 
 % crossref
 In the tutorial section, many examples of simple and complex compositions are shown in \secref{Tutorial.Composition}, for instance \figref{tkf91-tkf91}, \figref{mf-tkf91} and \figref{mf-tkf91-liv}.  
+See also \appref{MealyComposition} for the Mealy machine formulation.
 
 \subsection{Intersection ($T\fork U$) unifies input of $T$ with input of $U$}
 \seclabel{Fork}
@@ -2583,7 +2588,7 @@ and
 The resulting transducer is in weak-normal form (it can be converted to a strict-normal form transducer by eliminating null states).
 % crossref
 In the tutorial section, many examples of simple and complex intersections are shown in \secref{Tutorial.Intersection}, for instance \figref{fork-subcs-submf} and  \figref{root-fork-tkf91liv-tkf91mf}. 
-
+See also \appref{MealyFork} for the Mealy machine formulation.
 
 
 \subsection{Identity and bifurcation transducers ($\identity$, $\idfork$)}
@@ -4293,11 +4298,14 @@ S_O(\pi) & = & \sum_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
 
 
 \section{Composition and intersection in Mealy transducers}
+\applabel{Mealy}
 
 This paper mostly discusses Moore machines (wherein character input and output is associated with states).
-For completeness, we give constructions of composition (\secref{Composition}) and intersection (\secref{Fork}) for Mealy machines (I/O associated with transitions).
+For completeness, we give constructions of composition (\secref{Composition}) and intersection (\secref{Fork})
+for the more general Mealy machines (wherein I/O is associated with transitions).
 
 \subsection{Mealy normal form}
+\applabel{MealyNormal}
 We first introduce a normal form for Mealy transducers, analogous to the Moore-normal form.
 A letter transducer
  $T = (\Omega_I, \Omega_O, \States, \startstate, \laststate, \Transitions, \weight)$ 
@@ -4320,7 +4328,7 @@ assigning the absorbing transitions to the ``ready'' state and the non-absorbing
 and adding a dummy transition (of unit weight) from the unready to the ready state.
 
 \subsection{Mealy machine composition}
-\seclabel{Composition}
+\applabel{MealyComposition}
 
 {\em Transducer composition:}
 Given letter transducers
@@ -4344,7 +4352,7 @@ and
 
 
 \subsection{Mealy machine intersection}
-\seclabel{Fork}
+\applabel{MealyFork}
 
 {\em Transducer intersection:}
 Given letter transducers
