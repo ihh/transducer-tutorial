@@ -4292,6 +4292,80 @@ S_O(\pi) & = & \sum_{(\phi_1,\omega_I,\omega_O,\phi_2) \in \pi} \omega_O
 \end{eqnarray*}
 
 
+\section{Composition and intersection in Mealy transducers}
+
+This paper mostly discusses Moore machines (wherein character input and output is associated with states).
+For completeness, we give constructions of composition (\secref{Composition}) and intersection (\secref{Fork}) for Mealy machines (I/O associated with transitions).
+
+\subsection{Mealy normal form}
+We first introduce a normal form for Mealy transducers, analogous to the Moore-normal form.
+A letter transducer
+ $T = (\Omega_I, \Omega_O, \States, \startstate, \laststate, \Transitions, \weight)$ 
+is Mealy-normal if the state space $\States$ can be partitioned into two disjoint subsets, $\States_{\mbox{unready}}$ and $\States_{\mbox{ready}}$,
+such that
+\begin{eqnarray*}
+\weight(\phi_U,\omega_{\mbox{in}},\omega,\phi) & = & 0 \quad \forall \phi_U \in \States_{\mbox{unready}}, \omega_{\mbox{in}} \in \Omega_I \\
+\weight(\phi_R,\epsilon,\omega,\phi) & = & 0 \quad \forall \phi_R \in \States_{\mbox{ready}}
+\end{eqnarray*}
+
+where
+ $\omega \in \gappedalphabet{O}$
+and
+ $\phi \in \States$.
+That is, there are no absorbing transitions from ``unready'' states, and no non-absorbing transitions from ``ready'' states.
+Such a Mealy-normal transducer can easily be constructed from any general letter transducer
+simply by identifying any states that have both absorbing and non-absorbing outgoing transitions,
+splitting each such state into a ``ready'' and an ``unready'' state,
+assigning the absorbing transitions to the ``ready'' state and the non-absorbing states to the ``unready'' state,
+and adding a dummy transition (of unit weight) from the unready to the ready state.
+
+\subsection{Mealy machine composition}
+\seclabel{Composition}
+
+{\em Transducer composition:}
+Given letter transducers
+ $T = (\Omega_X, \Omega_Y, \States, \startstate, \laststate, \Transitions, \weight)$ and
+ $U = (\Omega_Y, \Omega_Z, \States', \startstate', \laststate', \Transitions', \weight')$,
+in Mealy normal form,
+we construct $T \compose U = (\Omega_X, \Omega_Z, \States'' \ldots \weight'')$ as follows.
+
+Let $\States'' \subset \States \times \States'$,
+$\startstate''=(\startstate,\startstate')$, $\laststate''=(\laststate,\laststate')$
+and
+\begin{eqnarray*}
+\lefteqn{\weight''((t,u),\omega_x,\omega_z,(t',u')) =} & & \\
+& & \left\{ \begin{array}{ll}
+\delta(t=t') \delta(\omega_x=\epsilon) \weight(u,\epsilon,\omega_z,u') & \mbox{if $u \in \States_{\mbox{unready}}$} \\
+\displaystyle
+\delta(u=u') \delta(\omega_z=\epsilon) \weight'(t,\omega_x,\epsilon,t')
++ \sum_{\omega_y \in \Omega_Y} \weight(t,\omega_x,\omega_y,t') \weight'(u,\omega_y,\omega_z,u') & \mbox{if $u \in \States_{\mbox{ready}}$}
+\end{array} \right.
+\end{eqnarray*}
+
+
+\subsection{Mealy machine intersection}
+\seclabel{Fork}
+
+{\em Transducer intersection:}
+Given letter transducers
+ $T = (\Omega_X, \Omega_T, \States, \startstate, \laststate, \Transitions, \weight)$ and
+ $U = (\Omega_X, \Omega_U, \States', \startstate', \laststate', \Transitions', \weight')$,
+in Mealy normal form,
+we construct $T\fork U = (\Omega_X, \Omega_V, \States'' \ldots \weight'')$
+where $\Omega_V \subseteq \gappedpair{T}{U}$ as follows.
+
+Let $\States'' \subset \States \times \States'$,
+$\startstate''=(\startstate,\startstate')$, $\laststate''=(\laststate,\laststate')$
+and
+\begin{eqnarray*}
+\lefteqn{\weight''((t,u),\omega_x,(\omega_y,\omega_z),(t',u')) =} & & \\
+ & & \left\{ \begin{array}{ll}
+\delta(t=t') \delta(\omega_x=\omega_y=\epsilon) \weight'(u,\epsilon,\omega_z,u') & \mbox{if $u \in \States'_{\mbox{unready}}$} \\
+\delta(u=u') \delta(\omega_x=\omega_z=\epsilon) \weight(t,\epsilon,\omega_y,t') & \mbox{if $t \in \States_{\mbox{unready}}$ and $u \in \States'_{\mbox{ready}}$} \\
+\weight(t,\omega_x,\omega_y,t') \weight'(u,\omega_x,\omega_z,u') & \mbox{if $t \in \States_{\mbox{ready}}$ and $u \in \States'_{\mbox{ready}}$}
+\end{array} \right.
+\end{eqnarray*}
+
 
 \bibliography{../latex-inputs/alignment,../latex-inputs/ncrna,../latex-inputs/genomics,../latex-inputs/reconstruction}
 
